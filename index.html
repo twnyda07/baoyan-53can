@@ -148,7 +148,7 @@
     <div class="deck">
       <div class="flip float" id="flip">
         <div class="glow" id="glow"></div>
-        <div class="face back"><img src="images/00.png" alt="寶嚴 善知識卡背"></div>
+        <div class="face back"><img src="images/00.jpg" alt="寶嚴 善知識卡背"></div>
         <div class="face front"><img id="frontImg" alt="善知識卡"></div>
       </div>
     </div>
@@ -201,7 +201,7 @@ function draw(){
     flip.classList.remove("float");
     flip.classList.add("shuffle");
     const pick=SIGNS[Math.floor(Math.random()*SIGNS.length)];
-    frontImg.src="images/"+String(pick.n).padStart(2,"0")+".png";
+    frontImg.src="images/"+String(pick.n).padStart(2,"0")+".jpg";
     setTimeout(()=>{
       flip.classList.remove("shuffle");
       flip.classList.add("flipped"); flipped=true;
