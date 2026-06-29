@@ -181,7 +181,7 @@
         <path d="M12 54c2-9 10-14 20-14s18 5 20 14"/>
         <path d="M26 24c1.5 1.5 4.5 1.5 6 0M38 24c1.5 1.5 4.5 1.5 6 0" stroke-width="2.4"/>
       </svg>
-      <p>開啟鏡頭，或上傳一張正面清晰的相片<br>讓善知識為您觀照面相</p>
+      <p>拍一張、或選一張正面清晰的相片<br>讓善知識為您觀照面相</p>
     </div>
     <svg class="guide" id="guide" viewBox="0 0 300 360" preserveAspectRatio="none">
       <ellipse cx="150" cy="180" rx="92" ry="120"/>
@@ -201,13 +201,11 @@
   <div class="err" id="err"></div>
 
   <div class="actions" id="setupActions">
-    <button class="btn" id="photoBtn">📷 拍照</button>
-    <button class="btn ghost" id="uploadBtn">🖼 從相簿選</button>
+    <button class="btn" id="pickBtn">📷 拍照 / 選照片</button>
     <button class="btn ghost" id="camBtn">即時鏡頭</button>
-    <input type="file" id="fileCam" accept="image/*" capture="user" style="display:none;">
     <input type="file" id="file" accept="image/*" style="display:none;">
   </div>
-  <p class="cam-tip" id="camTip">手機請優先用「📷 拍照」最穩定；「即時鏡頭」在 LINE／FB／IG 內建瀏覽器可能無法使用。</p>
+  <p class="cam-tip" id="camTip"></p>
   <div class="actions" id="goActions" style="display:none;">
     <button class="btn big" id="readBtn">觀　照　面　相</button>
     <button class="btn ghost" id="resetBtn">重新選擇</button>
@@ -272,10 +270,8 @@ const viewer=document.getElementById("viewer");
 const video=document.getElementById("video");
 const shot=document.getElementById("shot");
 const fileInput=document.getElementById("file");
-const fileCamInput=document.getElementById("fileCam");
 const camBtn=document.getElementById("camBtn");
-const uploadBtn=document.getElementById("uploadBtn");
-const photoBtn=document.getElementById("photoBtn");
+const pickBtn=document.getElementById("pickBtn");
 const readBtn=document.getElementById("readBtn");
 const resetBtn=document.getElementById("resetBtn");
 const againBtn=document.getElementById("againBtn");
@@ -356,10 +352,8 @@ function handleFile(f){
   img.onerror=()=>{ setErr("照片讀取失敗，請換一張試試。"); URL.revokeObjectURL(url); };
   img.src=url;
 }
-photoBtn.addEventListener("click",()=>fileCamInput.click());
-uploadBtn.addEventListener("click",()=>fileInput.click());
+pickBtn.addEventListener("click",()=>fileInput.click());
 fileInput.addEventListener("change",e=>handleFile(e.target.files&&e.target.files[0]));
-fileCamInput.addEventListener("change",e=>handleFile(e.target.files&&e.target.files[0]));
 
 function drawToShot(src){
   const W=300,H=360; shot.width=W; shot.height=H;
@@ -504,6 +498,19 @@ camBtn.addEventListener("click",openCam);
 readBtn.addEventListener("click",read);
 resetBtn.addEventListener("click",resetAll);
 againBtn.addEventListener("click",resetAll);
+
+/* 手機隱藏「即時鏡頭」（行動裝置常被系統／App 內建瀏覽器封鎖），
+   改以「拍照 / 選照片」用原生相機，穩定可用。桌機則保留即時鏡頭。 */
+(function(){
+  const ua=navigator.userAgent||"";
+  const isMobile=(navigator.maxTouchPoints>1)||/Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+  if(isMobile){
+    camBtn.style.display="none";
+    camTip.textContent="按「拍照 / 選照片」即可開啟相機拍攝，或從相簿選一張正面照。";
+  }else{
+    camTip.textContent="可用「即時鏡頭」即時觀照，或「拍照 / 選照片」上傳一張正面照片。";
+  }
+})();
 
 /* 星空 + 金塵 */
 (function(){
