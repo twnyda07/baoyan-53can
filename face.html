@@ -89,7 +89,7 @@
   .btn.ghost:hover{background:rgba(212,175,55,.14);}
   .btn.big{font-size:18px; padding:14px 44px; letter-spacing:.28em; text-indent:.28em;}
 
-  /* 結果面板（深色玻璃） */
+  /* 結果面板（與抽籤頁一致的深色玻璃） */
   .card-scene{width:100%; max-width:460px; margin:20px auto 0; display:none;}
   .card-scene.show{display:block; animation:fadeUp .6s ease;}
   @keyframes fadeUp{from{opacity:0; transform:translateY(16px);}to{opacity:1; transform:translateY(0);}}
@@ -101,18 +101,33 @@
   .badge{display:inline-block; background:linear-gradient(180deg,#e8c84e,#b8901f); color:#2a1d02; font-size:13px; letter-spacing:.3em; text-indent:.3em; padding:6px 22px; border-radius:22px; font-weight:700; border:1px solid var(--gold);}
   .no{color:var(--ink-soft); font-size:13.5px; letter-spacing:.12em; margin:12px 0 2px;}
   .no b{color:var(--gold-light); font-size:16px;}
-  .face-shot{width:96px; height:96px; margin:12px auto 4px; border-radius:50%; overflow:hidden; border:2px solid var(--gold); box-shadow:0 4px 14px rgba(0,0,0,.4), 0 0 16px rgba(212,175,55,.35); background:#0c1024;}
-  .face-shot img{width:100%; height:100%; object-fit:cover;}
-  .name{font-size:26px; font-weight:700; margin-top:6px; letter-spacing:.05em;
+
+  /* 善知識畫卡（與抽籤頁同樣完整呈現） */
+  .sign-card{width:220px; max-width:66%; margin:14px auto 4px; border-radius:12px; overflow:hidden;
+    border:1.5px solid var(--gold); background:#0c1024;
+    box-shadow:0 14px 34px rgba(0,0,0,.55), 0 0 22px rgba(212,175,55,.3);}
+  .sign-card img{width:100%; display:block; aspect-ratio:1024/1536; object-fit:contain; background:#0c1024;}
+
+  .name{font-size:26px; font-weight:700; margin-top:10px; letter-spacing:.05em;
     background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 18px rgba(212,175,55,.25);}
   .role{font-size:14px; color:var(--ink-soft); margin-top:6px;}
 
-  .scores{display:flex; justify-content:space-around; gap:9px; margin:14px auto 0; max-width:380px;}
+  /* 三圓圈法門關鍵詞（與抽籤頁一致） */
+  .keys-t{color:var(--gold); font-size:12px; letter-spacing:.3em; margin-top:14px; opacity:.85;}
+  .keys{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+  .keys .k{font-size:13px; color:var(--gold-light); background:rgba(212,175,55,.12);
+    border:1px solid rgba(212,175,55,.5); border-radius:20px; padding:5px 14px; letter-spacing:.08em;}
+
+  .scores{display:flex; justify-content:space-around; gap:9px; margin:16px auto 0; max-width:380px;}
   .score{flex:1; background:rgba(8,12,30,.55); border:1px solid rgba(212,175,55,.28); border-radius:10px; padding:11px 4px;}
   .score .sv{font-size:24px; font-weight:700; color:var(--gold-light); text-shadow:0 0 12px rgba(212,175,55,.35);}
   .score .sk{font-size:12px; color:var(--ink-soft); letter-spacing:.12em; margin-top:3px;}
 
-  .section{margin:16px auto 0; max-width:382px; text-align:left;}
+  .yourface{width:74px; height:74px; margin:16px auto 0; border-radius:50%; overflow:hidden; border:1.5px solid rgba(212,175,55,.6); background:#0c1024; box-shadow:0 3px 10px rgba(0,0,0,.4);}
+  .yourface img{width:100%; height:100%; object-fit:cover;}
+  .yourface-cap{font-size:11.5px; color:var(--ink-soft); letter-spacing:.18em; margin-top:6px;}
+
+  .section{margin:14px auto 0; max-width:382px; text-align:left;}
   .section h3{font-size:13.5px; color:var(--gold); letter-spacing:.24em; border-bottom:1px solid rgba(212,175,55,.25); padding-bottom:8px; margin-bottom:11px; text-align:center;}
   .trait{display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.7; margin-bottom:10px;}
   .trait .t-k{flex:0 0 56px; color:var(--gold-light); font-weight:700;}
@@ -120,15 +135,23 @@
   .trait .bar{height:6px; border-radius:4px; background:rgba(212,175,55,.16); flex:0 0 56px; margin-top:7px; overflow:hidden; position:relative;}
   .trait .bar i{position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:4px; box-shadow:0 0 8px rgba(212,175,55,.6);}
 
-  .gate{margin:15px auto 0; max-width:382px; text-align:left; font-size:14px; line-height:1.7; color:var(--ink);}
+  .poem{margin:16px auto 4px; max-width:340px; padding:14px 8px; border-top:1px solid rgba(212,175,55,.25); border-bottom:1px solid rgba(212,175,55,.25);}
+  .poem div{font-size:21px; color:var(--gold-light); letter-spacing:.32em; text-indent:.32em; line-height:2; font-weight:600; text-shadow:0 0 12px rgba(212,175,55,.3);}
+  .gate{margin:14px auto 0; max-width:382px; text-align:left; font-size:13.5px; line-height:1.7; color:var(--ink);}
   .gate .gk{color:var(--gold); font-weight:700; letter-spacing:.1em;}
   .verse{margin:14px auto 0; max-width:382px; background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.22); border-radius:10px; padding:14px 16px; font-size:15px; line-height:1.95; color:var(--ink); text-align:left;}
   .verse .vt{color:var(--gold); font-weight:700; letter-spacing:.22em; font-size:13.5px; display:block; margin-bottom:6px;}
+  .source{margin-top:15px;}
+  .source a{display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:var(--gold-light);
+    background:rgba(212,175,55,.12); border:1px solid var(--gold); border-radius:30px; padding:9px 18px; font-size:13.5px; transition:background .15s;}
+  .source a:hover{background:rgba(212,175,55,.25);}
+  .source .yt{display:inline-block; width:20px; height:14px; background:#c00; border-radius:4px; position:relative;}
+  .source .yt::after{content:""; position:absolute; top:3px; left:7px; border-left:7px solid #fff; border-top:4px solid transparent; border-bottom:4px solid transparent;}
 
   footer{margin-top:30px; color:var(--ink-soft); opacity:.7; font-size:12px; line-height:1.9; text-align:center; max-width:520px;}
   .err{color:#ffd9a8; font-size:13px; margin-top:10px; min-height:18px;}
 
-  @media(max-width:480px){h1{font-size:24px;} .viewer{width:88vw; height:106vw; max-width:300px; max-height:360px;}}
+  @media(max-width:480px){h1{font-size:24px;} .viewer{width:88vw; height:106vw; max-width:300px; max-height:360px;} .poem div{font-size:19px;}}
 </style>
 </head>
 <body>
@@ -199,64 +222,8 @@
   </footer>
 </div>
 
+<script src="signs.js"></script>
 <script>
-/* ============ 五十三參資料 ============ */
-const SIGNS = [
- {n:1,name:"德雲比丘",role:"勝樂國 妙峰山",gate:"憶念一切諸佛境界智慧光明普見法門（念佛）",msg:"心中常存光明的念頭，便能照見前路。把握當下每一份善念，諸事自有轉機。"},
- {n:2,name:"海雲比丘",role:"海門國",gate:"諸佛菩薩行光明普門法門",msg:"以寬廣如海的胸懷面對眼前人事，包容能化解一切阻礙。"},
- {n:3,name:"善住比丘",role:"楞伽道邊 海岸聚落",gate:"普速疾供養諸佛成就眾生無礙解脫門",msg:"腳步穩健、心無罣礙，你正走在對的道路上，繼續前行勿疑。"},
- {n:4,name:"彌伽長者",role:"達里鼻荼國 自在城",gate:"妙音陀羅尼．輪字莊嚴",msg:"真誠的言語最動人。多用善言鼓勵他人，福報自然回到你身上。"},
- {n:5,name:"解脫長者",role:"住林聚落",gate:"如來無礙莊嚴解脫門",msg:"放下執著，便得自在。困住你的往往不是外境，而是不肯鬆手的心。"},
- {n:6,name:"海幢比丘",role:"閻浮提畔 摩利伽羅國",gate:"般若波羅蜜三昧光明",msg:"靜下心來，智慧自現。遇事不急著反應，沉澱後再決定。"},
- {n:7,name:"休捨優婆夷",role:"海潮處 普莊嚴園",gate:"離憂安隱幢解脫門",msg:"憂愁無益於事，安住於當下。你所擔心的，多半不會發生。"},
- {n:8,name:"毗目瞿沙仙人",role:"那羅素國",gate:"菩薩無勝幢解脫",msg:"堅定你的志向，不為他人動搖。你的方向是正確的。"},
- {n:9,name:"勝熱婆羅門",role:"伊沙那聚落",gate:"菩薩無盡輪解脫",msg:"真正的考驗能淬鍊出真金。眼前的艱難，是成長的階梯。"},
- {n:10,name:"慈行童女",role:"師子奮迅城",gate:"般若波羅蜜普莊嚴門",msg:"以慈悲待人、以智慧處事，柔和的力量能成就大事。"},
- {n:11,name:"善見比丘",role:"三眼國",gate:"菩薩隨順燈解脫",msg:"明辨是非、順應因緣。看清方向後，順勢而為最省力。"},
- {n:12,name:"自在主童子",role:"名聞國 河渚中",gate:"一切工巧大神通智光明法門（算數）",msg:"凡事講求方法與條理，按部就班，繁雜之事也能迎刃而解。"},
- {n:13,name:"具足優婆夷",role:"海住城",gate:"菩薩無盡福德藏解脫",msg:"樂於分享者永不匱乏。你的給予，將化為源源不絕的福報。"},
- {n:14,name:"明智居士",role:"大興城",gate:"隨意出生福德藏解脫",msg:"智慧與善心並用，所求皆能如願，但莫忘初衷。"},
- {n:15,name:"法寶髻長者",role:"師子宮城",gate:"菩薩無量福德寶藏解脫",msg:"累積善行如積寶藏，平日的努力終將顯現成果。"},
- {n:16,name:"普眼長者",role:"普門國（藤根國）",gate:"令一切眾生普見諸佛歡喜法門（醫方香法）",msg:"關懷他人的需要，療癒別人也療癒了自己。"},
- {n:17,name:"無厭足王",role:"多羅幢城",gate:"菩薩如幻解脫（示現方便）",msg:"嚴正不等於無情。必要時的堅持與原則，是為了更大的善。"},
- {n:18,name:"大光王",role:"妙光城",gate:"菩薩大慈為首隨順世間三昧門",msg:"以慈悲領眾、以德服人。你的善意正在影響周遭。"},
- {n:19,name:"不動優婆夷",role:"安住王都",gate:"求一切法無厭足三昧",msg:"保持初學者的謙卑與熱忱，不斷學習者永遠年輕。"},
- {n:20,name:"遍行外道",role:"都薩羅城 善德山",gate:"至一切處菩薩行（無依無作神通力）",msg:"廣結善緣，何處都能修行。放開心胸接納不同的人。"},
- {n:21,name:"鬻香長者",role:"廣大國",gate:"善別一切諸香法門",msg:"細細品味生活、分辨輕重緩急，你已具備過人的眼光。"},
- {n:22,name:"婆施羅船師",role:"樓閣城",gate:"大悲幢行",msg:"人生如航海，掌穩你的舵。風浪過後便是彼岸。"},
- {n:23,name:"無上勝長者",role:"可樂城",gate:"至一切處修菩薩行清淨法門",msg:"不依賴外境，內心自有依止。你比想像中更有力量。"},
- {n:24,name:"師子頻申比丘尼",role:"輸那國 迦陵迦林城",gate:"成就一切智解脫",msg:"無畏如獅，自信展現你的才能，機會正等著你。"},
- {n:25,name:"婆須蜜多女",role:"險難國 寶莊嚴城",gate:"離貪欲際解脫（善巧度生）",msg:"以善巧化解煩惱，懂得轉念，即是解脫之道。"},
- {n:26,name:"鞞瑟胝羅居士",role:"善度城",gate:"不般涅槃際解脫",msg:"珍惜當下的緣分，用心相待，莫待失去才懂珍惜。"},
- {n:27,name:"觀自在菩薩",role:"補怛洛迦山",gate:"大悲行解脫門",msg:"觀照自心、慈悲待人。所求之事，菩薩聞聲必應，誠則靈。"},
- {n:28,name:"正趣菩薩",role:"自東方來",gate:"普門速疾行解脫",msg:"把握時機，當行則行。猶豫不決會錯失良緣。"},
- {n:29,name:"大天神",role:"墮羅鉢底城",gate:"雲網解脫",msg:"順應變化、廣施善法。靈活應變者能成大局。"},
- {n:30,name:"安住地神",role:"摩竭提國 菩提場",gate:"不可壞智慧藏法門",msg:"腳踏實地、根基穩固。沉穩踏實終能守得雲開見月明。"},
- {n:31,name:"婆珊婆演底主夜神",role:"迦毗羅城",gate:"破一切眾生闇法光明解脫",msg:"黑暗終將過去，你就是照亮自己與他人的那盞燈。"},
- {n:32,name:"普德淨光主夜神",role:"菩提場右",gate:"寂靜禪定樂普遊步解脫",msg:"於喧鬧中保持內心的寧靜，定力是你最大的資產。"},
- {n:33,name:"喜目觀察眾生主夜神",role:"菩提場",gate:"大勢力普喜幢解脫",msg:"以歡喜心看世界，處處是順緣。保持樂觀，好運自來。"},
- {n:34,name:"普救眾生妙德主夜神",role:"菩提場",gate:"普現一切世間調伏眾生解脫",msg:"助人於危難，你的善行終將回饋自身。"},
- {n:35,name:"寂靜音海主夜神",role:"菩提場",gate:"念念出生廣大喜莊嚴解脫",msg:"常生歡喜、廣積喜緣。心安處即是福地。"},
- {n:36,name:"守護一切城主夜神",role:"菩提場",gate:"甚深自在妙音解脫",msg:"守護你所珍視的，你的付出正默默增長著福德。"},
- {n:37,name:"開敷一切樹華主夜神",role:"嵐毗尼林",gate:"出生廣大喜光明解脫",msg:"因緣成熟，花開有時。耐心等待，美好即將綻放。"},
- {n:38,name:"大願精進力救護一切眾生主夜神",role:"嵐毗尼林",gate:"教化眾生令生善根解脫",msg:"立定大願、精進不懈。願力加上努力，無事不成。"},
- {n:39,name:"妙德圓滿神",role:"嵐毗尼林",gate:"遍一切處示現受生自在解脫",msg:"圓滿來自不斷的累積，你正一步步接近目標。"},
- {n:40,name:"瞿夷（釋種女）",role:"迦毗羅城",gate:"觀察一切菩薩三昧海解脫",msg:"以清淨心觀照，洞悉事物本質，智慧助你看清全局。"},
- {n:41,name:"摩耶夫人",role:"迦毗羅城",gate:"菩薩大願智幻解脫（佛母）",msg:"孕育與守護，是最深的慈悲。你的呵護正成就著他人。"},
- {n:42,name:"天主光天女",role:"忉利天宮",gate:"無礙念清淨莊嚴解脫",msg:"保持正念清明，不被外境迷惑，福慧雙增。"},
- {n:43,name:"遍友童子師",role:"迦毗羅城",gate:"善誘後學，導歸眾藝",msg:"引導與被引導都是福分。謙虛求教，貴人就在身邊。"},
- {n:44,name:"善知眾藝童子",role:"迦毗羅城",gate:"善知眾藝菩薩字智（四十二字輪）",msg:"博學多藝，一門深入。專注學習能開啟智慧之門。"},
- {n:45,name:"賢勝優婆夷",role:"婆怛那城",gate:"無依處道場解脫",msg:"賢德自有福報，不必外求。安守本分，福澤綿長。"},
- {n:46,name:"堅固解脫長者",role:"沃田城",gate:"無著念清淨莊嚴解脫",msg:"意志堅定、不為誘惑所動，你終能達成所願。"},
- {n:47,name:"妙月長者",role:"沃田城",gate:"淨智光明解脫",msg:"如明月當空，保持心地光明磊落，諸事順遂。"},
- {n:48,name:"無勝軍長者",role:"出生城",gate:"無盡相解脫",msg:"以無畏之心面對挑戰，沒有什麼能真正打敗你。"},
- {n:49,name:"最寂靜婆羅門",role:"出生城南 法聚落",gate:"誠願語解脫（誠願自在）",msg:"真誠所至，金石為開。守住你的誠信，願望必成。"},
- {n:50,name:"德生童子．有德童女",role:"妙意華門城",gate:"菩薩幻住解脫",msg:"看破得失如幻、隨緣自在，反而成就最圓滿。"},
- {n:51,name:"彌勒菩薩",role:"海岸國 毗盧遮那莊嚴藏樓閣",gate:"入三世一切境界不忘念智莊嚴藏解脫",msg:"廣大的願景需要時間實現，保持歡喜與耐心，未來可期。"},
- {n:52,name:"文殊師利菩薩",role:"遙伸右手 摩善財頂",gate:"令得普賢行（大智）",msg:"以智慧抉擇方向，你已具備明辨的眼光，放心前行。"},
- {n:53,name:"普賢菩薩",role:"菩提場 如來前",gate:"入一切佛剎微塵數三昧．普賢行願（圓滿）",msg:"願行圓滿、功德無量。堅持到底，必得善果。"}
-];
-
 /* ============ 面相文案庫 ============ */
 const READINGS = {
   上停:{
@@ -437,6 +404,7 @@ function read(){
 }
 
 function bar(level){ return `<span class="bar"><i style="width:${pct(level)}%"></i></span>`; }
+function imgPath(n){ return "images/"+String(n).padStart(2,"0")+".png"; }
 
 function showResult(rep,canvas){
   const s=rep.sign;
@@ -446,13 +414,21 @@ function showResult(rep,canvas){
     const lv=rep.lv[k];
     return `<div class="trait"><span class="t-k">${k}</span><span class="t-v">${READINGS[k][lv]}</span>${bar(lv)}</div>`;
   }).join("");
+  const keysHTML=(s.keys||[]).map(k=>`<span class="k">${k}</span>`).join("");
+  const src = (typeof sourceLink==="function") ? sourceLink(s) : null;
+  const poemHTML = s.poem ? `<div class="poem"><div>${s.poem[0]}</div><div>${s.poem[1]}</div></div>` : "";
+  const srcHTML = src ? `<div class="source"><a href="${src.url}" target="_blank" rel="noopener"><span class="yt"></span>聆聽出處 · ${src.label}</a></div>` : "";
   scene.innerHTML=`
     <div class="card">
       <div class="badge">面相觀照</div>
       <div class="no">與第 <b>${s.n}</b> 參善知識相應　／　共五十三參</div>
-      <div class="face-shot"><img src="${faceURL}" alt="面相"></div>
+      <div class="sign-card"><img src="${imgPath(s.n)}" alt="${s.name}"></div>
       <div class="name">${s.name}</div>
-      <div class="role">參訪：${s.role}</div>
+      <div class="role">參訪：${s.place||s.role||""}</div>
+      ${keysHTML?`<div class="keys-t">獨 特 法 門</div><div class="keys">${keysHTML}</div>`:""}
+
+      <div class="yourface"><img src="${faceURL}" alt="您的面相"></div>
+      <div class="yourface-cap">您 的 面 相</div>
       <div class="scores">
         <div class="score"><div class="sv">${rep.wisdom}</div><div class="sk">智慧</div></div>
         <div class="score"><div class="sv">${rep.career}</div><div class="sk">事業</div></div>
@@ -463,8 +439,11 @@ function showResult(rep,canvas){
         ${traitHTML}
         <div class="trait" style="margin-top:4px"><span class="t-k">總評</span><span class="t-v">${STOP_FOCUS[rep.maxStop]}</span></div>
       </div>
+
+      ${poemHTML}
       <div class="gate"><span class="gk">所應法門　</span>${s.gate}</div>
-      <div class="verse"><span class="vt">善知識開示</span>${s.msg}</div>
+      <div class="verse"><span class="vt">善知識開示</span>${s.jie||s.msg||""}</div>
+      ${srcHTML}
     </div>`;
   scene.classList.add("show");
   scene.scrollIntoView({behavior:"smooth",block:"nearest"});
