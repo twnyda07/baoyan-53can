@@ -150,6 +150,7 @@
 
   footer{margin-top:30px; color:var(--ink-soft); opacity:.7; font-size:12px; line-height:1.9; text-align:center; max-width:520px;}
   .err{color:#ffd9a8; font-size:13px; margin-top:10px; min-height:18px;}
+  .cam-tip{color:var(--ink-soft); font-size:12.5px; line-height:1.7; margin-top:12px; max-width:380px; margin-left:auto; margin-right:auto; opacity:.85;}
 
   @media(max-width:480px){h1{font-size:24px;} .viewer{width:88vw; height:106vw; max-width:300px; max-height:360px;} .poem div{font-size:19px;}}
 </style>
@@ -200,10 +201,13 @@
   <div class="err" id="err"></div>
 
   <div class="actions" id="setupActions">
-    <button class="btn" id="camBtn">開啟鏡頭</button>
-    <button class="btn ghost" id="uploadBtn">上傳／拍照</button>
+    <button class="btn" id="photoBtn">📷 拍照</button>
+    <button class="btn ghost" id="uploadBtn">🖼 從相簿選</button>
+    <button class="btn ghost" id="camBtn">即時鏡頭</button>
+    <input type="file" id="fileCam" accept="image/*" capture="user" style="display:none;">
     <input type="file" id="file" accept="image/*" style="display:none;">
   </div>
+  <p class="cam-tip" id="camTip">手機請優先用「📷 拍照」最穩定；「即時鏡頭」在 LINE／FB／IG 內建瀏覽器可能無法使用。</p>
   <div class="actions" id="goActions" style="display:none;">
     <button class="btn big" id="readBtn">觀　照　面　相</button>
     <button class="btn ghost" id="resetBtn">重新選擇</button>
@@ -268,8 +272,10 @@ const viewer=document.getElementById("viewer");
 const video=document.getElementById("video");
 const shot=document.getElementById("shot");
 const fileInput=document.getElementById("file");
+const fileCamInput=document.getElementById("fileCam");
 const camBtn=document.getElementById("camBtn");
 const uploadBtn=document.getElementById("uploadBtn");
+const photoBtn=document.getElementById("photoBtn");
 const readBtn=document.getElementById("readBtn");
 const resetBtn=document.getElementById("resetBtn");
 const againBtn=document.getElementById("againBtn");
@@ -279,6 +285,7 @@ const againActions=document.getElementById("againActions");
 const scene=document.getElementById("scene");
 const errEl=document.getElementById("err");
 const aTip=document.getElementById("aTip");
+const camTip=document.getElementById("camTip");
 
 let stream=null, mode=null, uploadedImg=null;
 function setErr(m){ errEl.textContent=m||""; }
@@ -313,7 +320,7 @@ async function openCam(){
     }
     video.srcObject=stream; await video.play();
     mode="cam"; viewer.className="viewer cam";
-    setupActions.style.display="none"; goActions.style.display="flex";
+    setupActions.style.display="none"; camTip.style.display="none"; goActions.style.display="flex";
     scene.classList.remove("show"); againActions.style.display="none";
   }catch(e){
     const n=(e&&e.name)||"";
@@ -335,21 +342,24 @@ async function openCam(){
   }
 }
 
-uploadBtn.addEventListener("click",()=>fileInput.click());
-fileInput.addEventListener("change",e=>{
-  const f=e.target.files&&e.target.files[0]; if(!f) return;
+function handleFile(f){
+  if(!f) return;
   setErr("");
   const url=URL.createObjectURL(f); const img=new Image();
   img.onload=()=>{
     uploadedImg=img; drawToShot(img);
     mode="shot"; viewer.className="viewer shot"; stopCam();
-    setupActions.style.display="none"; goActions.style.display="flex";
+    setupActions.style.display="none"; camTip.style.display="none"; goActions.style.display="flex";
     scene.classList.remove("show"); againActions.style.display="none";
     URL.revokeObjectURL(url);
   };
   img.onerror=()=>{ setErr("照片讀取失敗，請換一張試試。"); URL.revokeObjectURL(url); };
   img.src=url;
-});
+}
+photoBtn.addEventListener("click",()=>fileCamInput.click());
+uploadBtn.addEventListener("click",()=>fileInput.click());
+fileInput.addEventListener("change",e=>handleFile(e.target.files&&e.target.files[0]));
+fileCamInput.addEventListener("change",e=>handleFile(e.target.files&&e.target.files[0]));
 
 function drawToShot(src){
   const W=300,H=360; shot.width=W; shot.height=H;
@@ -363,7 +373,7 @@ function stopCam(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=
 function resetAll(){
   stopCam(); mode=null; uploadedImg=null;
   viewer.className="viewer";
-  setupActions.style.display="flex"; goActions.style.display="none";
+  setupActions.style.display="flex"; camTip.style.display=""; goActions.style.display="none";
   againActions.style.display="none"; scene.classList.remove("show"); setErr("");
 }
 
