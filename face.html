@@ -201,8 +201,8 @@
 
   <div class="actions" id="setupActions">
     <button class="btn" id="camBtn">開啟鏡頭</button>
-    <button class="btn ghost" id="uploadBtn">上傳照片</button>
-    <input type="file" id="file" accept="image/*" capture="user" style="display:none;">
+    <button class="btn ghost" id="uploadBtn">上傳／拍照</button>
+    <input type="file" id="file" accept="image/*" style="display:none;">
   </div>
   <div class="actions" id="goActions" style="display:none;">
     <button class="btn big" id="readBtn">觀　照　面　相</button>
@@ -283,15 +283,56 @@ const aTip=document.getElementById("aTip");
 let stream=null, mode=null, uploadedImg=null;
 function setErr(m){ errEl.textContent=m||""; }
 
+function isInAppBrowser(){
+  const ua=navigator.userAgent||"";
+  return /(FBAN|FBAV|Instagram|Line\/|MicroMessenger|Twitter|TikTok|; wv\))/i.test(ua);
+}
+
 async function openCam(){
   setErr("");
+  // 安全環境檢查（http、file:// 無法使用相機）
+  if(!window.isSecureContext){
+    setErr("開啟相機需在安全連線（https）下使用。請改用下方「上傳照片」（可直接拍照）。");
+    return;
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    if(isInAppBrowser()){
+      setErr("偵測到您是在 App 內建瀏覽器（LINE／FB／IG）開啟，相機常被封鎖。請按右上角「⋯」選「用外部瀏覽器開啟」（Safari／Chrome），或改用下方「上傳照片」直接拍照。");
+    }else{
+      setErr("此瀏覽器不支援開啟相機，請改用下方「上傳照片」（可直接拍照）。");
+    }
+    return;
+  }
+  camBtn.disabled=true; const camLabel=camBtn.textContent; camBtn.textContent="開啟中…";
   try{
-    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user", width:{ideal:640}, height:{ideal:640}}, audio:false});
+    try{
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}, audio:false});
+    }catch(e1){
+      // 後援：不限定前/後鏡頭
+      stream=await navigator.mediaDevices.getUserMedia({video:true, audio:false});
+    }
     video.srcObject=stream; await video.play();
     mode="cam"; viewer.className="viewer cam";
     setupActions.style.display="none"; goActions.style.display="flex";
     scene.classList.remove("show"); againActions.style.display="none";
-  }catch(e){ setErr("無法開啟鏡頭（請改用「上傳照片」，或允許瀏覽器使用相機）。"); }
+  }catch(e){
+    const n=(e&&e.name)||"";
+    let msg;
+    if(n==="NotAllowedError"||n==="SecurityError"||n==="PermissionDeniedError"){
+      msg="相機權限被拒。請點網址列旁的相機圖示（或瀏覽器設定）允許相機後再試；也可改用下方「上傳照片」直接拍照。";
+    }else if(n==="NotFoundError"||n==="DevicesNotFoundError"||n==="OverconstrainedError"){
+      msg="找不到可用的相機。請改用下方「上傳照片」（可直接拍照）。";
+    }else if(n==="NotReadableError"||n==="TrackStartError"){
+      msg="相機正被其他程式占用，請先關閉其他相機程式再試，或改用「上傳照片」。";
+    }else if(isInAppBrowser()){
+      msg="App 內建瀏覽器常封鎖相機。請用 Safari／Chrome 開啟本頁，或改用下方「上傳照片」直接拍照。";
+    }else{
+      msg="無法開啟相機（"+(n||"未知錯誤")+"）。請改用下方「上傳照片」（可直接拍照）。";
+    }
+    setErr(msg);
+  }finally{
+    camBtn.disabled=false; camBtn.textContent=camLabel;
+  }
 }
 
 uploadBtn.addEventListener("click",()=>fileInput.click());
