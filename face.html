@@ -439,10 +439,19 @@ function buildReport(f){
     神采:tier(f.std,34,52),
     端正:tier(f.sym,0.86,0.95)
   };
-  const clamp=(x)=>Math.max(58,Math.min(98,Math.round(x)));
-  const wisdom = clamp(62 + (f.u-f.avgL)*1.2 + (f.std-40)*0.4 + (f.hash%7));
-  const career = clamp(62 + (f.m-f.avgL)*1.2 + (f.warmth-28)*0.5 + (f.hash%5));
-  const fortune= clamp(64 + (f.d-f.avgL)*1.2 + f.sym*14 + (f.hash%6));
+  /* 三項分數（智慧/事業/福德）：
+     鼓勵性—皆落在 74–99 高分區；
+     區辨性—與面相最旺之「停」相應者領先，三項彼此明顯拉開；
+     隨機性—每次數值與次序皆隨機，並以面相特徵微調增添個人化。 */
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const lead={上停:0,中停:1,下停:2}[maxStop];   // 上停→智慧、中停→事業、下停→福德
+  const hi=rnd(91,99), midv=rnd(83,90), lov=rnd(74,82);
+  const others=Math.random()<0.5?[midv,lov]:[lov,midv];
+  const adj=[(f.u-f.avgL)*0.12, (f.m-f.avgL)*0.12, (f.d-f.avgL)*0.12];
+  const sc=[0,0,0]; sc[lead]=hi; let pi=0;
+  for(let i=0;i<3;i++){ if(i!==lead) sc[i]=others[pi++]; }
+  const fin=i=>Math.max(72,Math.min(99,Math.round(sc[i]+(adj[i]||0))));
+  const wisdom=fin(0), career=fin(1), fortune=fin(2);
   const sign=nextSign();
   return {lv,maxStop,wisdom,career,fortune,sign};
 }
