@@ -454,6 +454,17 @@ function read(){
 function bar(level){ return `<span class="bar"><i style="width:${pct(level)}%"></i></span>`; }
 function imgPath(n){ return "images/"+String(n).padStart(2,"0")+".jpg"; }
 
+/* 面相寄語：依面相格局＋該善知識三圓圈法門即時生成（與抽籤頁籤詩/解曰不重覆） */
+function faceMessage(s, rep){
+  const k = s.keys || [];
+  const focus = STOP_FOCUS[rep.maxStop] || "";
+  const tops = [["智慧",rep.wisdom],["事業",rep.career],["福德",rep.fortune]].sort((a,b)=>b[1]-a[1]);
+  const top = tops[0][0];
+  const k0=k[0]||"", k1=k[1]||"", k2=k[2]||"";
+  return `觀您面相，${rep.maxStop}之氣最盛、${top}尤為突出。${focus}<br><br>`
+    + `與您相應的「${s.name}」，以「${k0}、${k1}、${k2}」為其獨特法門。願您取法於此——以「${k0}」立基、以「${k1}」應事、以「${k2}」成願，則面相所主之福慧可期圓滿。`;
+}
+
 function showResult(rep,canvas){
   const s=rep.sign;
   const faceURL=canvas.toDataURL("image/jpeg",0.8);
@@ -464,8 +475,8 @@ function showResult(rep,canvas){
   }).join("");
   const keysHTML=(s.keys||[]).map(k=>`<span class="k">${k}</span>`).join("");
   const src = (typeof sourceLink==="function") ? sourceLink(s) : null;
-  const poemHTML = s.poem ? `<div class="poem"><div>${s.poem[0]}</div><div>${s.poem[1]}</div></div>` : "";
   const srcHTML = src ? `<div class="source"><a href="${src.url}" target="_blank" rel="noopener"><span class="yt"></span>聆聽出處 · ${src.label}</a></div>` : "";
+  const faceMsg = faceMessage(s, rep);
   scene.innerHTML=`
     <div class="card">
       <div class="badge">面相觀照</div>
@@ -485,12 +496,10 @@ function showResult(rep,canvas){
       <div class="section">
         <h3>面　相　觀　照</h3>
         ${traitHTML}
-        <div class="trait" style="margin-top:4px"><span class="t-k">總評</span><span class="t-v">${STOP_FOCUS[rep.maxStop]}</span></div>
       </div>
 
-      ${poemHTML}
       <div class="gate"><span class="gk">所應法門　</span>${s.gate}</div>
-      <div class="verse"><span class="vt">善知識開示</span>${s.jie||s.msg||""}</div>
+      <div class="verse"><span class="vt">面相寄語</span>${faceMsg}</div>
       ${srcHTML}
     </div>`;
   scene.classList.add("show");
