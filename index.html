@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>善財童子五十三參．抽籤 — 寶嚴禪寺</title>
+<style>
+  :root{
+    --navy:#0a0e24; --navy2:#131a40; --navy3:#1d2552;
+    --gold:#d4af37; --gold-light:#f3e0a3; --gold-deep:#9c7a1e;
+    --ink:#ede6cf; --ink-soft:#b9b08f;
+    --panel:rgba(18,24,58,.78); --panel-line:rgba(212,175,55,.45);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:"Noto Serif TC","Songti TC","STSong","PMingLiU",serif;
+    color:var(--ink);
+    background:
+      radial-gradient(ellipse at 50% -10%, #28306e 0%, var(--navy2) 34%, var(--navy) 72%, #05070f 100%) fixed;
+    min-height:100%; display:flex; flex-direction:column; align-items:center;
+    padding:24px 16px 52px; position:relative; overflow-x:hidden;
+  }
+  /* 星空 */
+  .stars{position:fixed; inset:0; pointer-events:none; z-index:0;}
+  .stars i{position:absolute; background:#fff; border-radius:50%; opacity:.8; animation:tw 3s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.15;}50%{opacity:.9;}}
+  .dust{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .dust span{position:absolute; bottom:-20px; border-radius:50%;
+    background:radial-gradient(circle,var(--gold-light),transparent 70%); opacity:.5; animation:rise linear infinite;}
+  @keyframes rise{to{transform:translateY(-110vh) translateX(28px); opacity:0;}}
+
+  .wrap{width:100%; max-width:600px; position:relative; z-index:1; text-align:center;}
+  header{margin-bottom:8px;}
+  .temple{color:var(--gold-light); letter-spacing:.55em; font-size:15px; text-indent:.55em; margin-bottom:14px;
+    text-shadow:0 0 14px rgba(212,175,55,.5);}
+  h1{color:#fff; font-size:30px; font-weight:700; line-height:1.5; text-shadow:0 0 20px rgba(120,140,255,.4);}
+  h1 .grad{background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  h1 .sm{display:block; font-size:15.5px; color:var(--gold-light); letter-spacing:.32em; margin-top:9px; font-weight:400; -webkit-text-fill-color:initial;}
+  .subtitle{color:var(--ink-soft); font-size:14px; margin-top:14px; line-height:1.85;}
+
+  .stage{margin:26px auto 4px; display:flex; flex-direction:column; align-items:center;}
+
+  /* 翻牌 */
+  .deck{perspective:1600px; width:300px; max-width:78vw;}
+  .flip{position:relative; width:100%; aspect-ratio:1024/1536; transform-style:preserve-3d;
+    transition:transform 0.9s cubic-bezier(.2,.8,.25,1); cursor:pointer;}
+  .flip.flipped{transform:rotateY(180deg);}
+  .flip.shuffle{animation:shuffle .5s ease-in-out 2;}
+  @keyframes shuffle{0%,100%{transform:rotate(0) translateY(0);}25%{transform:rotate(-3deg) translateY(-8px);}75%{transform:rotate(3deg) translateY(-8px);}}
+  .face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    border-radius:14px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,.6), 0 0 26px rgba(212,175,55,.28);}
+  .face img{width:100%; height:100%; object-fit:contain; display:block;}
+  .face.front{transform:rotateY(180deg); background:#0c1024;}
+  .face.back{background:#0c1024;}
+  .glow{position:absolute; inset:-8px; border-radius:18px; pointer-events:none;
+    box-shadow:0 0 36px 6px rgba(212,175,55,.35); animation:breathe 3.2s ease-in-out infinite;}
+  @keyframes breathe{0%,100%{opacity:.45;}50%{opacity:.9;}}
+  .float{animation:floaty 4.5s ease-in-out infinite;}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+
+  .hint{color:var(--gold-light); margin-top:20px; font-size:15px; letter-spacing:.18em; min-height:22px;}
+  .hint.blink{animation:blink 1.6s ease-in-out infinite;}
+  @keyframes blink{50%{opacity:.4;}}
+
+  .btn{appearance:none; border:none; cursor:pointer; font-family:inherit;
+    background:linear-gradient(180deg,var(--gold-light),var(--gold) 55%,var(--gold-deep));
+    color:#3a2a05; font-weight:700; font-size:18px; letter-spacing:.28em; text-indent:.28em; padding:14px 42px;
+    border-radius:40px; margin-top:22px; box-shadow:0 6px 20px rgba(0,0,0,.45), 0 0 18px rgba(212,175,55,.3), inset 0 1px 0 #fff6d8;
+    transition:transform .15s; border:1.5px solid #fff2cf;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn:active{transform:translateY(1px);}
+  .btn[disabled]{opacity:.5; cursor:default; transform:none;}
+  .btn.ghost{background:transparent; color:var(--gold-light); border:1.5px solid var(--gold); box-shadow:none; font-size:15px; padding:11px 30px;}
+  .btn.ghost:hover{background:rgba(212,175,55,.14);}
+  .actions{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+
+  /* 文字解籤面板 */
+  .panel{width:100%; max-width:440px; margin:18px auto 0; display:none;
+    background:var(--panel); border:1.5px solid var(--panel-line); border-radius:16px;
+    box-shadow:0 16px 40px rgba(0,0,0,.5), inset 0 0 30px rgba(40,55,120,.3); padding:22px 22px 24px;
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); text-align:center;}
+  .panel.show{display:block; animation:fadeUp .6s ease;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(16px);}to{opacity:1; transform:translateY(0);}}
+
+  .luck{display:inline-block; font-size:15px; letter-spacing:.3em; text-indent:.3em; padding:6px 24px; border-radius:22px; font-weight:700; border:1px solid var(--gold);}
+  .luck.lv3{background:linear-gradient(180deg,#e8c84e,#b8901f); color:#2a1d02;}
+  .luck.lv2{background:rgba(212,175,55,.22); color:var(--gold-light);}
+  .luck.lv1{background:rgba(120,140,210,.2); color:#cfd8ff;}
+  .luck.lv0{background:rgba(160,160,160,.18); color:#e0e0e0;}
+  .cap{color:var(--ink-soft); font-size:13.5px; letter-spacing:.12em; margin-top:12px;}
+  .cap b{color:var(--gold-light); font-size:15px;}
+
+  .keys{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:12px;}
+  .keys .k{font-size:13px; color:var(--gold-light); background:rgba(212,175,55,.12);
+    border:1px solid rgba(212,175,55,.5); border-radius:20px; padding:5px 14px; letter-spacing:.08em;}
+  .keys-t{color:var(--gold); font-size:12px; letter-spacing:.3em; margin-top:14px; opacity:.85;}
+
+  .poem{margin:14px auto 4px; max-width:340px; padding:14px 8px; border-top:1px solid rgba(212,175,55,.25); border-bottom:1px solid rgba(212,175,55,.25);}
+  .poem div{font-size:22px; color:var(--gold-light); letter-spacing:.34em; text-indent:.34em; line-height:2; font-weight:600; text-shadow:0 0 12px rgba(212,175,55,.3);}
+
+  .jie{margin-top:14px; background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.22); border-radius:10px; padding:13px 16px; font-size:15px; line-height:1.95; color:var(--ink);}
+  .jie .vt{color:var(--gold); font-weight:700; letter-spacing:.22em; font-size:13.5px; display:block; margin-bottom:5px;}
+
+  .aspects{margin-top:13px; display:grid; grid-template-columns:1fr 1fr; gap:9px; text-align:left;}
+  .aspects .a{background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.2); border-radius:9px; padding:10px 11px;}
+  .aspects .a .t{display:flex; align-items:center; gap:6px; color:var(--gold-light); font-weight:700; font-size:13.5px; margin-bottom:4px; letter-spacing:.08em;}
+  .aspects .a .t i{font-style:normal; font-size:15px;}
+  .aspects .a .c{font-size:13.5px; color:var(--ink); line-height:1.7;}
+
+  .source{margin-top:15px;}
+  .source a{display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:var(--gold-light);
+    background:rgba(212,175,55,.12); border:1px solid var(--gold); border-radius:30px; padding:9px 18px; font-size:13.5px; transition:background .15s;}
+  .source a:hover{background:rgba(212,175,55,.25);}
+  .source .yt{display:inline-block; width:20px; height:14px; background:#c00; border-radius:4px; position:relative;}
+  .source .yt::after{content:""; position:absolute; top:3px; left:7px; border-left:7px solid #fff; border-top:4px solid transparent; border-bottom:4px solid transparent;}
+
+  footer{margin-top:32px; color:var(--ink-soft); opacity:.7; font-size:12px; line-height:1.9; text-align:center; max-width:520px;}
+
+  @media(max-width:480px){ h1{font-size:24px;} .poem div{font-size:19px;} .aspects{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="dust" id="dust"></div>
+
+<div class="wrap">
+  <header>
+    <div class="temple">寶 嚴 禪 寺</div>
+    <h1><span class="grad">善財童子五十三參</span>
+      <span class="sm">虔 心 抽 卡 ． 善 知 識 指 路</span>
+    </h1>
+    <p class="subtitle">
+      善財童子歷訪五十三位善知識，遍學菩薩大行。<br>
+      請先合掌靜心、默想所求之事，再抽取一張善知識卡。
+    </p>
+  </header>
+
+  <div class="stage">
+    <div class="deck">
+      <div class="flip float" id="flip">
+        <div class="glow" id="glow"></div>
+        <div class="face back"><img src="images/00.png" alt="寶嚴 善知識卡背"></div>
+        <div class="face front"><img id="frontImg" alt="善知識卡"></div>
+      </div>
+    </div>
+    <div class="hint blink" id="hint">點擊卡片，誠心抽卡</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="drawBtn">抽　卡</button>
+    <button class="btn ghost" id="againBtn" style="display:none;">再抽一卡</button>
+  </div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>
+    籤文依《大方廣佛華嚴經‧入法界品》五十三參發展，籤詩與解曰為勸善方便語，僅供省思祈福之用；<br>
+    法義開示請參見　見輝法師《善財童子五十三參的故事》。<br>
+    © 寶嚴禪寺　Baoyan Chan Monastery
+  </footer>
+</div>
+
+<script src="signs.js"></script>
+<script>
+function luckClass(l){
+  if(l.indexOf("上上")>=0||l.indexOf("大吉")>=0) return "lv3";
+  if(l.indexOf("上吉")>=0) return "lv2";
+  if(l.indexOf("中平")>=0) return "lv0";
+  return "lv1";
+}
+
+const flip=document.getElementById("flip"), glow=document.getElementById("glow"),
+      frontImg=document.getElementById("frontImg"), hint=document.getElementById("hint"),
+      drawBtn=document.getElementById("drawBtn"), againBtn=document.getElementById("againBtn"),
+      panel=document.getElementById("panel");
+let busy=false, flipped=false;
+
+function draw(){
+  if(busy) return; busy=true;
+  drawBtn.disabled=true; againBtn.style.display="none";
+  panel.classList.remove("show");
+  hint.classList.remove("blink");
+
+  if(flipped){
+    // 先翻回卡背，再重新洗牌抽卡
+    flip.classList.remove("flipped"); flipped=false;
+    setTimeout(start, 700);
+  } else { start(); }
+
+  function start(){
+    hint.textContent="洗牌中…誠心默想所求";
+    flip.classList.remove("float");
+    flip.classList.add("shuffle");
+    const pick=SIGNS[Math.floor(Math.random()*SIGNS.length)];
+    frontImg.src="images/"+String(pick.n).padStart(2,"0")+".png";
+    setTimeout(()=>{
+      flip.classList.remove("shuffle");
+      flip.classList.add("flipped"); flipped=true;
+      hint.textContent="";
+      setTimeout(()=>{ showPanel(pick); busy=false; drawBtn.style.display="none"; againBtn.style.display="inline-block"; }, 650);
+    }, 1000);
+  }
+}
+
+function showPanel(s){
+  const src=sourceLink(s);
+  panel.innerHTML=`
+    <div class="luck ${luckClass(s.luck)}">${s.luck}</div>
+    <div class="cap">第 <b>${s.n}</b> 參　·　${s.name}　／　共五十三參</div>
+    <div class="keys-t">獨 特 法 門</div>
+    <div class="keys">${s.keys.map(k=>`<span class="k">${k}</span>`).join("")}</div>
+    <div class="poem"><div>${s.poem[0]}</div><div>${s.poem[1]}</div></div>
+    <div class="jie"><span class="vt">解　曰</span>${s.jie}</div>
+    <div class="aspects">
+      <div class="a"><div class="t"><i>💼</i>事業工作</div><div class="c">${s.career}</div></div>
+      <div class="a"><div class="t"><i>💗</i>感情姻緣</div><div class="c">${s.love}</div></div>
+      <div class="a"><div class="t"><i>💰</i>財運求財</div><div class="c">${s.wealth}</div></div>
+      <div class="a"><div class="t"><i>🌿</i>健康身體</div><div class="c">${s.health}</div></div>
+      <div class="a"><div class="t"><i>📖</i>考試升學</div><div class="c">${s.exam}</div></div>
+      <div class="a"><div class="t"><i>🏠</i>遷移搬遷</div><div class="c">${s.move}</div></div>
+      <div class="a"><div class="t"><i>🧭</i>出行外出</div><div class="c">${s.travel}</div></div>
+      <div class="a"><div class="t"><i>🎯</i>謀望求事</div><div class="c">${s.plan}</div></div>
+    </div>
+    <div class="source"><a href="${src.url}" target="_blank" rel="noopener"><span class="yt"></span>聆聽出處 · ${src.label}</a></div>`;
+  panel.classList.add("show");
+  panel.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+flip.addEventListener("click",()=>{ if(!flipped) draw(); });
+drawBtn.addEventListener("click",draw);
+againBtn.addEventListener("click",draw);
+
+/* 星空 + 金塵 */
+(function(){
+  const st=document.getElementById("stars");
+  for(let i=0;i<70;i++){const s=document.createElement("i");
+    const sz=Math.random()*2+0.6; s.style.width=s.style.height=sz+"px";
+    s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*3)+"s"; st.appendChild(s);}
+  const du=document.getElementById("dust");
+  for(let i=0;i<16;i++){const sp=document.createElement("span");
+    sp.style.left=Math.random()*100+"%"; sp.style.animationDuration=(7+Math.random()*8)+"s";
+    sp.style.animationDelay=(Math.random()*8)+"s"; const sz=3+Math.random()*7;
+    sp.style.width=sp.style.height=sz+"px"; du.appendChild(sp);}
+})();
+</script>
+</body>
+</html>
