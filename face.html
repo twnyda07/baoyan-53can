@@ -6,146 +6,139 @@
 <title>善財童子五十三參．面相觀照 — 寶嚴禪寺</title>
 <style>
   :root{
-    --red:#7a1416; --red-deep:#5a0d0f; --red-light:#9c2a2c;
-    --gold:#c9a227; --gold-light:#e8cf7a; --gold-deep:#9c7a14;
-    --paper:#f7f0e1; --paper-line:#e7dcc2;
-    --ink:#2b211a; --ink-soft:#5c4d3d;
+    --navy:#0a0e24; --navy2:#131a40; --navy3:#1d2552;
+    --gold:#d4af37; --gold-light:#f3e0a3; --gold-deep:#9c7a1e;
+    --ink:#ede6cf; --ink-soft:#b9b08f;
+    --panel:rgba(18,24,58,.78); --panel-line:rgba(212,175,55,.45);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{height:100%;}
   body{
     font-family:"Noto Serif TC","Songti TC","STSong","PMingLiU",serif;
     color:var(--ink);
-    background:radial-gradient(circle at 50% -10%, #93292b 0%, var(--red) 38%, var(--red-deep) 100%);
-    min-height:100%;
-    display:flex; flex-direction:column; align-items:center;
-    padding:24px 16px 48px; position:relative; overflow-x:hidden;
+    background:radial-gradient(ellipse at 50% -10%, #28306e 0%, var(--navy2) 34%, var(--navy) 72%, #05070f 100%) fixed;
+    min-height:100%; display:flex; flex-direction:column; align-items:center;
+    padding:24px 16px 52px; position:relative; overflow-x:hidden;
   }
-  .bg-orbs{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
-  .bg-orbs span{
-    position:absolute; bottom:-20px; width:8px; height:8px; border-radius:50%;
-    background:radial-gradient(circle,var(--gold-light),transparent 70%);
-    opacity:.5; animation:rise linear infinite;
-  }
-  @keyframes rise{to{transform:translateY(-110vh) translateX(30px); opacity:0;}}
+  /* 星空 + 金塵 */
+  .stars{position:fixed; inset:0; pointer-events:none; z-index:0;}
+  .stars i{position:absolute; background:#fff; border-radius:50%; opacity:.8; animation:tw 3s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.15;}50%{opacity:.9;}}
+  .dust{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .dust span{position:absolute; bottom:-20px; border-radius:50%;
+    background:radial-gradient(circle,var(--gold-light),transparent 70%); opacity:.5; animation:rise linear infinite;}
+  @keyframes rise{to{transform:translateY(-110vh) translateX(28px); opacity:0;}}
 
-  .wrap{width:100%; max-width:560px; position:relative; z-index:1; text-align:center;}
-  header{margin-bottom:6px;}
-  .temple{color:var(--gold-light); letter-spacing:.5em; font-size:15px; text-indent:.5em; margin-bottom:14px;}
-  h1{color:var(--paper); font-size:30px; font-weight:700; line-height:1.5; text-shadow:0 2px 10px rgba(0,0,0,.4);}
-  h1 .sm{display:block; font-size:16px; color:var(--gold-light); letter-spacing:.3em; margin-top:8px; font-weight:400;}
-  .subtitle{color:#f3dca0; opacity:.85; font-size:14px; margin-top:14px; line-height:1.8;}
+  .wrap{width:100%; max-width:600px; position:relative; z-index:1; text-align:center;}
+  header{margin-bottom:8px;}
+  .temple{color:var(--gold-light); letter-spacing:.55em; font-size:15px; text-indent:.55em; margin-bottom:14px; text-shadow:0 0 14px rgba(212,175,55,.5);}
+  h1{color:#fff; font-size:30px; font-weight:700; line-height:1.5; text-shadow:0 0 20px rgba(120,140,255,.4);}
+  h1 .grad{background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  h1 .sm{display:block; font-size:15.5px; color:var(--gold-light); letter-spacing:.32em; margin-top:9px; font-weight:400; -webkit-text-fill-color:initial;}
+  .subtitle{color:var(--ink-soft); font-size:14px; margin-top:14px; line-height:1.85;}
   .back-link{display:inline-flex; align-items:center; gap:6px; margin-top:14px; text-decoration:none;
     color:var(--gold-light); font-size:13.5px; font-weight:700; letter-spacing:.12em;
-    padding:8px 20px; border-radius:28px; border:1.5px solid var(--gold); background:rgba(201,162,39,.12);
-    transition:background .15s, transform .15s;}
-  .back-link:hover{background:rgba(201,162,39,.24); transform:translateY(-2px);}
+    padding:8px 20px; border-radius:28px; border:1.5px solid var(--gold); background:rgba(212,175,55,.12);
+    box-shadow:0 0 14px rgba(212,175,55,.22); transition:background .15s, transform .15s;}
+  .back-link:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
 
   /* 觀照台 */
   .viewer{
-    position:relative; width:300px; height:360px; margin:26px auto 6px;
+    position:relative; width:300px; height:360px; margin:26px auto 6px; max-width:80vw;
     border-radius:18px; overflow:hidden;
-    background:linear-gradient(180deg,#2a1416,#160a0b);
-    border:2px solid var(--gold); box-shadow:0 14px 34px rgba(0,0,0,.5), inset 0 0 0 5px rgba(201,162,39,.12);
+    background:radial-gradient(circle at 50% 40%,#10173c,#070b1e);
+    border:1.5px solid var(--panel-line);
+    box-shadow:0 16px 40px rgba(0,0,0,.55), 0 0 26px rgba(212,175,55,.28), inset 0 0 30px rgba(40,55,120,.35);
   }
-  .viewer video, .viewer img, .viewer canvas.shot{
-    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none;
-  }
+  .viewer video, .viewer img, .viewer canvas.shot{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none;}
   .viewer.cam video{display:block;}
   .viewer.shot canvas.shot{display:block;}
-  .placeholder{
-    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    color:var(--gold-light); gap:14px; padding:20px; text-align:center;
-  }
+  .placeholder{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--gold-light); gap:14px; padding:20px; text-align:center;}
   .viewer.cam .placeholder, .viewer.shot .placeholder{display:none;}
-  .placeholder svg{width:74px; height:74px; opacity:.85;}
-  .placeholder p{font-size:14px; line-height:1.8; opacity:.8;}
+  .placeholder svg{width:74px; height:74px; opacity:.9; filter:drop-shadow(0 0 8px rgba(212,175,55,.5));}
+  .placeholder p{font-size:14px; line-height:1.8; opacity:.85;}
 
-  /* 面相導引線（三停五嶽） */
+  /* 三停五嶽導引線 */
   .guide{position:absolute; inset:0; pointer-events:none; display:none;}
   .viewer.cam .guide, .viewer.shot .guide{display:block;}
-  .guide line, .guide circle, .guide ellipse{stroke:var(--gold-light); fill:none; opacity:.55;}
-  .guide .lbl{fill:var(--gold-light); font-size:9px; opacity:.85; letter-spacing:.1em;}
+  .guide line, .guide circle, .guide ellipse{stroke:var(--gold-light); fill:none; opacity:.6; filter:drop-shadow(0 0 3px rgba(212,175,55,.5));}
+  .guide .lbl{fill:var(--gold-light); font-size:9px; opacity:.9; letter-spacing:.1em;}
 
   /* 掃描動畫 */
   .scan{position:absolute; left:0; right:0; height:3px; top:0;
     background:linear-gradient(90deg,transparent,var(--gold-light),transparent);
-    box-shadow:0 0 14px 3px rgba(232,207,122,.7); display:none;}
+    box-shadow:0 0 16px 4px rgba(243,224,163,.8); display:none;}
   .viewer.analyzing .scan{display:block; animation:scan 1.4s ease-in-out infinite;}
   @keyframes scan{0%{top:0;}50%{top:calc(100% - 3px);}100%{top:0;}}
-  .viewer.analyzing .guide{opacity:.9;}
+  .viewer.analyzing .guide{opacity:.95;}
   .analyzing-tip{color:var(--gold-light); font-size:14px; letter-spacing:.2em; margin-top:14px; display:none; animation:blink 1.4s infinite;}
   .analyzing-tip.show{display:block;}
   @keyframes blink{50%{opacity:.4;}}
 
   /* 按鈕 */
   .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:18px;}
-  .btn{
-    appearance:none; border:none; cursor:pointer; font-family:inherit;
+  .btn{appearance:none; border:none; cursor:pointer; font-family:inherit;
     background:linear-gradient(180deg,var(--gold-light),var(--gold) 55%,var(--gold-deep));
-    color:#4a2c08; font-weight:700; font-size:16px; letter-spacing:.2em; text-indent:.2em;
-    padding:13px 30px; border-radius:40px;
-    box-shadow:0 6px 18px rgba(0,0,0,.35), inset 0 1px 0 #fff6d8;
-    transition:transform .15s, box-shadow .15s; border:1.5px solid #fff2cf;
-  }
+    color:#3a2a05; font-weight:700; font-size:16px; letter-spacing:.22em; text-indent:.22em; padding:13px 32px;
+    border-radius:40px; box-shadow:0 6px 20px rgba(0,0,0,.45), 0 0 18px rgba(212,175,55,.3), inset 0 1px 0 #fff6d8;
+    transition:transform .15s; border:1.5px solid #fff2cf;}
   .btn:hover{transform:translateY(-2px);}
   .btn:active{transform:translateY(1px);}
-  .btn[disabled]{opacity:.45; cursor:default; transform:none;}
-  .btn.ghost{background:transparent; color:var(--gold-light); border:1.5px solid var(--gold); box-shadow:none; font-size:14.5px; padding:11px 24px;}
-  .btn.ghost:hover{background:rgba(201,162,39,.12);}
-  .btn.big{font-size:18px; padding:14px 44px;}
+  .btn[disabled]{opacity:.5; cursor:default; transform:none;}
+  .btn.ghost{background:transparent; color:var(--gold-light); border:1.5px solid var(--gold); box-shadow:none; font-size:14.5px; padding:11px 26px;}
+  .btn.ghost:hover{background:rgba(212,175,55,.14);}
+  .btn.big{font-size:18px; padding:14px 44px; letter-spacing:.28em; text-indent:.28em;}
 
-  /* 結果卡 */
-  .card-scene{width:100%; max-width:460px; margin:22px auto 0; display:none;}
-  .card-scene.show{display:block; animation:cardIn .7s cubic-bezier(.2,.9,.25,1.2);}
-  @keyframes cardIn{0%{opacity:0; transform:translateY(24px) scale(.96);}100%{opacity:1; transform:none;}}
-  .card{
-    position:relative; width:100%; border-radius:16px;
-    background:linear-gradient(180deg,#fffaf0,var(--paper));
-    border:2px solid var(--gold);
-    box-shadow:0 18px 40px rgba(0,0,0,.5), inset 0 0 0 6px rgba(201,162,39,.12);
-    padding:26px 24px 28px; text-align:center;
-  }
-  .card::before{content:""; position:absolute; inset:8px; border:1px solid var(--paper-line); border-radius:10px; pointer-events:none;}
-  .badge{display:inline-block; background:var(--red); color:var(--gold-light); font-size:13px; letter-spacing:.3em; text-indent:.3em; padding:5px 18px; border-radius:20px; border:1px solid var(--gold); margin-bottom:4px;}
-  .no{color:var(--ink-soft); font-size:13.5px; letter-spacing:.2em; margin:10px 0 2px;}
-  .no b{color:var(--red); font-size:17px;}
-  .face-shot{width:96px; height:96px; margin:10px auto 4px; border-radius:50%; overflow:hidden; border:2px solid var(--gold); box-shadow:0 4px 12px rgba(0,0,0,.18); background:#f0e6cf;}
+  /* 結果面板（深色玻璃） */
+  .card-scene{width:100%; max-width:460px; margin:20px auto 0; display:none;}
+  .card-scene.show{display:block; animation:fadeUp .6s ease;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(16px);}to{opacity:1; transform:translateY(0);}}
+  .card{position:relative; width:100%; border-radius:16px;
+    background:var(--panel); border:1.5px solid var(--panel-line);
+    box-shadow:0 16px 40px rgba(0,0,0,.5), inset 0 0 30px rgba(40,55,120,.3);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    padding:24px 22px 26px; text-align:center;}
+  .badge{display:inline-block; background:linear-gradient(180deg,#e8c84e,#b8901f); color:#2a1d02; font-size:13px; letter-spacing:.3em; text-indent:.3em; padding:6px 22px; border-radius:22px; font-weight:700; border:1px solid var(--gold);}
+  .no{color:var(--ink-soft); font-size:13.5px; letter-spacing:.12em; margin:12px 0 2px;}
+  .no b{color:var(--gold-light); font-size:16px;}
+  .face-shot{width:96px; height:96px; margin:12px auto 4px; border-radius:50%; overflow:hidden; border:2px solid var(--gold); box-shadow:0 4px 14px rgba(0,0,0,.4), 0 0 16px rgba(212,175,55,.35); background:#0c1024;}
   .face-shot img{width:100%; height:100%; object-fit:cover;}
-  .name{font-size:27px; font-weight:700; color:var(--red-deep); margin-top:6px; letter-spacing:.05em;}
+  .name{font-size:26px; font-weight:700; margin-top:6px; letter-spacing:.05em;
+    background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 18px rgba(212,175,55,.25);}
   .role{font-size:14px; color:var(--ink-soft); margin-top:6px;}
 
-  .section{margin:16px auto 0; max-width:380px; text-align:left;}
-  .section h3{font-size:14px; color:var(--gold-deep); letter-spacing:.2em; border-bottom:1px dashed var(--paper-line); padding-bottom:7px; margin-bottom:10px;}
-  .trait{display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.7; margin-bottom:9px;}
-  .trait .t-k{flex:0 0 58px; color:var(--red); font-weight:700;}
+  .scores{display:flex; justify-content:space-around; gap:9px; margin:14px auto 0; max-width:380px;}
+  .score{flex:1; background:rgba(8,12,30,.55); border:1px solid rgba(212,175,55,.28); border-radius:10px; padding:11px 4px;}
+  .score .sv{font-size:24px; font-weight:700; color:var(--gold-light); text-shadow:0 0 12px rgba(212,175,55,.35);}
+  .score .sk{font-size:12px; color:var(--ink-soft); letter-spacing:.12em; margin-top:3px;}
+
+  .section{margin:16px auto 0; max-width:382px; text-align:left;}
+  .section h3{font-size:13.5px; color:var(--gold); letter-spacing:.24em; border-bottom:1px solid rgba(212,175,55,.25); padding-bottom:8px; margin-bottom:11px; text-align:center;}
+  .trait{display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.7; margin-bottom:10px;}
+  .trait .t-k{flex:0 0 56px; color:var(--gold-light); font-weight:700;}
   .trait .t-v{flex:1; color:var(--ink);}
-  .trait .bar{height:6px; border-radius:4px; background:var(--paper-line); flex:0 0 60px; margin-top:7px; overflow:hidden; position:relative;}
-  .trait .bar i{position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg,var(--gold),var(--gold-deep)); border-radius:4px;}
+  .trait .bar{height:6px; border-radius:4px; background:rgba(212,175,55,.16); flex:0 0 56px; margin-top:7px; overflow:hidden; position:relative;}
+  .trait .bar i{position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:4px; box-shadow:0 0 8px rgba(212,175,55,.6);}
 
-  .scores{display:flex; justify-content:space-around; gap:8px; margin:6px auto 0; max-width:380px;}
-  .score{flex:1; background:rgba(201,162,39,.10); border:1px solid var(--paper-line); border-radius:10px; padding:10px 4px;}
-  .score .sv{font-size:23px; font-weight:700; color:var(--red);}
-  .score .sk{font-size:12px; color:var(--ink-soft); letter-spacing:.1em; margin-top:2px;}
+  .gate{margin:15px auto 0; max-width:382px; text-align:left; font-size:14px; line-height:1.7; color:var(--ink);}
+  .gate .gk{color:var(--gold); font-weight:700; letter-spacing:.1em;}
+  .verse{margin:14px auto 0; max-width:382px; background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.22); border-radius:10px; padding:14px 16px; font-size:15px; line-height:1.95; color:var(--ink); text-align:left;}
+  .verse .vt{color:var(--gold); font-weight:700; letter-spacing:.22em; font-size:13.5px; display:block; margin-bottom:6px;}
 
-  .gate{margin:16px auto 0; max-width:380px; text-align:left; font-size:14px; line-height:1.7;}
-  .gate .gk{color:var(--gold-deep); font-weight:700; letter-spacing:.1em;}
-  .verse{margin:14px auto 0; max-width:380px; background:rgba(201,162,39,.10); border:1px solid var(--paper-line); border-radius:10px; padding:15px 18px; font-size:15px; line-height:2; color:var(--ink); text-align:left;}
-  .verse .vt{color:var(--red); font-weight:700; letter-spacing:.2em; font-size:13px; display:block; margin-bottom:6px;}
-
-  footer{margin-top:30px; color:#f0d89e; opacity:.6; font-size:12px; line-height:1.9; text-align:center; max-width:480px;}
+  footer{margin-top:30px; color:var(--ink-soft); opacity:.7; font-size:12px; line-height:1.9; text-align:center; max-width:520px;}
   .err{color:#ffd9a8; font-size:13px; margin-top:10px; min-height:18px;}
 
   @media(max-width:480px){h1{font-size:24px;} .viewer{width:88vw; height:106vw; max-width:300px; max-height:360px;}}
 </style>
 </head>
 <body>
-<div class="bg-orbs" id="orbs"></div>
+<div class="stars" id="stars"></div>
+<div class="dust" id="dust"></div>
 
 <div class="wrap">
   <header>
     <div class="temple">寶 嚴 禪 寺</div>
-    <h1>善財童子五十三參
+    <h1><span class="grad">善財童子五十三參</span>
       <span class="sm">面 相 觀 照 ． 善 知 識 相 應</span>
     </h1>
     <p class="subtitle">
@@ -166,7 +159,6 @@
       </svg>
       <p>開啟鏡頭，或上傳一張正面清晰的相片<br>讓善知識為您觀照面相</p>
     </div>
-    <!-- 三停五嶽導引線 -->
     <svg class="guide" id="guide" viewBox="0 0 300 360" preserveAspectRatio="none">
       <ellipse cx="150" cy="180" rx="92" ry="120"/>
       <line x1="58" y1="120" x2="242" y2="120"/>
@@ -267,32 +259,32 @@ const SIGNS = [
 
 /* ============ 面相文案庫 ============ */
 const READINGS = {
-  上停:{ // 額／智慧、思維、早年
+  上停:{
     high:"上停（天庭）開闊明亮，主智慧通達、思慮高遠，少年運佳、得長上提攜。",
     mid:"上停（天庭）平正勻稱，心思細密、學習力強，凡事三思而後行。",
     low:"上停（天庭）內斂含蓄，沉潛務實、不尚空談，宜多向智者請益以開新局。"
   },
-  中停:{ // 眉眼鼻／事業、人際、中年
+  中停:{
     high:"中停（眉眼鼻顴）飽滿有神，主魄力與行動力強、事業心旺，中年得勢、人緣廣聚。",
     mid:"中停氣象端正，待人誠懇、進退有節，是能受人信賴的中流砥柱。",
     low:"中停柔和謙退，性情溫厚不爭，宜主動把握良機、勿過於退讓。"
   },
-  下停:{ // 口頷／福德、晚運、包容
+  下停:{
     high:"下停（口頷地閣）方圓豐隆，主福德深厚、晚運綿長，心寬能容、晚景安樂。",
     mid:"下停勻稱有肉，重情重義、持家有道，福報隨善行而日增。",
     low:"下停清秀俐落，律己甚嚴、做事乾淨，宜多寬待自己與他人以養福。"
   },
-  氣色:{ // 紅潤
+  氣色:{
     high:"氣色紅潤光潔，精神煥發，近期運勢上揚、貴人在側。",
     mid:"氣色溫潤平和，身心安泰，宜守成積德、靜待時機。",
     low:"氣色沉靜內斂，宜調養作息、舒展心神，運勢將漸入佳境。"
   },
-  神采:{ // 對比／輪廓立體、眼神
+  神采:{
     high:"五官輪廓分明、神采奕奕，眼神專注有定見，氣場出眾、令人印象深刻。",
     mid:"五官清朗、神情安定，溫和而不失主見，是可深交之相。",
     low:"神情柔和含蓄，內斂沉穩、深藏不露，真才實學待時而顯。"
   },
-  端正:{ // 對稱
+  端正:{
     high:"面相端正勻稱、左右調和，主性情中正、處事公允，一生少是非。",
     mid:"五官協調自然，剛柔並濟，能在原則與圓融之間取得平衡。",
     low:"面相個性鮮明、別具神韻，主才情獨具、不隨流俗，宜善用個人特質。"
@@ -321,111 +313,71 @@ const scene=document.getElementById("scene");
 const errEl=document.getElementById("err");
 const aTip=document.getElementById("aTip");
 
-let stream=null;       // 鏡頭串流
-let mode=null;         // 'cam' | 'shot'
-let uploadedImg=null;  // 上傳的 Image 物件
-
+let stream=null, mode=null, uploadedImg=null;
 function setErr(m){ errEl.textContent=m||""; }
 
-/* ---- 開啟鏡頭 ---- */
 async function openCam(){
   setErr("");
   try{
     stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user", width:{ideal:640}, height:{ideal:640}}, audio:false});
-    video.srcObject=stream;
-    await video.play();
-    mode="cam";
-    viewer.className="viewer cam";
-    setupActions.style.display="none";
-    goActions.style.display="flex";
-    scene.classList.remove("show");
-    againActions.style.display="none";
-  }catch(e){
-    setErr("無法開啟鏡頭（請改用「上傳照片」，或允許瀏覽器使用相機）。");
-  }
+    video.srcObject=stream; await video.play();
+    mode="cam"; viewer.className="viewer cam";
+    setupActions.style.display="none"; goActions.style.display="flex";
+    scene.classList.remove("show"); againActions.style.display="none";
+  }catch(e){ setErr("無法開啟鏡頭（請改用「上傳照片」，或允許瀏覽器使用相機）。"); }
 }
 
-/* ---- 上傳照片 ---- */
 uploadBtn.addEventListener("click",()=>fileInput.click());
 fileInput.addEventListener("change",e=>{
-  const f=e.target.files&&e.target.files[0];
-  if(!f) return;
+  const f=e.target.files&&e.target.files[0]; if(!f) return;
   setErr("");
-  const url=URL.createObjectURL(f);
-  const img=new Image();
+  const url=URL.createObjectURL(f); const img=new Image();
   img.onload=()=>{
-    uploadedImg=img;
-    drawToShot(img);
-    mode="shot";
-    viewer.className="viewer shot";
-    stopCam();
-    setupActions.style.display="none";
-    goActions.style.display="flex";
-    scene.classList.remove("show");
-    againActions.style.display="none";
+    uploadedImg=img; drawToShot(img);
+    mode="shot"; viewer.className="viewer shot"; stopCam();
+    setupActions.style.display="none"; goActions.style.display="flex";
+    scene.classList.remove("show"); againActions.style.display="none";
     URL.revokeObjectURL(url);
   };
   img.onerror=()=>{ setErr("照片讀取失敗，請換一張試試。"); URL.revokeObjectURL(url); };
   img.src=url;
 });
 
-/* 把來源（圖片）以 cover 方式置中繪到 shot canvas */
 function drawToShot(src){
-  const W=300,H=360;
-  shot.width=W; shot.height=H;
+  const W=300,H=360; shot.width=W; shot.height=H;
   const c=shot.getContext("2d");
   const sw=src.naturalWidth||src.videoWidth, sh=src.naturalHeight||src.videoHeight;
-  const scale=Math.max(W/sw,H/sh);
-  const dw=sw*scale, dh=sh*scale;
+  const scale=Math.max(W/sw,H/sh); const dw=sw*scale, dh=sh*scale;
   c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);
 }
+function stopCam(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } }
 
-function stopCam(){
-  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-}
-
-/* ---- 重置 ---- */
 function resetAll(){
-  stopCam();
-  mode=null; uploadedImg=null;
+  stopCam(); mode=null; uploadedImg=null;
   viewer.className="viewer";
-  setupActions.style.display="flex";
-  goActions.style.display="none";
-  againActions.style.display="none";
-  scene.classList.remove("show");
-  setErr("");
+  setupActions.style.display="flex"; goActions.style.display="none";
+  againActions.style.display="none"; scene.classList.remove("show"); setErr("");
 }
 
 /* ============ 影像特徵分析 ============ */
-function grabSourceCanvas(){
-  // 取得目前畫面（鏡頭即時擷取 / 已上傳）到 shot canvas
-  if(mode==="cam"){ drawToShot(video); }
-  return shot;
-}
+function grabSourceCanvas(){ if(mode==="cam"){ drawToShot(video); } return shot; }
 
 function analyzeFace(canvas){
-  const W=canvas.width, H=canvas.height;
-  const ctx=canvas.getContext("2d");
-  // 取臉部約略區域：中央 64% 寬、80% 高
-  const fx=Math.round(W*0.18), fy=Math.round(H*0.10);
-  const fw=Math.round(W*0.64), fh=Math.round(H*0.80);
+  const W=canvas.width, H=canvas.height, ctx=canvas.getContext("2d");
+  const fx=Math.round(W*0.18), fy=Math.round(H*0.10), fw=Math.round(W*0.64), fh=Math.round(H*0.80);
   const data=ctx.getImageData(fx,fy,fw,fh).data;
-
-  let lum=[0,0,0], cnt=[0,0,0];      // 三停亮度（上中下）
+  let lum=[0,0,0], cnt=[0,0,0];
   let sumR=0,sumG=0,sumB=0,sumL=0,sumL2=0,N=0;
   let leftL=0,leftN=0,rightL=0,rightN=0;
   let hash=2166136261>>>0;
-
   for(let y=0;y<fh;y++){
     const band = y< fh/3 ? 0 : (y< fh*2/3 ? 1 : 2);
     for(let x=0;x<fw;x++){
-      const i=(y*fw+x)*4;
-      const r=data[i],g=data[i+1],b=data[i+2];
+      const i=(y*fw+x)*4; const r=data[i],g=data[i+1],b=data[i+2];
       const L=0.299*r+0.587*g+0.114*b;
       lum[band]+=L; cnt[band]++;
       sumR+=r; sumG+=g; sumB+=b; sumL+=L; sumL2+=L*L; N++;
       if(x<fw/2){ leftL+=L; leftN++; } else { rightL+=L; rightN++; }
-      // 取樣雜湊（每隔數像素），讓同一張臉得到穩定結果
       if((x%7===0)&&(y%7===0)){
         hash ^= (r&0xF8)|((g&0xF8)<<8)|((b&0xF8)<<16);
         hash = Math.imul(hash,16777619)>>>0;
@@ -435,24 +387,18 @@ function analyzeFace(canvas){
   const avgL=sumL/N;
   const u=lum[0]/cnt[0], m=lum[1]/cnt[1], d=lum[2]/cnt[2];
   const std=Math.sqrt(Math.max(0,sumL2/N-avgL*avgL));
-  const warmth=(sumR-sumB)/N;                       // 紅潤度
-  const sym=1-Math.min(1,Math.abs(leftL/leftN-rightL/rightN)/Math.max(1,avgL)); // 0~1 對稱度
-
-  // 偵測是否像有效照片（過暗、過曝、或近乎全黑）
+  const warmth=(sumR-sumB)/N;
+  const sym=1-Math.min(1,Math.abs(leftL/leftN-rightL/rightN)/Math.max(1,avgL));
   const valid = N>0 && avgL>14 && avgL<248 && std>6;
-
   return {avgL,u,m,d,std,warmth,sym,hash:hash>>>0,valid};
 }
 
-/* 把數值轉成 low/mid/high 等級 */
 function tier(v,lo,hi){ return v<lo?"low":(v>hi?"high":"mid"); }
 function pct(level){ return level==="high"?86:(level==="mid"?60:38); }
 
 function buildReport(f){
-  // 三停相對強弱
   const stops={上停:f.u,中停:f.m,下停:f.d};
   const maxStop=Object.keys(stops).reduce((a,b)=>stops[a]>=stops[b]?a:b);
-  // 各維度等級
   const lv={
     上停:tier(f.u,f.avgL-10,f.avgL+10),
     中停:tier(f.m,f.avgL-10,f.avgL+10),
@@ -461,15 +407,11 @@ function buildReport(f){
     神采:tier(f.std,34,52),
     端正:tier(f.sym,0.86,0.95)
   };
-  // 福德／智慧／事業 三項指數（60~98，偏吉）
   const clamp=(x)=>Math.max(58,Math.min(98,Math.round(x)));
   const wisdom = clamp(62 + (f.u-f.avgL)*1.2 + (f.std-40)*0.4 + (f.hash%7));
   const career = clamp(62 + (f.m-f.avgL)*1.2 + (f.warmth-28)*0.5 + (f.hash%5));
   const fortune= clamp(64 + (f.d-f.avgL)*1.2 + f.sym*14 + (f.hash%6));
-
-  // 與善知識相應（以穩定雜湊決定，同一張臉結果一致）
   const sign=SIGNS[f.hash % SIGNS.length];
-
   return {lv,maxStop,wisdom,career,fortune,sign};
 }
 
@@ -477,22 +419,16 @@ function buildReport(f){
 function read(){
   if(!mode){ setErr("請先開啟鏡頭或上傳照片。"); return; }
   setErr("");
-  const canvas=grabSourceCanvas();   // 定格目前畫面
-  // 若是鏡頭，定格後切到 shot 顯示
+  const canvas=grabSourceCanvas();
   if(mode==="cam"){ stopCam(); mode="shot"; }
   viewer.className="viewer shot analyzing";
-  aTip.classList.add("show");
-  goActions.style.display="none";
-
+  aTip.classList.add("show"); goActions.style.display="none";
   setTimeout(()=>{
     const f=analyzeFace(canvas);
-    viewer.className="viewer shot";
-    aTip.classList.remove("show");
+    viewer.className="viewer shot"; aTip.classList.remove("show");
     if(!f.valid){
       setErr("畫面太暗或看不清面容，請在光線充足處、正面清晰再試一次。");
-      goActions.style.display="flex";
-      viewer.className="viewer shot";
-      return;
+      goActions.style.display="flex"; return;
     }
     const rep=buildReport(f);
     showResult(rep,canvas);
@@ -510,7 +446,6 @@ function showResult(rep,canvas){
     const lv=rep.lv[k];
     return `<div class="trait"><span class="t-k">${k}</span><span class="t-v">${READINGS[k][lv]}</span>${bar(lv)}</div>`;
   }).join("");
-
   scene.innerHTML=`
     <div class="card">
       <div class="badge">面相觀照</div>
@@ -518,47 +453,40 @@ function showResult(rep,canvas){
       <div class="face-shot"><img src="${faceURL}" alt="面相"></div>
       <div class="name">${s.name}</div>
       <div class="role">參訪：${s.role}</div>
-
       <div class="scores">
         <div class="score"><div class="sv">${rep.wisdom}</div><div class="sk">智慧</div></div>
         <div class="score"><div class="sv">${rep.career}</div><div class="sk">事業</div></div>
         <div class="score"><div class="sv">${rep.fortune}</div><div class="sk">福德</div></div>
       </div>
-
       <div class="section">
         <h3>面　相　觀　照</h3>
         ${traitHTML}
         <div class="trait" style="margin-top:4px"><span class="t-k">總評</span><span class="t-v">${STOP_FOCUS[rep.maxStop]}</span></div>
       </div>
-
       <div class="gate"><span class="gk">所應法門　</span>${s.gate}</div>
-
-      <div class="verse">
-        <span class="vt">善知識開示</span>
-        ${s.msg}
-      </div>
+      <div class="verse"><span class="vt">善知識開示</span>${s.msg}</div>
     </div>`;
   scene.classList.add("show");
   scene.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
-/* ---- 事件 ---- */
 camBtn.addEventListener("click",openCam);
 readBtn.addEventListener("click",read);
 resetBtn.addEventListener("click",resetAll);
 againBtn.addEventListener("click",resetAll);
 
-/* 背景金色光點 */
+/* 星空 + 金塵 */
 (function(){
-  const box=document.getElementById("orbs");
-  for(let i=0;i<18;i++){
-    const sp=document.createElement("span");
-    sp.style.left=Math.random()*100+"%";
-    sp.style.animationDuration=(6+Math.random()*8)+"s";
-    sp.style.animationDelay=(Math.random()*8)+"s";
-    const sz=4+Math.random()*8; sp.style.width=sp.style.height=sz+"px";
-    box.appendChild(sp);
-  }
+  const st=document.getElementById("stars");
+  for(let i=0;i<70;i++){const s=document.createElement("i");
+    const sz=Math.random()*2+0.6; s.style.width=s.style.height=sz+"px";
+    s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*3)+"s"; st.appendChild(s);}
+  const du=document.getElementById("dust");
+  for(let i=0;i<16;i++){const sp=document.createElement("span");
+    sp.style.left=Math.random()*100+"%"; sp.style.animationDuration=(7+Math.random()*8)+"s";
+    sp.style.animationDelay=(Math.random()*8)+"s"; const sz=3+Math.random()*7;
+    sp.style.width=sp.style.height=sz+"px"; du.appendChild(sp);}
 })();
 </script>
 </body>
