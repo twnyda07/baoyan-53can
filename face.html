@@ -173,7 +173,7 @@
   </header>
 
   <div class="viewer" id="viewer">
-    <video id="video" playsinline muted></video>
+    <video id="video" playsinline webkit-playsinline muted autoplay></video>
     <canvas class="shot" id="shot"></canvas>
     <div class="placeholder">
       <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -201,7 +201,7 @@
   <div class="err" id="err"></div>
 
   <div class="actions" id="setupActions">
-    <button class="btn" id="pickBtn">📷 拍照 / 選照片</button>
+    <button class="btn" id="pickBtn">📷 選照片</button>
     <button class="btn ghost" id="camBtn">即時鏡頭</button>
     <input type="file" id="file" accept="image/*" style="display:none;">
   </div>
@@ -314,7 +314,10 @@ async function openCam(){
       // 後援：不限定前/後鏡頭
       stream=await navigator.mediaDevices.getUserMedia({video:true, audio:false});
     }
-    video.srcObject=stream; await video.play();
+    video.setAttribute("playsinline",""); video.setAttribute("webkit-playsinline","");
+    video.muted=true; video.srcObject=stream;
+    // iOS Safari 有時 play() 會被拒，但畫面仍會顯示，故忽略其錯誤、不中斷串流
+    try{ await video.play(); }catch(_){ }
     mode="cam"; viewer.className="viewer cam";
     setupActions.style.display="none"; camTip.style.display="none"; goActions.style.display="flex";
     scene.classList.remove("show"); againActions.style.display="none";
@@ -499,16 +502,13 @@ readBtn.addEventListener("click",read);
 resetBtn.addEventListener("click",resetAll);
 againBtn.addEventListener("click",resetAll);
 
-/* 手機隱藏「即時鏡頭」（行動裝置常被系統／App 內建瀏覽器封鎖），
-   改以「拍照 / 選照片」用原生相機，穩定可用。桌機則保留即時鏡頭。 */
+/* 即時鏡頭在 Android Chrome／iPhone Safari（https）皆可使用；
+   僅 App 內建瀏覽器（LINE／FB／IG）會封鎖相機，故給提示引導。 */
 (function(){
-  const ua=navigator.userAgent||"";
-  const isMobile=(navigator.maxTouchPoints>1)||/Android|iPhone|iPad|iPod|Mobile/i.test(ua);
-  if(isMobile){
-    camBtn.style.display="none";
-    camTip.textContent="按「拍照 / 選照片」即可開啟相機拍攝，或從相簿選一張正面照。";
+  if(isInAppBrowser()){
+    camTip.innerHTML="若「即時鏡頭」開不了，代表此 App 內建瀏覽器封鎖了相機 —— 請點右上角「⋯」用 <b>Safari／Chrome</b> 開啟本頁，或改用「選照片」拍攝。";
   }else{
-    camTip.textContent="可用「即時鏡頭」即時觀照，或「拍照 / 選照片」上傳一張正面照片。";
+    camTip.textContent="按「即時鏡頭」即時觀照（首次會請您允許相機），或用「選照片」拍攝／選一張正面照片。";
   }
 })();
 
