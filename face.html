@@ -440,18 +440,16 @@ function buildReport(f){
     端正:tier(f.sym,0.86,0.95)
   };
   /* 三項分數（智慧/事業/福德）：
-     鼓勵性—皆落在 74–99 高分區；
-     區辨性—與面相最旺之「停」相應者領先，三項彼此明顯拉開；
-     隨機性—每次數值與次序皆隨機，並以面相特徵微調增添個人化。 */
-  const rnd=(a,b)=>a+Math.random()*(b-a);
+     級距—一個 90 多、一個 80 多、一個 70 多（皆不低於 60，鼓勵性）；
+     區辨性—與面相最旺之「停」相應者得 90 多分而領先，三項分屬不同級距；
+     隨機性—每次各級距內的數值、以及 80/70 多落在哪一項，皆隨機。 */
+  const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));  // [a,b] 整數
   const lead={上停:0,中停:1,下停:2}[maxStop];   // 上停→智慧、中停→事業、下停→福德
-  const hi=rnd(91,99), midv=rnd(83,90), lov=rnd(74,82);
-  const others=Math.random()<0.5?[midv,lov]:[lov,midv];
-  const adj=[(f.u-f.avgL)*0.12, (f.m-f.avgL)*0.12, (f.d-f.avgL)*0.12];
+  const hi=ri(90,99), mid=ri(80,89), lo=ri(70,79);
+  const others=Math.random()<0.5?[mid,lo]:[lo,mid];     // 次高/第三隨機分配
   const sc=[0,0,0]; sc[lead]=hi; let pi=0;
   for(let i=0;i<3;i++){ if(i!==lead) sc[i]=others[pi++]; }
-  const fin=i=>Math.max(72,Math.min(99,Math.round(sc[i]+(adj[i]||0))));
-  const wisdom=fin(0), career=fin(1), fortune=fin(2);
+  const wisdom=sc[0], career=sc[1], fortune=sc[2];
   const sign=nextSign();
   return {lv,maxStop,wisdom,career,fortune,sign};
 }
