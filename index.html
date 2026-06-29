@@ -142,6 +142,7 @@
       請先合掌靜心、默想所求之事，再抽取一張善知識卡。
     </p>
     <a class="cross-link" href="face.html"><span class="eye">👁️‍🗨️</span>改用「面相觀照」· 以鏡頭或照片相應善知識 →</a>
+    <a class="cross-link" href="lengyan.html"><span class="eye">🪷</span>前往「楞嚴咒持咒共修」· 比賽記錄持咒遍數 →</a>
   </header>
 
   <div class="stage">
@@ -184,6 +185,16 @@ const flip=document.getElementById("flip"), glow=document.getElementById("glow")
       panel=document.getElementById("panel");
 let busy=false, flipped=false;
 
+/* 洗牌袋：53 參每輪全部抽完一次才重洗，更隨機且每參必現 */
+let _bag=[];
+function nextSign(){
+  if(_bag.length===0){
+    _bag=SIGNS.slice();
+    for(let i=_bag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); const t=_bag[i]; _bag[i]=_bag[j]; _bag[j]=t;}
+  }
+  return _bag.pop();
+}
+
 function draw(){
   if(busy) return; busy=true;
   drawBtn.disabled=true; againBtn.style.display="none";
@@ -200,7 +211,7 @@ function draw(){
     hint.textContent="洗牌中…誠心默想所求";
     flip.classList.remove("float");
     flip.classList.add("shuffle");
-    const pick=SIGNS[Math.floor(Math.random()*SIGNS.length)];
+    const pick=nextSign();
     frontImg.src="images/"+String(pick.n).padStart(2,"0")+".jpg";
     setTimeout(()=>{
       flip.classList.remove("shuffle");
