@@ -6,3 +6,6 @@
 奇幻史詩風.webloc
 掛圖.sh
 images/說明.txt
+資料庫MCP交接文件.md
+# 本機啟動器（含個人 API 金鑰等私密資訊，絕不發布到公開 repo）
+*.command

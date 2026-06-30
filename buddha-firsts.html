@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>佛陀之最 — 最早的佛陀圖像．最早的佛陀報導</title>
+<meta name="description" content="以開放資料庫考據：人類最早的佛陀圖像，與最早關於佛陀的報導。">
+<style>
+  :root{
+    --navy:#0a0e24; --navy2:#131a40; --navy3:#1d2552;
+    --gold:#d4af37; --gold-light:#f3e0a3; --gold-deep:#9c7a1e;
+    --ink:#ede6cf; --ink-soft:#b9b08f;
+    --panel:rgba(18,24,58,.78); --panel-line:rgba(212,175,55,.45);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif TC","Songti TC","STSong","PMingLiU",serif;
+    color:var(--ink);
+    background:
+      radial-gradient(ellipse at 50% -8%, #28306e 0%, var(--navy2) 32%, var(--navy) 70%, #05070f 100%) fixed;
+    min-height:100%; padding:28px 16px 60px; position:relative; overflow-x:hidden;
+    line-height:1.85;
+  }
+  .stars{position:fixed; inset:0; pointer-events:none; z-index:0;}
+  .stars i{position:absolute; background:#fff; border-radius:50%; opacity:.8; animation:tw 3s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.15;}50%{opacity:.9;}}
+  .dust{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .dust span{position:absolute; bottom:-20px; border-radius:50%;
+    background:radial-gradient(circle,var(--gold-light),transparent 70%); opacity:.5; animation:rise linear infinite;}
+  @keyframes rise{to{transform:translateY(-110vh) translateX(28px); opacity:0;}}
+
+  .wrap{width:100%; max-width:760px; margin:0 auto; position:relative; z-index:1;}
+
+  /* header */
+  header{text-align:center; margin-bottom:30px;}
+  .temple{color:var(--gold-light); letter-spacing:.55em; font-size:14px; text-indent:.55em;
+    margin-bottom:16px; text-shadow:0 0 14px rgba(212,175,55,.5);}
+  h1{color:#fff; font-size:34px; font-weight:700; line-height:1.4; text-shadow:0 0 22px rgba(120,140,255,.4);}
+  h1 .grad{background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  .lead{color:var(--ink-soft); font-size:15px; margin-top:18px; line-height:1.95; max-width:600px; margin-inline:auto;}
+  .toc{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:22px;}
+  .toc a{text-decoration:none; color:var(--gold-light); font-size:14px; font-weight:700; letter-spacing:.12em;
+    padding:9px 20px; border-radius:30px; background:rgba(212,175,55,.12);
+    border:1.5px solid var(--gold); box-shadow:0 0 16px rgba(212,175,55,.18); transition:.15s;}
+  .toc a:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
+
+  /* section */
+  section{margin-top:46px; scroll-margin-top:20px;}
+  .sec-no{display:block; color:var(--gold); font-size:13px; letter-spacing:.4em; text-indent:.4em; text-align:center; opacity:.85;}
+  .sec-h{color:#fff; font-size:25px; font-weight:700; text-align:center; margin-top:8px;
+    text-shadow:0 0 16px rgba(120,140,255,.35);}
+  .sec-sub{color:var(--ink-soft); font-size:14px; text-align:center; margin-top:8px; letter-spacing:.05em;}
+  .rule{width:60px; height:2px; margin:18px auto 26px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+
+  .card{background:var(--panel); border:1.5px solid var(--panel-line); border-radius:16px;
+    box-shadow:0 16px 40px rgba(0,0,0,.5), inset 0 0 30px rgba(40,55,120,.25);
+    padding:22px 24px; margin-bottom:20px;
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .card p{font-size:15.5px; margin-top:10px;}
+  .card p:first-child{margin-top:0;}
+  .card b, .card strong{color:var(--gold-light);}
+  .tag{display:inline-block; font-size:12px; letter-spacing:.18em; color:var(--gold);
+    border:1px solid rgba(212,175,55,.5); border-radius:20px; padding:3px 12px; margin-bottom:12px;}
+
+  /* gallery */
+  .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:8px 0 4px;}
+  figure{background:#0c1024; border:1px solid rgba(212,175,55,.28); border-radius:12px; overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);}
+  figure a{display:block; line-height:0;}
+  figure img{width:100%; aspect-ratio:3/4; object-fit:cover; display:block; background:#11162e; transition:transform .4s;}
+  figure a:hover img{transform:scale(1.05);}
+  figcaption{padding:9px 11px 11px; line-height:1.55;}
+  figcaption .ft{color:var(--gold-light); font-size:13.5px; font-weight:700;}
+  figcaption .fd{color:var(--ink-soft); font-size:12px; margin-top:3px;}
+  .credit{text-align:center; color:var(--ink-soft); font-size:11.5px; margin-top:6px; opacity:.8;}
+
+  /* timeline */
+  .tl{list-style:none; margin:6px 0 2px; padding-left:8px;}
+  .tl li{position:relative; padding:0 0 16px 26px; border-left:2px solid rgba(212,175,55,.3);}
+  .tl li:last-child{border-left-color:transparent; padding-bottom:0;}
+  .tl li::before{content:""; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%;
+    background:var(--gold); box-shadow:0 0 12px rgba(212,175,55,.7);}
+  .tl .yr{color:var(--gold-light); font-weight:700; font-size:14.5px; letter-spacing:.04em;}
+  .tl .tx{font-size:14.5px; margin-top:3px;}
+
+  /* highlight box */
+  .hl{border:1.5px solid var(--gold); background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(212,175,55,.05));
+    border-radius:14px; padding:20px 22px; margin-top:6px; box-shadow:0 0 26px rgba(212,175,55,.18);}
+  .hl .h{color:#fff; font-size:18px; font-weight:700; letter-spacing:.04em;}
+  .hl .meta{color:var(--gold-light); font-size:13px; margin-top:4px; letter-spacing:.04em;}
+  .hl p{font-size:15px; margin-top:11px;}
+
+  /* note / caveat */
+  .note{border-left:3px solid var(--gold); background:rgba(8,12,30,.5); border-radius:0 10px 10px 0;
+    padding:13px 16px; margin-top:14px; font-size:14px; color:var(--ink-soft); line-height:1.8;}
+  .note b{color:var(--gold-light);}
+
+  /* source chips */
+  .srcs{display:flex; flex-wrap:wrap; gap:9px; margin-top:14px;}
+  .srcs a{display:inline-flex; align-items:center; gap:7px; text-decoration:none; color:var(--gold-light);
+    background:rgba(212,175,55,.1); border:1px solid var(--gold); border-radius:24px; padding:7px 15px;
+    font-size:13px; transition:.15s;}
+  .srcs a:hover{background:rgba(212,175,55,.24); transform:translateY(-1px);}
+  .srcs a .db{font-size:11px; color:var(--gold); opacity:.85;}
+
+  /* compare table */
+  .cmp{width:100%; border-collapse:collapse; margin-top:6px; font-size:14px;}
+  .cmp th,.cmp td{border:1px solid rgba(212,175,55,.25); padding:11px 13px; vertical-align:top; text-align:left;}
+  .cmp th{color:var(--gold-light); background:rgba(212,175,55,.1); font-weight:700; letter-spacing:.05em;}
+  .cmp td b{color:var(--gold-light);}
+  .cmp .rowh{color:var(--gold); font-weight:700; white-space:nowrap; background:rgba(8,12,30,.4);}
+
+  footer{margin-top:48px; padding-top:22px; border-top:1px solid rgba(212,175,55,.2);
+    color:var(--ink-soft); font-size:12px; line-height:1.95; text-align:center;}
+  footer .prov{font-size:11.5px; opacity:.85; margin-top:8px;}
+  footer b{color:var(--gold-light);}
+
+  @media(max-width:480px){
+    h1{font-size:26px;} .sec-h{font-size:21px;}
+    .card{padding:18px 16px;} .gallery{grid-template-columns:1fr 1fr; gap:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="dust" id="dust"></div>
+
+<div class="wrap">
+  <header>
+    <div class="temple">寶 嚴 工 作 坊</div>
+    <h1><span class="grad">佛 陀 之 最</span></h1>
+    <p class="lead">
+      世界上最早的一張佛陀圖像，與最早關於佛陀的報導，分別是什麼？<br>
+      以下考據取自開放博物館、Europeana、OpenAlex、DOAB 與 Guardian 等公開資料庫。
+    </p>
+    <nav class="toc">
+      <a href="#image">一、最早的佛陀圖像</a>
+      <a href="#report">二、最早的佛陀報導</a>
+      <a href="#sum">綜覽</a>
+    </nav>
+  </header>
+
+  <!-- ========== 一、最早的佛陀圖像 ========== -->
+  <section id="image">
+    <span class="sec-no">壹</span>
+    <h2 class="sec-h">最早的佛陀「圖像」</h2>
+    <p class="sec-sub">佛身隱於象徵，五百年後才現人形</p>
+    <div class="rule"></div>
+
+    <div class="card">
+      <span class="tag">無像時期 · Aniconism</span>
+      <p>佛陀入滅後最初的兩、三百年，佛教藝術<b>刻意不直接描繪佛陀本人</b>。在巴爾胡特（Bharhut）、桑奇（Sanchi）等早期遺址，藝匠以<b>象徵</b>代替佛身——<b>菩提樹、法輪、佛足印、空寶座、佛塔、傘蓋</b>。因此，最早「與佛陀有關的圖像」，其實是這些象徵，而非佛像。</p>
+    </div>
+
+    <div class="card">
+      <span class="tag">人形初現 · 約西元 1 世紀</span>
+      <p>佛陀以「人形」現身，大約在<b>西元 1 世紀</b>才出現，而且幾乎同時誕生於兩個藝術中心：</p>
+      <ul class="tl" style="margin-top:14px;">
+        <li><span class="yr">犍陀羅 Gandhāra（今巴基斯坦西北）</span><div class="tx">受希臘—羅馬影響、衣紋寫實的佛像。</div></li>
+        <li><span class="yr">秣菟羅 Mathurā（北印度）</span><div class="tx">本土風格、體態渾厚的佛像。</div></li>
+      </ul>
+      <p style="margin-top:14px;">學界最常被點名為「最早、且年代確鑿」的人形佛像候選：<b>比馬蘭舍利盒（Bimaran casket，大英博物館，約 1 世紀）</b>，以及<b>迦膩色伽錢幣（Kanishka，約 127–150 CE）</b>——錢幣上站立的佛陀旁，用希臘字母標著「ΒΟΔΔΟ（Boddo＝佛陀）」，是少數有確切年代的最早佛像之一。</p>
+    </div>
+
+    <div class="card">
+      <span class="tag">開放典藏實例 · 犍陀羅造像</span>
+      <p>以下為大都會藝術博物館（Met）開放近用（Open Access）藏品，可一窺佛像最初成形時的面貌——點圖可看館藏頁：</p>
+      <div class="gallery">
+        <figure>
+          <a href="https://www.metmuseum.org/art/collection/search/38777" target="_blank" rel="noopener">
+            <img loading="lazy" src="assets-buddha/DP123377.jpg" alt="犍陀羅 佛頭 約4世紀">
+          </a>
+          <figcaption><div class="ft">佛頭</div><div class="fd">犍陀羅 · 約 4 世紀 · 灰泥</div></figcaption>
+        </figure>
+        <figure>
+          <a href="https://www.metmuseum.org/art/collection/search/38452" target="_blank" rel="noopener">
+            <img loading="lazy" src="assets-buddha/DP123361.jpg" alt="犍陀羅 佛陀涅槃浮雕 約3世紀">
+          </a>
+          <figcaption><div class="ft">佛陀涅槃</div><div class="fd">犍陀羅 · 約 3 世紀 · 片岩</div></figcaption>
+        </figure>
+        <figure>
+          <a href="https://www.metmuseum.org/art/collection/search/38474" target="_blank" rel="noopener">
+            <img loading="lazy" src="assets-buddha/DP123372.jpg" alt="犍陀羅 彌勒菩薩立像 約3世紀">
+          </a>
+          <figcaption><div class="ft">彌勒菩薩立像</div><div class="fd">犍陀羅 · 約 3 世紀 · 灰片岩</div></figcaption>
+        </figure>
+        <figure>
+          <a href="https://www.metmuseum.org/art/collection/search/61820" target="_blank" rel="noopener">
+            <img loading="lazy" src="assets-buddha/DP-15581-062.jpg" alt="中國 釋迦牟尼坐佛 約4世紀末5世紀初">
+          </a>
+          <figcaption><div class="ft">釋迦牟尼坐佛</div><div class="fd">中國 · 約 4 世紀末–5 世紀初 · 鎏金銅</div></figcaption>
+        </figure>
+      </div>
+      <div class="credit">圖：The Metropolitan Museum of Art, Open Access（CC0）。最右件示佛像東傳中國之貌。</div>
+    </div>
+
+    <div class="note">
+      <b>誠實提醒：</b>「世界上『單一一張』最早的佛像」學界至今<b>沒有定論</b>——比馬蘭舍利盒與迦膩色伽錢幣何者更早仍在爭論。最穩妥的講法是：<b>人形佛像約於西元 1 世紀首見於犍陀羅與秣菟羅</b>；在那之前，佛陀只以象徵示現。
+    </div>
+
+    <div class="srcs">
+      <a href="https://zenodo.org/record/3492002" target="_blank" rel="noopener"><span class="db">OpenAlex</span>Cribb (2017)《比馬蘭舍利盒斷代》</a>
+      <a href="https://eprints.soas.ac.uk/18812/1/Luczanits%202008%20GandharaO.pdf" target="_blank" rel="noopener"><span class="db">OpenAlex</span>Luczanits (2008)《犍陀羅藝術》</a>
+      <a href="https://directory.doabooks.org/handle/20.500.12854/134413" target="_blank" rel="noopener"><span class="db">DOAB</span>Olivieri《Stoneyards in Gandhara》</a>
+      <a href="https://directory.doabooks.org/handle/20.500.12854/157553" target="_blank" rel="noopener"><span class="db">DOAB</span>《犍陀羅美術與希臘—羅馬世界》（中文）</a>
+    </div>
+  </section>
+
+  <!-- ========== 二、最早的佛陀報導 ========== -->
+  <section id="report">
+    <span class="sec-no">貳</span>
+    <h2 class="sec-h">最早的佛陀「報導」</h2>
+    <p class="sec-sub">兩千五百年前的人物，何時成了新聞？</p>
+    <div class="rule"></div>
+
+    <div class="card">
+      <span class="tag">先把話講清楚</span>
+      <p>「<b>新聞報導</b>」是近代報紙時代之後才有的東西。真正「最早關於佛陀的<b>記載</b>」並不是新聞，而是<b>早期佛典</b>（口傳後寫定的巴利三藏／阿含）。現代新聞資料庫只覆蓋近代，因此查不到「人類史上第一篇佛陀報導」。</p>
+      <p>我們能誠實回答的，是兩件事：<b>新聞庫裡最早出現佛陀的紀錄</b>，以及<b>最具份量的一則「關於歷史上佛陀」的報導</b>。</p>
+    </div>
+
+    <div class="card">
+      <span class="tag">Guardian 數位典藏 · 依年代排序實查</span>
+      <ul class="tl">
+        <li><span class="yr">1864 年</span><div class="tx">Guardian 數位典藏「From the archive」最早可回溯至 1860 年代。</div></li>
+        <li><span class="yr">1993-05-01</span><div class="tx">全文索引中，最早出現「Buddha」一字的文章——一篇書評，只是順帶提及。</div></li>
+        <li><span class="yr">1995-05-16</span><div class="tx">最早出現全名「Gautama Buddha」的報導〈Shoko tactics〉，實為報導奧姆真理教（麻原彰晃）。</div></li>
+      </ul>
+      <div class="note">
+        現代新聞幾乎不會把佛陀<b>本人</b>當「新聞」，只有<b>順帶提及</b>。要找到一則真正「關於佛陀」的重磅報導，得等到考古帶來新證據的那一刻——見下。
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag">最有份量的一則 · 2013</span>
+      <div class="hl">
+        <div class="h">藍毗尼發現「目前已知最早的佛教結構」</div>
+        <div class="meta">Coningham, Acharya, Strickland, Davis (2013) ·《Antiquity》考古學期刊</div>
+        <p>考古團隊在佛陀傳統出生地<b>藍毗尼（Lumbini, 尼泊爾）</b>摩耶夫人廟下方，挖出一座<b>西元前 6 世紀的木造結構</b>，是目前已知<b>最早、年代確鑿的佛教建築</b>，把佛陀生平的考古證據往前推。2013 年 11 月經 National Geographic、BBC 等全球大幅報導，可說是「關於歷史上佛陀」最具重量的一則現代報導。</p>
+      </div>
+      <div class="srcs">
+        <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/90338647E132E7B20420CCC9C847E237/S0003598X00049899a.pdf/div-class-title-the-earliest-buddhist-shrine-excavating-the-birthplace-of-the-buddha-lumbini-nepal-div.pdf" target="_blank" rel="noopener"><span class="db">OpenAlex</span>原始論文全文 PDF（Antiquity）</a>
+      </div>
+      <div class="note">
+        <b>工具旁註：</b>本頁的 Guardian 查詢用的是共享測試金鑰，相關度排序偏弱；但「依年代排序」功能正常，上面的年代結果即是實查所得。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 綜覽 ========== -->
+  <section id="sum">
+    <span class="sec-no">參</span>
+    <h2 class="sec-h">綜　覽</h2>
+    <p class="sec-sub">兩個「最早」，一句話記住</p>
+    <div class="rule"></div>
+
+    <div class="card" style="overflow-x:auto;">
+      <table class="cmp">
+        <tr><th></th><th>最早的佛陀圖像</th><th>最早的佛陀報導</th></tr>
+        <tr>
+          <td class="rowh">答案</td>
+          <td>人形佛像約<b>西元 1 世紀</b>首見於犍陀羅與秣菟羅；更早是「無像時期」的象徵（法輪、佛足印、菩提樹）。</td>
+          <td>新聞庫意義下：Guardian 最早索引到「Buddha」是 <b>1993</b>；真正有份量的是 <b>2013 藍毗尼考古發現</b>（西元前 6 世紀佛寺）。</td>
+        </tr>
+        <tr>
+          <td class="rowh">最早實證候選</td>
+          <td>比馬蘭舍利盒、迦膩色伽錢幣（ΒΟΔΔΟ）。</td>
+          <td>Coningham 等 (2013)《Antiquity》論文。</td>
+        </tr>
+        <tr>
+          <td class="rowh">資料庫</td>
+          <td>大都會博物館、Europeana、OpenAlex、DOAB。</td>
+          <td>OpenAlex、Guardian。</td>
+        </tr>
+      </table>
+      <p style="margin-top:18px; text-align:center; color:var(--gold-light); font-size:15px; line-height:1.9;">
+        佛陀的「臉」，在他身後約五百年才被刻出來；<br>佛陀的「最早一則新聞」，其實是 2013 年挖出他出生地的那座木構佛寺。
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    本頁為開放資料庫考據彙整，僅供學習與省思之用；圖像版權屬各館所有。<br>
+    <span class="prov">資料來源：<b>大都會藝術博物館</b>（Open Access, CC0）· <b>Europeana</b> · <b>OpenAlex</b> · <b>DOAB／OAPEN</b> · <b>The Guardian</b> Open Platform</span><br>
+    <span class="prov">© 寶嚴工作坊　Baoyan Workshop</span>
+  </footer>
+</div>
+
+<script>
+/* 星空 + 金塵（自包含，無外部依賴） */
+(function(){
+  const st=document.getElementById("stars");
+  for(let i=0;i<80;i++){const s=document.createElement("i");
+    const sz=Math.random()*2+0.6; s.style.width=s.style.height=sz+"px";
+    s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*3)+"s"; st.appendChild(s);}
+  const du=document.getElementById("dust");
+  for(let i=0;i<16;i++){const sp=document.createElement("span");
+    sp.style.left=Math.random()*100+"%"; sp.style.animationDuration=(7+Math.random()*8)+"s";
+    sp.style.animationDelay=(Math.random()*8)+"s"; const sz=3+Math.random()*7;
+    sp.style.width=sp.style.height=sz+"px"; du.appendChild(sp);}
+})();
+</script>
+</body>
+</html>
