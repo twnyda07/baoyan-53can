@@ -553,8 +553,8 @@ function imgPath(n){ return "images/"+String(n).padStart(2,"0")+".jpg"; }
 function faceMessage(s, rep){
   const b = (rep.bodhi && rep.bodhi.name) || "諸佛菩薩";
   return `相由心生、相隨心轉——面相並非命定，而能因修行而增勝。`
-    + `願您藉由以上三項功課精進用功——以<b>教理</b>開智慧、以<b>福德</b>培福報、以<b>禪定</b>安身心，`
-    + `讓自己與 <b>${b}</b> 相應，愈修愈像菩薩：心地漸明、福慧增長、相好莊嚴。`;
+    + `願您朝著以下三項功課精進用功——以<b>教理</b>開智慧、以<b>福德</b>培福報、以<b>禪定</b>安身心，`
+    + `日日增上，讓自己與 <b>${b}</b> 相應，愈來愈像菩薩：心地漸明、福慧增長、相好莊嚴。`;
 }
 
 function showResult(rep,canvas){
@@ -602,27 +602,23 @@ function showResult(rep,canvas){
         ${traitHTML}
       </div>
 
-      <div class="bodhi">
-        <div class="bodhi-h">與 您 有 緣 的 菩 薩</div>
-        <div class="bodhi-name">${rep.bodhi.icon}　${rep.bodhi.name}</div>
-        <div class="bodhi-sym">${rep.bodhi.symbol}</div>
-        <div class="bodhi-tasks">
-          <div class="bt"><span class="btk">教　理</span><span class="btv">${rep.homework.jiao}</span></div>
-          <div class="bt"><span class="btk">福　德</span><span class="btv">${rep.homework.fude}</span></div>
-          <div class="bt"><span class="btk">禪　定</span><span class="btv">${rep.homework.chan}</span></div>
-        </div>
-        <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
-      </div>
-
       ${poemHTML}
       <div class="gate"><span class="gk">所應法門　</span>${s.gate}</div>
       <div class="verse"><span class="vt">善知識開示</span>${s.jie||s.msg||""}</div>
       ${aspectsHTML}
       ${srcHTML}
 
-      <div class="closing">
-        <div class="closing-h">✦　自 我 升 級 ・ 修 行 建 議　✦</div>
-        <div class="closing-t">${faceMsg}</div>
+      <div class="bodhi">
+        <div class="bodhi-h">與 您 有 緣 的 菩 薩 ・ 自 我 升 級</div>
+        <div class="bodhi-name">${rep.bodhi.icon}　${rep.bodhi.name}</div>
+        <div class="bodhi-sym">${rep.bodhi.symbol}</div>
+        <div class="bodhi-intro">${faceMsg}</div>
+        <div class="bodhi-tasks">
+          <div class="bt"><span class="btk">教　理</span><span class="btv">${rep.homework.jiao}</span></div>
+          <div class="bt"><span class="btk">福　德</span><span class="btv">${rep.homework.fude}</span></div>
+          <div class="bt"><span class="btk">禪　定</span><span class="btv">${rep.homework.chan}</span></div>
+        </div>
+        <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
       </div>
     </div>`;
   scene.classList.add("show");
