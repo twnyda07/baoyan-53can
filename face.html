@@ -156,6 +156,8 @@
   .bodhi-name{font-size:22px; font-weight:700; margin-top:8px; letter-spacing:.04em;
     background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 16px rgba(212,175,55,.3);}
   .bodhi-sym{color:var(--ink-soft); font-size:13px; margin-top:5px;}
+  .bodhi-intro{font-size:13.5px; line-height:1.9; color:var(--ink); text-align:left; margin-top:12px; padding:12px 2px 2px;}
+  .bodhi-intro b{color:var(--gold-light);}
   .bodhi-tasks{margin-top:12px; text-align:left;}
   .bodhi-tasks .bt{display:flex; gap:10px; font-size:13.5px; line-height:1.7; padding:7px 0; border-top:1px dashed rgba(212,175,55,.22);}
   .bodhi-tasks .btk{flex:0 0 74px; color:var(--gold-light); font-weight:700; letter-spacing:.05em;}
@@ -542,14 +544,10 @@ function imgPath(n){ return "images/"+String(n).padStart(2,"0")+".jpg"; }
 
 /* 面相寄語：依面相格局＋該善知識三圓圈法門即時生成（與抽籤頁籤詩/解曰不重覆） */
 function faceMessage(s, rep){
-  const focus = STOP_FOCUS[rep.maxStop] || "";
-  const tops = [["智慧",rep.wisdom],["事業",rep.career],["福德",rep.fortune]].sort((a,b)=>b[1]-a[1]);
-  const top = tops[0][0];
   const b = (rep.bodhi && rep.bodhi.name) || "諸佛菩薩";
-  return `觀您面相，${rep.maxStop}之氣最盛、${top}尤為突出。${focus}<br><br>`
-    + `相由心生、相隨心轉——面相並非命定，而能因修行而增勝。與您有緣的是<b>${b}</b>；`
-    + `願您依上方功課精進用功——以<b>教理</b>開智慧、以<b>福德</b>培福報、以<b>禪定</b>安身心。`
-    + `如是熏修日久，心地漸明、福慧漸增，相好自然莊嚴，願您愈修愈像 ${b} 一般，慈悲莊嚴、自在無礙。`;
+  return `相由心生、相隨心轉——面相並非命定，而能因修行而增勝。`
+    + `藉由以下三項功課精進用功——以<b>教理</b>開智慧、以<b>福德</b>培福報、以<b>禪定</b>安身心，`
+    + `讓自己與 <b>${b}</b> 相應，愈修愈像菩薩：心地漸明、福慧增長、相好莊嚴。`;
 }
 
 function showResult(rep,canvas){
@@ -601,6 +599,7 @@ function showResult(rep,canvas){
         <div class="bodhi-h">與 您 有 緣 的 菩 薩</div>
         <div class="bodhi-name">${rep.bodhi.icon}　${rep.bodhi.name}</div>
         <div class="bodhi-sym">${rep.bodhi.symbol}</div>
+        <div class="bodhi-intro">${faceMsg}</div>
         <div class="bodhi-tasks">
           <div class="bt"><span class="btk">教　理</span><span class="btv">${rep.homework.jiao}</span></div>
           <div class="bt"><span class="btk">福　德</span><span class="btv">${rep.homework.fude}</span></div>
@@ -608,8 +607,6 @@ function showResult(rep,canvas){
         </div>
         <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
       </div>
-
-      <div class="verse" style="margin-top:16px"><span class="vt">面相寄語</span>${faceMsg}</div>
 
       ${poemHTML}
       <div class="gate"><span class="gk">所應法門　</span>${s.gate}</div>
