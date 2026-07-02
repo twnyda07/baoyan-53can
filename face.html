@@ -542,13 +542,14 @@ function imgPath(n){ return "images/"+String(n).padStart(2,"0")+".jpg"; }
 
 /* 面相寄語：依面相格局＋該善知識三圓圈法門即時生成（與抽籤頁籤詩/解曰不重覆） */
 function faceMessage(s, rep){
-  const k = s.keys || [];
   const focus = STOP_FOCUS[rep.maxStop] || "";
   const tops = [["智慧",rep.wisdom],["事業",rep.career],["福德",rep.fortune]].sort((a,b)=>b[1]-a[1]);
   const top = tops[0][0];
-  const k0=k[0]||"", k1=k[1]||"", k2=k[2]||"";
+  const b = (rep.bodhi && rep.bodhi.name) || "諸佛菩薩";
   return `觀您面相，${rep.maxStop}之氣最盛、${top}尤為突出。${focus}<br><br>`
-    + `與您相應的「${s.name}」，以「${k0}、${k1}、${k2}」為其獨特法門。願您取法於此——以「${k0}」立基、以「${k1}」應事、以「${k2}」成願，則面相所主之福慧可期圓滿。`;
+    + `相由心生、相隨心轉——面相並非命定，而能因修行而增勝。與您有緣的是<b>${b}</b>；`
+    + `願您依上方功課精進用功——以<b>教理</b>開智慧、以<b>福德</b>培福報、以<b>禪定</b>安身心。`
+    + `如是熏修日久，心地漸明、福慧漸增，相好自然莊嚴，願您愈修愈像 ${b} 一般，慈悲莊嚴、自在無礙。`;
 }
 
 function showResult(rep,canvas){
