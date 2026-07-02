@@ -165,7 +165,8 @@
   .closing-h{color:var(--gold); font-size:12.5px; letter-spacing:.28em; margin-bottom:10px;}
   .closing-t{font-size:14px; line-height:2; color:var(--ink); text-align:left;}
   .closing-t b{color:var(--gold-light);}
-  .bodhi-tasks{margin-top:12px; text-align:left;}
+  .bodhi-sub{color:var(--gold-light); font-size:12px; letter-spacing:.3em; margin-top:14px; text-align:center; opacity:.92;}
+  .bodhi-tasks{margin-top:8px; text-align:left;}
   .bodhi-tasks .bt{display:flex; gap:10px; font-size:13.5px; line-height:1.7; padding:7px 0; border-top:1px dashed rgba(212,175,55,.22);}
   .bodhi-tasks .btk{flex:0 0 74px; color:var(--gold-light); font-weight:700; letter-spacing:.05em;}
   .bodhi-tasks .btv{flex:1; color:var(--ink);}
@@ -308,26 +309,26 @@ const BODHISATTVAS = [
 ];
 
 /* 功課池：每次隨機各抽一項，涵蓋教理／福德／禪定三類 */
-const JIAO_POOL = [   // 教理：聽法、到道場上課
-  "聽《華嚴經》開示、到道場上華嚴課",
-  "聽《楞嚴經》開示、到道場上楞嚴課",
-  "聽《金剛經》開示、到道場上金剛經課",
-  "到道場聽經聞法，深入三部經教理"
+const JIAO_POOL = [   // 教理：每日聞法 ＋ 每週到道場上課
+  "每日聽《華嚴經》開示 10～20 分鐘；每週到道場上一堂華嚴課",
+  "每日聽《楞嚴經》開示 10～20 分鐘；每週到道場上一堂楞嚴課",
+  "每日聽《金剛經》開示 10～20 分鐘；每週到道場上一堂金剛經課",
+  "每日聞法薰習 10～20 分鐘；每週到道場上課精進一次"
 ];
-const FUDE_POOL = [   // 福德：三布施 或 誦經持咒
-  "法布施——分享正法、助印經典流通",
-  "財布施——供養三寶、發心建設道場累積福報",
-  "無畏布施——護生放生、安慰陪伴苦難之人",
-  "每日誦《華嚴經》一卷（精進者三卷）",
-  "每日誦一部《金剛經》，或寫金剛經塔（抄經）",
-  "每日誦《楞嚴經》一卷",
-  "每日持楞嚴咒一遍或三遍",
-  "到道場出坡培福、護持道場"
+const FUDE_POOL = [   // 福德：每日誦持 或 每日一善布施
+  "每日持楞嚴咒 1 遍或 3 遍",
+  "每日誦《金剛經》1 部",
+  "每日誦《華嚴經》1 卷（精進者 3 卷）",
+  "每日誦《楞嚴經》1 卷",
+  "每日抄《金剛經》一段，積成金剛經塔",
+  "每日行法布施——分享一則正法、隨喜助印經典",
+  "每日行財布施——隨力供養三寶、發心護持建設道場",
+  "每日行無畏布施——護生放生、安慰陪伴需要的人"
 ];
-const CHAN_POOL = [   // 禪定：禪修（真實功課）
+const CHAN_POOL = [   // 禪定：每日禪修（真實功課）
   "每日靜坐禪修 15～30 分鐘",
-  "到道場上禪修課",
-  "發心參加禪七精進共修"
+  "每日靜坐禪修 15 分鐘；每週到道場上一堂禪修課",
+  "每日靜坐禪修 20 分鐘；並發心參加禪七精進共修"
 ];
 function pickOne(a){ return a[Math.floor(Math.random()*a.length)]; }
 
@@ -613,6 +614,7 @@ function showResult(rep,canvas){
         <div class="bodhi-name">${rep.bodhi.icon}　${rep.bodhi.name}</div>
         <div class="bodhi-sym">${rep.bodhi.symbol}</div>
         <div class="bodhi-intro">${faceMsg}</div>
+        <div class="bodhi-sub">每 日 功 課</div>
         <div class="bodhi-tasks">
           <div class="bt"><span class="btk">教　理</span><span class="btv">${rep.homework.jiao}</span></div>
           <div class="bt"><span class="btk">福　德</span><span class="btv">${rep.homework.fude}</span></div>
