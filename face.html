@@ -290,37 +290,37 @@ const STOP_FOCUS = {
 /* ============ 與您有緣的菩薩・祕密功課（依雲端「秘密任務」四獸牌卡發展）============ */
 const BODHISATTVAS = [
  {icon:"🦁", name:"文殊菩薩", symbol:"大智慧・明辨決斷（善知獅座騎）",
-  jiao:"聽《金剛經》般若開示、上智慧課",
+  jiao:"聽《金剛經》般若開示、到道場上智慧課",
   fude:"持文殊心咒「嗡 阿 喇 巴 札 那 諦」21 遍；行法布施——分享一則正法予有緣人",
   chan:"每日靜坐 15 分鐘，修「照見」觀照",
   reward:"智慧光加乘 ×2"},
  {icon:"🐘", name:"普賢菩薩", symbol:"大行實踐・十大願王（曉非象座騎）",
-  jiao:"聽《華嚴經》開示、上華嚴課",
+  jiao:"聽《華嚴經》開示、到道場上華嚴課",
   fude:"每日誦《華嚴經》一卷（精進者三卷）＋禮佛十拜；發心建設道場、出坡培福（財布施）",
   chan:"行禪、動中修定，出坡亦是禪",
   reward:"福報光加乘 ×2"},
  {icon:"🐉", name:"觀音菩薩", symbol:"大慈大悲・聞聲救苦（辨色龍座騎）",
-  jiao:"聽《心經》・《普門品》開示、上課",
+  jiao:"聽《心經》・《普門品》開示、到道場上課",
   fude:"持誦《心經》＋觀音聖號；行無畏布施——安慰陪伴、護生放生",
   chan:"慈心禪、返聞聞自性（耳根圓通）",
   reward:"慈悲福德光加乘 ×3"},
  {icon:"🐕", name:"地藏菩薩", symbol:"大願孝親・消業堅忍（諦聽犬座騎）",
-  jiao:"聽《地藏經》・《楞嚴經》開示、上課",
+  jiao:"聽《地藏經》・《楞嚴經》開示、到道場上課",
   fude:"每日誦《楞嚴經》一卷、持七佛滅罪真言 3 遍；孝親供養、財布施報恩",
   chan:"懺悔靜坐、觀業性本空",
   reward:"消業福報光加乘 ×2"},
  {icon:"✨", name:"大勢至菩薩", symbol:"念佛精進・都攝六根、淨念相繼",
-  jiao:"聽《楞嚴經・大勢至念佛圓通章》開示、上楞嚴課",
+  jiao:"聽《楞嚴經・大勢至念佛圓通章》開示、到道場上楞嚴課",
   fude:"每日持楞嚴咒一遍或三遍＋念佛聖號；精進共修、護持道場（法布施）",
   chan:"念佛禪，淨念相繼、專注一境",
   reward:"精進智光加乘 ×2"},
- {icon:"⚔️", name:"伽藍菩薩（關聖帝君）", symbol:"護法忠義・正直護持事業",
-  jiao:"聽《金剛經》開示、上般若課",
+ {icon:"⚔️", name:"伽藍菩薩", symbol:"護法忠義・正直護持事業",
+  jiao:"聽《金剛經》開示、到道場上般若課",
   fude:"每日誦一部《金剛經》＋寫金剛經塔；財布施護壇、發心建設道場累積福報",
   chan:"正念端坐，培養剛正浩然之氣",
   reward:"事業護持光加乘 ×2"},
  {icon:"🛡️", name:"韋馱菩薩", symbol:"護法除障・精進迅捷",
-  jiao:"聽《楞嚴經》開示、上楞嚴課",
+  jiao:"聽《楞嚴經》開示、到道場上楞嚴課",
   fude:"每日持楞嚴咒一遍或三遍＋誦《楞嚴經》一卷；出坡護壇、發心建設道場累積福報（財布施）",
   chan:"精進禪、早起用功不懈怠",
   reward:"除障精進光加乘 ×2"}
@@ -606,7 +606,7 @@ function showResult(rep,canvas){
         <div class="bodhi-tasks">
           <div class="bt"><span class="btk">教　理</span><span class="btv">${rep.bodhi.jiao}</span></div>
           <div class="bt"><span class="btk">福　德</span><span class="btv">${rep.bodhi.fude}</span></div>
-          <div class="bt"><span class="btk">禪　定</span><span class="btv">${rep.bodhi.chan}</span></div>
+          <div class="bt"><span class="btk">禪　定</span><span class="btv">${rep.bodhi.chan}；並發心參加禪七精進共修</span></div>
         </div>
         <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
       </div>
