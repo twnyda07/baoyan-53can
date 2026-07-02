@@ -148,6 +148,21 @@
   .source .yt{display:inline-block; width:20px; height:14px; background:#c00; border-radius:4px; position:relative;}
   .source .yt::after{content:""; position:absolute; top:3px; left:7px; border-left:7px solid #fff; border-top:4px solid transparent; border-bottom:4px solid transparent;}
 
+  /* 與您有緣的菩薩・祕密功課 */
+  .bodhi{margin:18px auto 0; max-width:400px; padding:16px 16px 14px; text-align:center;
+    background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(8,12,30,.5));
+    border:1.5px solid var(--gold); border-radius:14px; box-shadow:inset 0 0 22px rgba(212,175,55,.12), 0 0 16px rgba(212,175,55,.18);}
+  .bodhi-h{color:var(--gold); font-size:12.5px; letter-spacing:.3em; opacity:.9;}
+  .bodhi-name{font-size:22px; font-weight:700; margin-top:8px; letter-spacing:.04em;
+    background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 16px rgba(212,175,55,.3);}
+  .bodhi-sym{color:var(--ink-soft); font-size:13px; margin-top:5px;}
+  .bodhi-tasks{margin-top:12px; text-align:left;}
+  .bodhi-tasks .bt{display:flex; gap:10px; font-size:13.5px; line-height:1.7; padding:7px 0; border-top:1px dashed rgba(212,175,55,.22);}
+  .bodhi-tasks .btk{flex:0 0 74px; color:var(--gold-light); font-weight:700; letter-spacing:.05em;}
+  .bodhi-tasks .btv{flex:1; color:var(--ink);}
+  .bodhi-reward{margin-top:12px; color:#2a1d02; font-weight:700; font-size:13.5px; letter-spacing:.12em;
+    background:linear-gradient(180deg,#e8c84e,#b8901f); border:1px solid var(--gold); border-radius:20px; padding:6px 16px; display:inline-block;}
+
   .aspects{margin-top:13px; display:grid; grid-template-columns:1fr 1fr; gap:9px; text-align:left;}
   .aspects .a{background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.2); border-radius:9px; padding:10px 11px;}
   .aspects .a .t{display:flex; align-items:center; gap:6px; color:var(--gold-light); font-weight:700; font-size:13.5px; margin-bottom:4px; letter-spacing:.08em;}
@@ -271,6 +286,55 @@ const STOP_FOCUS = {
   中停:"你的格局偏重「事業與行動」——魄力與人際是你的本錢，宜在能發揮領導與開創之處一展長才。",
   下停:"你的格局偏重「福德與守成」——以厚德與包容聚人聚財，晚運尤佳，宜廣積善緣、穩中求進。"
 };
+
+/* ============ 與您有緣的菩薩・祕密功課（依雲端「秘密任務」四獸牌卡發展）============ */
+const BODHISATTVAS = [
+ {icon:"🦁", name:"文殊菩薩", symbol:"大智慧・明辨決斷（善知獅座騎）",
+  jiao:"聽《金剛經》般若開示、上智慧課",
+  fude:"持文殊心咒「嗡 阿 喇 巴 札 那 諦」21 遍；行法布施——分享一則正法予有緣人",
+  chan:"每日靜坐 15 分鐘，修「照見」觀照",
+  reward:"智慧光加乘 ×2"},
+ {icon:"🐘", name:"普賢菩薩", symbol:"大行實踐・十大願王（曉非象座騎）",
+  jiao:"聽《華嚴經》開示、上華嚴課",
+  fude:"每日誦《華嚴經》一卷（精進者三卷）＋禮佛十拜；發心建設道場、出坡培福（財布施）",
+  chan:"行禪、動中修定，出坡亦是禪",
+  reward:"福報光加乘 ×2"},
+ {icon:"🐉", name:"觀音菩薩", symbol:"大慈大悲・聞聲救苦（辨色龍座騎）",
+  jiao:"聽《心經》・《普門品》開示、上課",
+  fude:"持誦《心經》＋觀音聖號；行無畏布施——安慰陪伴、護生放生",
+  chan:"慈心禪、返聞聞自性（耳根圓通）",
+  reward:"慈悲福德光加乘 ×3"},
+ {icon:"🐕", name:"地藏菩薩", symbol:"大願孝親・消業堅忍（諦聽犬座騎）",
+  jiao:"聽《地藏經》・《楞嚴經》開示、上課",
+  fude:"每日誦《楞嚴經》一卷、持七佛滅罪真言 3 遍；孝親供養、財布施報恩",
+  chan:"懺悔靜坐、觀業性本空",
+  reward:"消業福報光加乘 ×2"},
+ {icon:"✨", name:"大勢至菩薩", symbol:"念佛精進・都攝六根、淨念相繼",
+  jiao:"聽《楞嚴經・大勢至念佛圓通章》開示、上楞嚴課",
+  fude:"每日持楞嚴咒一遍或三遍＋念佛聖號；精進共修、護持道場（法布施）",
+  chan:"念佛禪，淨念相繼、專注一境",
+  reward:"精進智光加乘 ×2"},
+ {icon:"⚔️", name:"伽藍菩薩（關聖帝君）", symbol:"護法忠義・正直護持事業",
+  jiao:"聽《金剛經》開示、上般若課",
+  fude:"每日誦一部《金剛經》＋寫金剛經塔；財布施護壇、發心建設道場累積福報",
+  chan:"正念端坐，培養剛正浩然之氣",
+  reward:"事業護持光加乘 ×2"},
+ {icon:"🛡️", name:"韋馱菩薩", symbol:"護法除障・精進迅捷",
+  jiao:"聽《楞嚴經》開示、上楞嚴課",
+  fude:"每日持楞嚴咒一遍或三遍＋誦《楞嚴經》一卷；出坡護壇、發心建設道場累積福報（財布施）",
+  chan:"精進禪、早起用功不懈怠",
+  reward:"除障精進光加乘 ×2"}
+];
+
+/* 菩薩以洗牌袋隨機配對：7 位每輪各出現一次才重洗（隨機且皆會出現） */
+let _bbag=[];
+function nextBodhi(){
+  if(_bbag.length===0){
+    _bbag=BODHISATTVAS.slice();
+    for(let i=_bbag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); const t=_bbag[i]; _bbag[i]=_bbag[j]; _bbag[j]=t;}
+  }
+  return _bbag.pop();
+}
 
 /* ============ DOM ============ */
 const viewer=document.getElementById("viewer");
@@ -451,7 +515,8 @@ function buildReport(f){
   for(let i=0;i<3;i++){ if(i!==lead) sc[i]=others[pi++]; }
   const wisdom=sc[0], career=sc[1], fortune=sc[2];
   const sign=nextSign();
-  return {lv,maxStop,wisdom,career,fortune,sign};
+  const bodhi=nextBodhi();   // 與您有緣的菩薩（隨機）
+  return {lv,maxStop,wisdom,career,fortune,sign,bodhi};
 }
 
 /* ============ 觀照流程 ============ */
@@ -532,6 +597,18 @@ function showResult(rep,canvas){
       <div class="section">
         <h3>面　相　觀　照</h3>
         ${traitHTML}
+      </div>
+
+      <div class="bodhi">
+        <div class="bodhi-h">與 您 有 緣 的 菩 薩</div>
+        <div class="bodhi-name">${rep.bodhi.icon}　${rep.bodhi.name}</div>
+        <div class="bodhi-sym">${rep.bodhi.symbol}</div>
+        <div class="bodhi-tasks">
+          <div class="bt"><span class="btk">教　理</span><span class="btv">${rep.bodhi.jiao}</span></div>
+          <div class="bt"><span class="btk">福　德</span><span class="btv">${rep.bodhi.fude}</span></div>
+          <div class="bt"><span class="btk">禪　定</span><span class="btv">${rep.bodhi.chan}</span></div>
+        </div>
+        <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
       </div>
 
       <div class="verse" style="margin-top:16px"><span class="vt">面相寄語</span>${faceMsg}</div>
