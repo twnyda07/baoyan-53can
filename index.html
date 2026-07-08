@@ -109,6 +109,14 @@
   .jie{margin-top:14px; background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.22); border-radius:10px; padding:13px 16px; font-size:15px; line-height:1.95; color:var(--ink);}
   .jie .vt{color:var(--gold); font-weight:700; letter-spacing:.22em; font-size:13.5px; display:block; margin-bottom:5px;}
 
+  .story{margin-top:14px; background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.22); border-radius:10px; padding:14px 16px; text-align:left;}
+  .story-h{color:var(--gold); font-weight:700; letter-spacing:.22em; font-size:13.5px; margin-bottom:6px;}
+  .story-c{font-size:14.5px; line-height:1.9; color:var(--ink); margin-bottom:12px;}
+  .story-h2{color:var(--gold-light); font-weight:700; letter-spacing:.14em; font-size:12.5px; margin:6px 0 8px; padding-top:10px; border-top:1px dashed rgba(212,175,55,.25);}
+  .oc{display:flex; gap:10px; font-size:13.5px; line-height:1.75; padding:4px 0;}
+  .oc .ock{flex:0 0 44px; color:var(--gold-light); font-weight:700; letter-spacing:.05em;}
+  .oc .ocv{flex:1; color:var(--ink);}
+
   .aspects{margin-top:13px; display:grid; grid-template-columns:1fr 1fr; gap:9px; text-align:left;}
   .aspects .a{background:rgba(8,12,30,.5); border:1px solid rgba(212,175,55,.2); border-radius:9px; padding:10px 11px;}
   .aspects .a .t{display:flex; align-items:center; gap:6px; color:var(--gold-light); font-weight:700; font-size:13.5px; margin-bottom:4px; letter-spacing:.08em;}
@@ -230,6 +238,14 @@ function showPanel(s){
     <div class="keys">${s.keys.map(k=>`<span class="k">${k}</span>`).join("")}</div>
     <div class="poem"><div>${s.poem[0]}</div><div>${s.poem[1]}</div></div>
     <div class="jie"><span class="vt">解　曰</span>${s.jie}</div>
+    ${s.challenge?`<div class="story">
+      <div class="story-h">善財的考驗</div>
+      <div class="story-c">${s.challenge}</div>
+      <div class="story-h2">超越之道 ・ 教理／福德／禪定</div>
+      <div class="oc"><span class="ock">教　理</span><span class="ocv">${s.overcome.jiao}</span></div>
+      <div class="oc"><span class="ock">福　德</span><span class="ocv">${s.overcome.fude}</span></div>
+      <div class="oc"><span class="ock">禪　定</span><span class="ocv">${s.overcome.chan}</span></div>
+    </div>`:""}
     <div class="aspects">
       <div class="a"><div class="t"><i>💼</i>事業工作</div><div class="c">${s.career}</div></div>
       <div class="a"><div class="t"><i>💗</i>感情姻緣</div><div class="c">${s.love}</div></div>
