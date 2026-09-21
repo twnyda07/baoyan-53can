@@ -145,14 +145,23 @@ let DATA=[], PW="";
 function say(el,t,c){ el.textContent=t; el.className="msg "+(c||""); }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m])); }
 
+/* Apps Script 的轉址偶爾會讓 fetch 失敗（跨網域），所以重試最多 3 次；
+   讀名單是唯讀動作，重試不會有副作用。 */
 async function fetchList(pw){
-  const res = await fetch(MAIL_API, {
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body: JSON.stringify({action:"list", pw:pw}),
-    redirect:"follow"
-  });
-  return JSON.parse(await res.text());
+  let lastErr=null;
+  for(let i=0;i<3;i++){
+    if(i) await new Promise(r=>setTimeout(r, 900*i));
+    try{
+      const res = await fetch(MAIL_API, {
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify({action:"list", pw:pw}),
+        redirect:"follow"
+      });
+      return JSON.parse(await res.text());
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr;
 }
 
 async function enter(){

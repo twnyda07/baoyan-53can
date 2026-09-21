@@ -58,28 +58,37 @@ const BaoyanMail = (function(){
   function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
 
   /* 送出：payload 只帶「編號」不帶文案，信件內容由伺服器端依同一份資料重建，
-     避免此公開端點被拿來夾帶任意內容寄信。 */
+     避免此公開端點被拿來夾帶任意內容寄信。
+     payload 另帶一個 rid（本次送出的識別碼）：Apps Script 的轉址偶爾會讓 fetch 失敗，
+     我們會重試，而後端看到同一個 rid 就不會重複寄信。 */
   async function post(payload){
     const body = JSON.stringify(payload);
-    try{
-      const res = await fetch(MAIL_API, {
-        method:"POST",
-        headers:{"Content-Type":"text/plain;charset=utf-8"},  // 用 text/plain 避免 CORS preflight
-        body: body,
-        redirect:"follow"
-      });
-      const txt = await res.text();
-      try{ return JSON.parse(txt); }catch(_){ return {ok:false, msg:"回應格式有誤，請稍後再試。"}; }
-    }catch(e){
-      // 少數瀏覽器（App 內建瀏覽器）讀不到跨網域回應 → 改用 no-cors 補送一次
+    let lastErr = null;
+    for(let i=0; i<3; i++){
+      if(i) await new Promise(r=>setTimeout(r, 900*i));
       try{
-        await fetch(MAIL_API, {method:"POST", mode:"no-cors",
-          headers:{"Content-Type":"text/plain;charset=utf-8"}, body: body});
-        return {ok:true, blind:true};
-      }catch(e2){
-        return {ok:false, msg:"連線失敗，請確認網路後再試一次。"};
-      }
+        const res = await fetch(MAIL_API, {
+          method:"POST",
+          headers:{"Content-Type":"text/plain;charset=utf-8"},  // 用 text/plain 避免 CORS preflight
+          body: body,
+          redirect:"follow"
+        });
+        const txt = await res.text();
+        try{ return JSON.parse(txt); }catch(_){ return {ok:false, msg:"回應格式有誤，請稍後再試。"}; }
+      }catch(e){ lastErr = e; }
     }
+    // 三次都讀不到回應（例如 App 內建瀏覽器擋跨網域）→ no-cors 盲送；同 rid 不會重複寄
+    try{
+      await fetch(MAIL_API, {method:"POST", mode:"no-cors",
+        headers:{"Content-Type":"text/plain;charset=utf-8"}, body: body});
+      return {ok:true, blind:true};
+    }catch(e2){
+      return {ok:false, msg:"連線失敗，請確認網路後再試一次。"};
+    }
+  }
+
+  function newRid(){
+    return "r" + Date.now().toString(36) + Math.random().toString(36).slice(2,10);
   }
 
   /* 在 container 內加上寄送區塊。
@@ -118,7 +127,8 @@ const BaoyanMail = (function(){
 
       btn.disabled = true; const label = btn.textContent; btn.textContent = "寄 送 中 …";
       say("正在為您寄出…","");
-      const data = Object.assign({}, payload, {name:name, email:email, page:location.href});
+      if(!box.dataset.rid) box.dataset.rid = newRid();   // 同一次送出重試共用，避免重複寄信
+      const data = Object.assign({}, payload, {name:name, email:email, page:location.href, rid:box.dataset.rid});
       const res = await post(data);
       if(res && res.ok){
         saveContact(name, email);

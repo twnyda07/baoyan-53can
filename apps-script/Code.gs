@@ -43,6 +43,14 @@ function doPost(e) {
 
     const req = validate_(p);
 
+    /* 同一次送出的重試不會重複寄信：前端帶 rid，10 分鐘內同 rid 直接視為已完成。
+       （Apps Script 的轉址偶爾會讓瀏覽器 fetch 失敗，前端因此會重試） */
+    const rid = String(p.rid || "").replace(/[^\w\-]/g, "").slice(0, 64);
+    const cache = CacheService.getScriptCache();
+    if (rid && cache.get("rid:" + rid)) {
+      return json_({ ok: true, dup: true });
+    }
+
     const lock = LockService.getScriptLock();
     lock.waitLock(20000);
     try {
@@ -61,6 +69,7 @@ function doPost(e) {
       });
       bumpQuota_(req.email);
       log_(req, "已寄出");
+      if (rid) cache.put("rid:" + rid, "1", 600);
     } finally {
       lock.releaseLock();
     }
