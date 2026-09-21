@@ -15,7 +15,10 @@ const CFG = {
   SS_NAME:     "善財五十三參．寄送名單",
   SHEET_NAME:  "寄送紀錄",
   MAX_PER_EMAIL_PER_DAY: 5,           // 同一信箱每日最多寄幾封（防濫用）
-  MAX_TOTAL_PER_DAY:     400          // 全站每日上限（Workspace 每日配額 1500）
+  MAX_TOTAL_PER_DAY:     400,         // 全站每日上限（Workspace 每日配額 1500）
+  ADMIN_PW:    "baoyan2026",          // 工作人員後台共同密碼（可用指令碼屬性 adminPassword 覆蓋）
+  ADMIN_MAX_FAIL_PER_DAY: 25,         // 密碼輸錯上限，超過當日鎖住後台
+  ADMIN_MAX_ROWS: 3000                // 後台一次最多回傳幾列
 };
 
 const HEAD = ["時間","姓名","Email","類型","第幾參","善知識","有緣菩薩","三分數(智/業/福)","來源頁","狀態"];
@@ -32,6 +35,12 @@ function doPost(e) {
   let out;
   try {
     const p = JSON.parse((e && e.postData && e.postData.contents) || "{}");
+
+    // 工作人員後台：讀名單（密碼在後端驗，密碼不對什麼都拿不到）
+    if (p.action === "list") {
+      return json_(listForAdmin_(p.pw));
+    }
+
     const req = validate_(p);
 
     const lock = LockService.getScriptLock();
@@ -59,8 +68,59 @@ function doPost(e) {
   } catch (err) {
     out = { ok: false, msg: String((err && err.message) || err) };
   }
-  return ContentService.createTextOutput(JSON.stringify(out))
+  return json_(out);
+}
+
+function json_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o))
                        .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ============ 工作人員後台（list.html）============ */
+
+function adminPw_() {
+  return PropertiesService.getScriptProperties().getProperty("adminPassword") || CFG.ADMIN_PW;
+}
+
+/* 換後台密碼：在編輯器把下面這行的密碼改掉後執行本函式即可（不必重新部署） */
+function setAdminPassword() {
+  PropertiesService.getScriptProperties().setProperty("adminPassword", "baoyan2026");
+  Logger.log("後台密碼已更新。");
+}
+
+function listForAdmin_(pw) {
+  const props = PropertiesService.getScriptProperties();
+  const failKey = "pwfail:" + today_();
+  const fails = Number(props.getProperty(failKey) || 0);
+  if (fails >= CFG.ADMIN_MAX_FAIL_PER_DAY) {
+    return { ok: false, msg: "今日密碼錯誤次數過多，後台已暫時鎖住，請明日再試。" };
+  }
+  if (String(pw || "") !== adminPw_()) {
+    props.setProperty(failKey, String(fails + 1));
+    Utilities.sleep(1200);   // 拖慢暴力嘗試
+    return { ok: false, msg: "密碼不正確。" };
+  }
+
+  const sh = sheet_();
+  const last = sh.getLastRow();
+  if (last < 2) return { ok: true, rows: [], head: HEAD, total: 0 };
+
+  const n = Math.min(last - 1, CFG.ADMIN_MAX_ROWS);
+  const start = last - n + 1;                       // 只取最後 N 列
+  const vals = sh.getRange(start, 1, n, HEAD.length).getValues();
+  const tz = "Asia/Taipei";
+  const rows = vals.map(function (r) {
+    return [
+      (r[0] && typeof r[0].getTime === "function")
+        ? Utilities.formatDate(r[0], tz, "yyyy-MM-dd HH:mm") : String(r[0] || ""),
+      String(r[1] || ""), String(r[2] || ""), String(r[3] || ""),
+      String(r[4] || ""), String(r[5] || ""), String(r[6] || ""),
+      String(r[7] || ""), String(r[8] || ""), String(r[9] || "")
+    ];
+  }).reverse();                                     // 新的排前面
+
+  return { ok: true, head: HEAD, rows: rows, total: last - 1, shown: rows.length,
+           sheetUrl: sh.getParent().getUrl(), today: today_() };
 }
 
 /* ============ 驗證（只接受編號，超出範圍一律擋掉）============ */
