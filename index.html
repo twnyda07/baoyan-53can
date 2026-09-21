@@ -178,6 +178,7 @@
 </div>
 
 <script src="signs.js"></script>
+<script src="mailer.js"></script>
 <script>
 function luckClass(l){
   if(l.indexOf("上上")>=0||l.indexOf("大吉")>=0) return "lv3";
@@ -257,6 +258,7 @@ function showPanel(s){
       <div class="a"><div class="t"><i>🎯</i>謀望求事</div><div class="c">${s.plan}</div></div>
     </div>
     <div class="source"><a href="${src.url}" target="_blank" rel="noopener"><span class="yt"></span>聆聽出處 · ${src.label}</a></div>`;
+  BaoyanMail.mount(panel, {mode:"draw", n:s.n});
   panel.classList.add("show");
   panel.scrollIntoView({behavior:"smooth", block:"nearest"});
 }

@@ -264,86 +264,18 @@
 </div>
 
 <script src="signs.js"></script>
+<script src="face-data.js"></script>
+<script src="mailer.js"></script>
 <script>
-/* ============ 面相文案庫 ============ */
-const READINGS = {
-  上停:{
-    high:"上停（天庭）開闊明亮，主智慧通達、思慮高遠，少年運佳、得長上提攜。",
-    mid:"上停（天庭）平正勻稱，心思細密、學習力強，凡事三思而後行。",
-    low:"上停（天庭）內斂含蓄，沉潛務實、不尚空談，宜多向智者請益以開新局。"
-  },
-  中停:{
-    high:"中停（眉眼鼻顴）飽滿有神，主魄力與行動力強、事業心旺，中年得勢、人緣廣聚。",
-    mid:"中停氣象端正，待人誠懇、進退有節，是能受人信賴的中流砥柱。",
-    low:"中停柔和謙退，性情溫厚不爭，宜主動把握良機、勿過於退讓。"
-  },
-  下停:{
-    high:"下停（口頷地閣）方圓豐隆，主福德深厚、晚運綿長，心寬能容、晚景安樂。",
-    mid:"下停勻稱有肉，重情重義、持家有道，福報隨善行而日增。",
-    low:"下停清秀俐落，律己甚嚴、做事乾淨，宜多寬待自己與他人以養福。"
-  },
-  氣色:{
-    high:"氣色紅潤光潔，精神煥發，近期運勢上揚、貴人在側。",
-    mid:"氣色溫潤平和，身心安泰，宜守成積德、靜待時機。",
-    low:"氣色沉靜內斂，宜調養作息、舒展心神，運勢將漸入佳境。"
-  },
-  神采:{
-    high:"五官輪廓分明、神采奕奕，眼神專注有定見，氣場出眾、令人印象深刻。",
-    mid:"五官清朗、神情安定，溫和而不失主見，是可深交之相。",
-    low:"神情柔和含蓄，內斂沉穩、深藏不露，真才實學待時而顯。"
-  },
-  端正:{
-    high:"面相端正勻稱、左右調和，主性情中正、處事公允，一生少是非。",
-    mid:"五官協調自然，剛柔並濟，能在原則與圓融之間取得平衡。",
-    low:"面相個性鮮明、別具神韻，主才情獨具、不隨流俗，宜善用個人特質。"
-  }
-};
-const STOP_FOCUS = {
-  上停:"你的格局偏重「智慧與謀略」——以思考與遠見取勝，宜走需要學識、規劃、創意之路。",
-  中停:"你的格局偏重「事業與行動」——魄力與人際是你的本錢，宜在能發揮領導與開創之處一展長才。",
-  下停:"你的格局偏重「福德與守成」——以厚德與包容聚人聚財，晚運尤佳，宜廣積善緣、穩中求進。"
-};
-
-/* ============ 與您有緣的菩薩・祕密功課（依雲端「秘密任務」四獸牌卡發展）============ */
-const BODHISATTVAS = [
- {icon:"🦁", name:"文殊菩薩", symbol:"大智慧・明辨決斷（善知獅座騎）", reward:"智慧光加乘 ×2"},
- {icon:"🐘", name:"普賢菩薩", symbol:"大行實踐・十大願王（曉非象座騎）", reward:"福報光加乘 ×2"},
- {icon:"🐉", name:"觀音菩薩", symbol:"大慈大悲・聞聲救苦（辨色龍座騎）", reward:"慈悲福德光加乘 ×3"},
- {icon:"🐕", name:"地藏菩薩", symbol:"大願孝親・消業堅忍（諦聽犬座騎）", reward:"消業福報光加乘 ×2"},
- {icon:"✨", name:"大勢至菩薩", symbol:"念佛精進・都攝六根、淨念相繼", reward:"精進智光加乘 ×2"},
- {icon:"⚔️", name:"伽藍菩薩", symbol:"護法忠義・正直護持事業", reward:"事業護持光加乘 ×2"},
- {icon:"🛡️", name:"韋馱菩薩", symbol:"護法除障・精進迅捷", reward:"除障精進光加乘 ×2"}
-];
-
-/* 功課池：每次隨機各抽一項，涵蓋教理／福德／禪定三類 */
-const JIAO_POOL = [   // 教理：每日聞法 ＋ 每週到道場上課
-  "每日聽《華嚴經》開示 10～20 分鐘；每週到道場上一堂華嚴課",
-  "每日聽《楞嚴經》開示 10～20 分鐘；每週到道場上一堂楞嚴課",
-  "每日聽《金剛經》開示 10～20 分鐘；每週到道場上一堂金剛經課",
-  "每日聞法薰習 10～20 分鐘；每週到道場上課精進一次"
-];
-const FUDE_POOL = [   // 福德：每日誦持 或 每日一善布施
-  "每日持楞嚴咒 1 遍或 3 遍",
-  "每日誦《金剛經》1 部",
-  "每日誦《華嚴經》1 卷（精進者 3 卷）",
-  "每日誦《楞嚴經》1 卷",
-  "每日抄《金剛經》一段，積成金剛經塔",
-  "每日行法布施——分享一則正法、隨喜助印經典",
-  "每日行財布施——隨力供養三寶、發心護持建設道場",
-  "每日行無畏布施——護生放生、安慰陪伴需要的人"
-];
-const CHAN_POOL = [   // 禪定：每日禪修（真實功課）
-  "每日靜坐禪修 15～30 分鐘",
-  "每日靜坐禪修 15 分鐘；每週到道場上一堂禪修課",
-  "每日靜坐禪修 20 分鐘；並發心參加禪七精進共修"
-];
-function pickOne(a){ return a[Math.floor(Math.random()*a.length)]; }
+/* 面相文案庫、有緣菩薩、三功課池已移到共用的 face-data.js
+   （抽籤頁寄信與 Apps Script 信件內容共用同一份文案，避免兩處不一致）*/
+function pickIdx(a){ return Math.floor(Math.random()*a.length); }
 
 /* 菩薩以洗牌袋隨機配對：7 位每輪各出現一次才重洗（隨機且皆會出現） */
 let _bbag=[];
-function nextBodhi(){
+function nextBodhiIdx(){
   if(_bbag.length===0){
-    _bbag=BODHISATTVAS.slice();
+    _bbag=BODHISATTVAS.map((_,i)=>i);
     for(let i=_bbag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); const t=_bbag[i]; _bbag[i]=_bbag[j]; _bbag[j]=t;}
   }
   return _bbag.pop();
@@ -528,9 +460,11 @@ function buildReport(f){
   for(let i=0;i<3;i++){ if(i!==lead) sc[i]=others[pi++]; }
   const wisdom=sc[0], career=sc[1], fortune=sc[2];
   const sign=nextSign();
-  const bodhi=nextBodhi();   // 與您有緣的菩薩（隨機）
-  const homework={ jiao:pickOne(JIAO_POOL), fude:pickOne(FUDE_POOL), chan:pickOne(CHAN_POOL) };  // 功課隨機（教理/福德/禪定）
-  return {lv,maxStop,wisdom,career,fortune,sign,bodhi,homework};
+  const bodhiIdx=nextBodhiIdx();   // 與您有緣的菩薩（隨機）
+  const hw=[pickIdx(JIAO_POOL), pickIdx(FUDE_POOL), pickIdx(CHAN_POOL)];  // 功課隨機（教理/福德/禪定）
+  return {lv,maxStop,wisdom,career,fortune,sign,bodhiIdx,hw,
+          bodhi:BODHISATTVAS[bodhiIdx],
+          homework:{jiao:JIAO_POOL[hw[0]], fude:FUDE_POOL[hw[1]], chan:CHAN_POOL[hw[2]]}};
 }
 
 /* ============ 觀照流程 ============ */
@@ -557,18 +491,12 @@ function read(){
 function bar(level){ return `<span class="bar"><i style="width:${pct(level)}%"></i></span>`; }
 function imgPath(n){ return "images/"+String(n).padStart(2,"0")+".jpg"; }
 
-/* 面相寄語：依面相格局＋該善知識三圓圈法門即時生成（與抽籤頁籤詩/解曰不重覆） */
-function faceMessage(s, rep){
-  const b = (rep.bodhi && rep.bodhi.name) || "諸佛菩薩";
-  return `相由心生、相隨心轉——面相並非命定，而能因修行而增勝。`
-    + `願您朝著以下三項功課精進用功——以<b>教理</b>開智慧、以<b>福德</b>培福報、以<b>禪定</b>安身心，`
-    + `日日增上，讓自己與 <b>${b}</b> 相應，愈來愈像菩薩：心地漸明、福慧增長、相好莊嚴。`;
-}
+/* 面相寄語（faceMessage）在共用的 face-data.js，信件與網頁用同一段文字 */
 
 function showResult(rep,canvas){
   const s=rep.sign;
   const faceURL=canvas.toDataURL("image/jpeg",0.8);
-  const traits=["上停","中停","下停","氣色","神采","端正"];
+  const traits=TRAIT_KEYS;
   const traitHTML=traits.map(k=>{
     const lv=rep.lv[k];
     return `<div class="trait"><span class="t-k">${k}</span><span class="t-v">${READINGS[k][lv]}</span>${bar(lv)}</div>`;
@@ -577,7 +505,7 @@ function showResult(rep,canvas){
   const src = (typeof sourceLink==="function") ? sourceLink(s) : null;
   const srcHTML = src ? `<div class="source"><a href="${src.url}" target="_blank" rel="noopener"><span class="yt"></span>聆聽出處 · ${src.label}</a></div>` : "";
   const poemHTML = s.poem ? `<div class="poem"><div>${s.poem[0]}</div><div>${s.poem[1]}</div></div>` : "";
-  const faceMsg = faceMessage(s, rep);
+  const faceMsg = faceMessage(rep.bodhi.name);
   const aspectsHTML = `
       <div class="aspects">
         <div class="a"><div class="t"><i>💼</i>事業工作</div><div class="c">${s.career}</div></div>
@@ -638,6 +566,12 @@ function showResult(rep,canvas){
         <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
       </div>
     </div>`;
+  /* 寄一份到我的信箱（只送編號，信件內容由伺服器依同一份資料重建；照片不上傳） */
+  BaoyanMail.mount(scene.querySelector(".card"), {
+    mode:"face", n:s.n,
+    face:{ lv:rep.lv, scores:[rep.wisdom,rep.career,rep.fortune],
+           maxStop:rep.maxStop, bodhi:rep.bodhiIdx, hw:rep.hw }
+  });
   scene.classList.add("show");
   scene.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
