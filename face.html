@@ -42,6 +42,25 @@
     box-shadow:0 0 14px rgba(212,175,55,.22); transition:background .15s, transform .15s;}
   .back-link:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
 
+  /* 三關串連：下一關 */
+  .nextgate{margin-top:22px; padding:20px 18px 22px; border-radius:12px; text-align:center;
+    background:linear-gradient(180deg, rgba(43,112,112,.16), rgba(8,12,30,.55));
+    border:1.5px solid rgba(120,190,185,.42); box-shadow:inset 0 0 26px rgba(43,112,112,.16);}
+  .nextgate .ng-k{font-size:12px; letter-spacing:.34em; text-indent:.34em; color:#8fd0c9;}
+  .nextgate .ng-t{font-size:19px; font-weight:700; letter-spacing:.14em; color:#eaf6f4; margin-top:8px;}
+  .nextgate .ng-x{font-size:14px; line-height:1.9; color:var(--ink-soft); margin-top:9px;
+    max-width:330px; margin-left:auto; margin-right:auto;}
+  .nextgate .ng-x b{color:#bfe6e0;}
+  .nextgate .ng-b{display:inline-block; margin-top:15px; text-decoration:none; font-weight:700;
+    font-size:15.5px; letter-spacing:.2em; text-indent:.2em; padding:12px 28px; border-radius:30px;
+    color:#06201e; background:linear-gradient(180deg,#bfe6e0,#79bdb5 60%,#4e968e);
+    border:1.5px solid #d6f2ee; box-shadow:0 6px 18px rgba(0,0,0,.4);
+    transition:transform .15s;}
+  .nextgate .ng-b:hover{transform:translateY(-2px);}
+  .nextgate .ng-h{display:block; margin-top:13px; font-size:12.5px; letter-spacing:.1em;
+    color:var(--ink-soft); text-decoration:none; opacity:.85;}
+  .nextgate .ng-h:hover{opacity:1; color:var(--gold-light);}
+
   /* 觀照台 */
   .viewer{
     position:relative; width:300px; height:360px; margin:26px auto 6px; max-width:80vw;
@@ -209,6 +228,7 @@
       請以鏡頭觀照或上傳照片，依面相三停五官之氣象，<br>與一位善知識相應，得其法門指引。
     </p>
     <a class="back-link" href="index.html">↩ 返回「抽籤」· 善知識卡</a>
+    <a class="back-link" href="fahui.html" style="margin-left:8px;">❖ 楞嚴三關觀照</a>
   </header>
 
   <div class="viewer" id="viewer">
@@ -572,9 +592,22 @@ function showResult(rep,canvas){
     face:{ lv:rep.lv, scores:[rep.wisdom,rep.career,rep.fortune],
            maxStop:rep.maxStop, bodhi:rep.bodhiIdx, hw:rep.hw }
   });
+  /* 三關串連：關一（面相）→ 關二（掌紋．二十五圓通）。接在寄信區之後。 */
+  scene.querySelector(".card").insertAdjacentHTML("beforeend", NEXT_GATE_HTML);
   scene.classList.add("show");
   scene.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
+
+/* 楞嚴三關觀照 · 第二關入口 */
+const NEXT_GATE_HTML = `
+  <div class="nextgate">
+    <div class="ng-k">楞 嚴 三 關 觀 照 ・ 第 二 關</div>
+    <div class="ng-t">掌紋觀照 ・ 二十五圓通</div>
+    <div class="ng-x">善財童子參的是五十三位善知識，楞嚴會上是二十五位聖者——
+      <b>每一位入道的那一道門都不一樣</b>。<br>攤開慣用手，於二十五門中請出一門。</div>
+    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/" target="_blank" rel="noopener">進第二關 →</a>
+    <a class="ng-h" href="fahui.html">／　回三關入口 · 看完整三關</a>
+  </div>`;
 
 camBtn.addEventListener("click",openCam);
 readBtn.addEventListener("click",read);

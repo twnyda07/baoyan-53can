@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三關 · 楞嚴修法：反聞聞自性 — 寶嚴禪寺</title>
+<meta name="description" content="楞嚴三關觀照第三關：耳根圓通．反聞聞自性。三分鐘引導聞性練習、文殊菩薩揀選偈、日用功課（持楞嚴咒、誦楞嚴經）。">
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --paper:#e9eef6; --paper2:#f7f9fd; --paper3:#dce4f0;
+    --ink:#131d33; --ink2:#3f4f70; --ink3:#71809c;
+    --line:#b3c2da; --line2:#d0dae9;
+    --blue:#1f4d8f; --seal:#9c3d4e; --jade:#2b7070; --gold:#8a6d24;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  [hidden]{display:none !important;}
+  body{
+    font-family:"Noto Serif TC","Songti TC","STSong","PMingLiU",serif;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 6%, rgba(255,255,255,.6), transparent 42%),
+      radial-gradient(circle at 85% 94%, rgba(120,150,200,.18), transparent 45%);
+    background-attachment:fixed;
+    color:var(--ink); font-size:18.5px; line-height:1.95;
+    padding:0 16px 70px; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px; margin:0 auto;}
+
+  .back-link{display:inline-block; margin-top:22px; font-size:15px; color:var(--ink2);
+    text-decoration:none; letter-spacing:.08em; border-bottom:1px solid var(--line);}
+  .back-link:hover{color:var(--ink); border-color:var(--ink2);}
+
+  header{text-align:center; padding:26px 0 6px;}
+  .temple{font-size:14.5px; letter-spacing:.6em; text-indent:.6em; color:var(--blue); margin-bottom:14px;}
+  .gatetag{display:inline-block; font-size:14px; letter-spacing:.26em; text-indent:.26em;
+    color:var(--seal); border:1px solid rgba(156,61,78,.42); border-radius:3px;
+    padding:4px 15px; margin-bottom:18px;}
+  h1{font-size:34px; font-weight:700; letter-spacing:.1em; line-height:1.45;}
+  h1 small{display:block; font-size:16px; font-weight:400; letter-spacing:.34em; text-indent:.34em;
+    color:var(--ink2); margin-top:12px;}
+  .rule{width:64px; height:1px; background:var(--line); margin:24px auto; position:relative;}
+  .rule::before{content:"❖"; position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+    background:var(--paper); padding:0 9px; color:var(--blue); font-size:12px;}
+  .lead{color:var(--ink2); font-size:17.5px; text-align:left; max-width:566px; margin:0 auto;}
+  .lead b{color:var(--ink); font-weight:700;}
+
+  section{margin-top:42px;}
+  h2{font-size:21px; letter-spacing:.22em; text-indent:.22em; font-weight:700; color:var(--ink);
+    padding-bottom:12px; border-bottom:1px solid var(--line2); margin-bottom:22px; text-align:center;}
+  h2 em{font-style:normal; color:var(--blue);}
+  .card{background:var(--paper2); border:1px solid var(--line2); border-radius:4px;
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 6px 20px rgba(60,85,130,.10); padding:26px 24px;}
+
+  /* 經文 */
+  .sutra{background:#fff; border:1px solid var(--line2); border-left:2px solid var(--blue);
+    border-radius:3px; padding:18px 20px; font-size:17.5px; line-height:2.15; color:var(--ink);}
+  .sutra .who{font-size:14.5px; letter-spacing:.22em; color:var(--blue); margin-bottom:9px;}
+  .src{font-size:13px; color:var(--ink3); letter-spacing:.04em; margin-top:11px; line-height:1.8;}
+
+  /* ── 練習 ── */
+  .prac{text-align:center;}
+  .dial{width:210px; height:210px; margin:4px auto 0; position:relative;}
+  .dial svg{width:100%; height:100%; transform:rotate(-90deg);}
+  .dial .trk{fill:none; stroke:var(--line2); stroke-width:6;}
+  .dial .bar{fill:none; stroke:var(--blue); stroke-width:6; stroke-linecap:round;
+    transition:stroke-dashoffset .3s linear, stroke .6s;}
+  .dial .mid{position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:3px;}
+  .dial .t{font-size:38px; font-weight:700; letter-spacing:.06em; font-variant-numeric:tabular-nums;}
+  .dial .st{font-size:13.5px; letter-spacing:.24em; text-indent:.24em; color:var(--ink3);}
+
+  .cue{min-height:152px; margin:22px auto 0; max-width:500px;}
+  .cue .cname{font-size:15px; letter-spacing:.3em; text-indent:.3em; color:var(--seal); font-weight:700;}
+  .cue .cline{font-size:23px; font-weight:700; letter-spacing:.1em; line-height:1.7; margin-top:8px;}
+  .cue .ctxt{font-size:17px; color:var(--ink2); line-height:1.95; margin-top:10px; text-align:left;}
+  .cue.sw{animation:fade .7s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(8px);}to{opacity:1; transform:none;}}
+
+  .row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:24px;}
+  .btn{appearance:none; font-family:inherit; cursor:pointer; text-decoration:none; display:inline-block;
+    font-size:17.5px; letter-spacing:.16em; text-indent:.16em; padding:13px 28px; border-radius:3px;
+    border:1px solid var(--ink); background:var(--ink); color:var(--paper2); transition:.15s; font-weight:700;}
+  .btn:hover{background:#2b3a5c;}
+  .btn:active{transform:translateY(1px);}
+  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn.ghost:hover{background:var(--paper3);}
+  .btn.sm{font-size:16px; padding:10px 20px;}
+
+  .steps{list-style:none; margin:26px 0 0; padding:0; display:flex; gap:6px; justify-content:center;}
+  .steps li{flex:1; max-width:110px; text-align:center; font-size:13px; letter-spacing:.1em;
+    color:var(--ink3); padding-top:9px; border-top:3px solid var(--line2); transition:.3s;}
+  .steps li.on{color:var(--seal); border-top-color:var(--seal); font-weight:700;}
+  .steps li.done{color:var(--ink2); border-top-color:var(--blue);}
+
+  .note{font-size:15px; color:var(--ink3); line-height:1.85; margin-top:20px; text-align:left;}
+
+  /* 功課 */
+  .hw{display:grid; gap:14px;}
+  .hwi{display:block; text-decoration:none; color:inherit; background:var(--paper2);
+    border:1px solid var(--line2); border-radius:4px; padding:18px 20px; transition:.15s;}
+  a.hwi:hover{background:#fff; border-color:var(--line); transform:translateY(-1px);}
+  .hwi .ht{font-size:19px; font-weight:700; letter-spacing:.1em;}
+  .hwi .hx{font-size:16px; color:var(--ink2); line-height:1.85; margin-top:5px;}
+  .hwi .hk{display:inline-block; font-size:12.5px; letter-spacing:.14em; padding:1px 9px; border-radius:2px;
+    margin-left:9px; vertical-align:3px; background:rgba(43,112,112,.1);
+    border:1px solid rgba(43,112,112,.32); color:var(--jade);}
+
+  .caveat{background:#fff; border:1px solid rgba(156,61,78,.3); border-radius:4px;
+    padding:19px 21px; font-size:16px; line-height:1.9; color:var(--ink2); margin-top:20px;}
+  .caveat b{color:var(--ink); font-weight:700;}
+  .caveat .h{color:var(--seal); font-size:15.5px; letter-spacing:.2em; text-indent:.2em;
+    font-weight:700; margin-bottom:8px;}
+
+  .endgate{text-align:center; margin-top:48px; padding:30px 20px;
+    border-top:1px solid var(--line2); border-bottom:1px solid var(--line2);}
+  .endgate .ln{font-size:21px; letter-spacing:.28em; text-indent:.28em; color:var(--ink);
+    line-height:2.1; font-weight:700;}
+  .endgate .src{margin-top:12px;}
+
+  footer{text-align:center; color:var(--ink3); font-size:13.5px; letter-spacing:.1em;
+    margin-top:32px; line-height:1.9;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back-link" href="fahui.html">↩ 回三關入口</a>
+
+  <header>
+    <div class="temple">寶嚴山寶嚴禪寺</div>
+    <div class="gatetag">第三關 · 楞嚴修法</div>
+    <h1>反聞聞自性<small>耳　根　圓　通</small></h1>
+    <div class="rule"></div>
+    <p class="lead">
+      第一關問你是誰，第二關給你一道門。<b>這一關把門關上。</b><br>
+      二十五門無有優劣，所請那一門只是入手處；入了門之後，走的是同一條路——
+      文殊菩薩為此方眾生所揀選的那一根。
+    </p>
+  </header>
+
+  <!-- ══ 經文 ══ -->
+  <section>
+    <h2>經　<em>文</em></h2>
+    <div class="sutra">
+      <div class="who">觀世音菩薩　自陳所證</div>
+      彼佛教我從聞思修入三摩地。初於聞中入流亡所；所入既寂，動靜二相了然不生。如是漸增，聞所聞盡；盡聞不住，覺所覺空；空覺極圓，空所空滅。生滅既滅，寂滅現前，忽然超越世出世間，十方圓明。……佛問圓通，我從耳門圓照三昧緣心自在，因入流相得三摩提，成就菩提，斯為第一。
+      <div class="src">《大佛頂首楞嚴經》卷六（CBETA, T19n0945）· 逐字錄自原文，刪節處以……標示</div>
+    </div>
+    <div class="sutra" style="margin-top:16px; border-left-color:var(--seal);">
+      <div class="who" style="color:var(--seal);">文殊菩薩　揀選偈</div>
+      此方真教體，清淨在音聞；欲取三摩提，實以聞中入。……將聞持佛佛，何不自聞聞？……一根既返源，六根成解脫。……大眾及阿難！旋汝倒聞機，反聞聞自性，性成無上道。
+      <div class="src">《大佛頂首楞嚴經》卷六（CBETA, T19n0945）</div>
+    </div>
+  </section>
+
+  <!-- ══ 三分鐘練習 ══ -->
+  <section>
+    <h2>三分鐘 · <em>聞性練習</em></h2>
+    <div class="card prac">
+      <div class="dial">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="trk" cx="50" cy="50" r="44"></circle>
+          <circle class="bar" id="bar" cx="50" cy="50" r="44"
+                  stroke-dasharray="276.46" stroke-dashoffset="276.46"></circle>
+        </svg>
+        <div class="mid">
+          <div class="t" id="clock">3:00</div>
+          <div class="st" id="phase">尚未開始</div>
+        </div>
+      </div>
+
+      <div class="cue" id="cue">
+        <div class="cname">準　備</div>
+        <div class="cline">站著、坐著都可以</div>
+        <div class="ctxt">身坐正，肩放下，手放在腿上。眼睛可閉可不閉——這一關不靠眼睛。
+          現場若人聲嘈雜，正好；<b>吵雜本身就是這個法門的材料</b>。</div>
+      </div>
+
+      <ul class="steps" id="steps">
+        <li data-i="0">安身</li>
+        <li data-i="1">聞</li>
+        <li data-i="2">入流亡所</li>
+        <li data-i="3">反聞</li>
+      </ul>
+
+      <div class="row">
+        <button class="btn" id="go">開　始</button>
+        <button class="btn ghost sm" id="reset" hidden>重來</button>
+      </div>
+
+      <p class="note">
+        引導語為<b>方便語，非經文</b>，依古德註疏所作。全程只在本機計時，不錄音、不上傳。
+      </p>
+    </div>
+
+    <div class="caveat">
+      <div class="h">做完之後</div>
+      不必問自己「有沒有境界」。經云「動靜二相了然不生」，是功夫漸深自然的事，不是現在要求來的。
+      <b>若見光見聲、覺得特別——卷九、卷十〈五十陰魔〉說得明白：不作聖心，名善境界；若作聖解，即受群邪。</b>
+      做完就放下，接著過堂、接著誦經，這才是正修。
+    </div>
+  </section>
+
+  <!-- ══ 日用功課 ══ -->
+  <section>
+    <h2>日用<em>功課</em></h2>
+    <div class="hw">
+      <a class="hwi" href="https://twnyda07.github.io/lengyan-chizhou/" target="_blank" rel="noopener">
+        <div class="ht">持楞嚴咒<span class="hk">功德海</span></div>
+        <div class="hx">法會的本業就在這裡。個人滿願 1080 遍，全體累積顯示為「功德海」——
+          開壇當日那一個數字，是大眾一起持出來的。</div>
+      </a>
+      <div class="hwi">
+        <div class="ht">每日誦《楞嚴經》一卷</div>
+        <div class="hx">自 10/24 起至法會圓滿，每日一卷。十卷一輪，輪到卷五、卷六，
+          正是二十五圓通與文殊揀選偈——讀到自己請到的那一門時，會認得。</div>
+      </div>
+      <a class="hwi" href="https://twnyda07.github.io/lengyan-25-yuantong/" target="_blank" rel="noopener">
+        <div class="ht">那一門的三學功課</div>
+        <div class="hx">回第二關，取所請那一門的<b>教理／福德／禪定</b>三項功課。
+          三者並行不可偏廢——教理明其所以然，福德厚其資糧，禪定得其受用。</div>
+      </a>
+      <a class="hwi" href="https://twnyda07.github.io/qichu-zhengxin/" target="_blank" rel="noopener">
+        <div class="ht">回頭看一次七處徵心</div>
+        <div class="hx">走完三關再看卷一那場論辯，與第一次讀不同：
+          那個被七次破掉的「心」，和這裡要你反聞的「能聞的」，是同一件事的兩面。</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ 歸處 ══ -->
+  <div class="endgate">
+    <div class="ln">一根既返源<br>六根成解脫</div>
+    <div class="src">《大佛頂首楞嚴經》卷六 · 文殊菩薩揀選偈（CBETA, T19n0945）</div>
+  </div>
+
+  <footer>
+    © 寶嚴山寶嚴禪寺　Baoyan Chan Monastery<br>
+    經文逐字錄自 CBETA 中華電子佛典協會《大正新脩大藏經》第 19 冊 No. 945；引導語為方便語，非經文。
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var TOTAL = 180;
+  var PHASES = [
+    { at:0,   name:"安　身", line:"先不管聲音，只管身體",
+      txt:"身坐正，肩放下。吸氣的時候知道在吸氣，吐氣的時候知道在吐氣。三、四個呼吸就好——這一段只是把心從外面收回來一點點，不必收得太乾淨。" },
+    { at:40,  name:"聞", line:"一切聲音，同時都在",
+      txt:"現在把注意力交給耳朵。不要去找聲音，也不要去推開聲音。遠的、近的、人聲、冷氣聲、自己的呼吸聲——<b>它們是同時都在的</b>。不揀擇，不評論，讓它們一起來。" },
+    { at:90,  name:"入流亡所", line:"不問「是什麼聲音」",
+      txt:"剛剛你是不是又在分辨「這是誰在講話」？放掉那個分辨。經云「入流亡所」——<b>亡所，就是不再黏在聲音這個「對象」上</b>。聲音照樣來來去去，你只是不去追它。" },
+    { at:140, name:"反　聞", line:"能聞的，有沒有來去？",
+      txt:"現在回頭看一眼：聲音有生有滅，<b>那個「能聞」的，剛剛有斷過嗎？</b>安靜的時候你聽見安靜，吵的時候你聽見吵——它一直都在。經云「旋汝倒聞機，反聞聞自性」，向外聽叫倒，回來看這個能聞的，就叫反聞。" }
+  ];
+  var CIRC = 276.46;
+  var bar=document.getElementById('bar'), clock=document.getElementById('clock'),
+      phase=document.getElementById('phase'), cue=document.getElementById('cue'),
+      go=document.getElementById('go'), reset=document.getElementById('reset'),
+      steps=document.getElementById('steps').children;
+  var timer=null, left=TOTAL, cur=-1;
+
+  function fmt(s){ return Math.floor(s/60)+":"+String(s%60).padStart(2,'0'); }
+
+  function paintPhase(i){
+    if(i===cur) return;
+    cur=i;
+    var p=PHASES[i];
+    cue.innerHTML='<div class="cname">'+p.name+'</div>'+
+                  '<div class="cline">'+p.line+'</div>'+
+                  '<div class="ctxt">'+p.txt+'</div>';
+    cue.classList.remove('sw'); void cue.offsetWidth; cue.classList.add('sw');
+    phase.textContent=p.name.replace(/\s/g,'');
+    for(var k=0;k<steps.length;k++){
+      steps[k].classList.toggle('on', k===i);
+      steps[k].classList.toggle('done', k<i);
+    }
+  }
+
+  function tick(){
+    left--;
+    if(left<0){ finish(); return; }
+    clock.textContent=fmt(left);
+    var done=TOTAL-left;
+    bar.setAttribute('stroke-dashoffset', CIRC*(1-done/TOTAL));
+    for(var i=PHASES.length-1;i>=0;i--){ if(done>=PHASES[i].at){ paintPhase(i); break; } }
+  }
+
+  function finish(){
+    clearInterval(timer); timer=null;
+    clock.textContent="0:00"; phase.textContent="圓滿";
+    bar.setAttribute('stroke-dashoffset', 0);
+    bar.style.stroke="#9c3d4e";
+    for(var k=0;k<steps.length;k++){ steps[k].classList.remove('on'); steps[k].classList.add('done'); }
+    cue.innerHTML='<div class="cname">圓　滿</div>'+
+      '<div class="cline">就這樣，不必追境界</div>'+
+      '<div class="ctxt">剛剛那三分鐘，不是要你得到什麼，是要你認得<b>那個一直在聽的</b>。'+
+      '回去持咒、誦經、過日子的時候，隨時都可以回來看它一眼——這一眼，就是功夫。</div>';
+    cue.classList.remove('sw'); void cue.offsetWidth; cue.classList.add('sw');
+    go.hidden=true; reset.hidden=false;
+  }
+
+  go.addEventListener('click', function(){
+    if(timer) return;
+    go.textContent="進行中"; go.disabled=true;
+    paintPhase(0);
+    timer=setInterval(tick,1000);
+  });
+  reset.addEventListener('click', function(){
+    left=TOTAL; cur=-1; clock.textContent=fmt(TOTAL); phase.textContent="尚未開始";
+    bar.setAttribute('stroke-dashoffset', CIRC); bar.style.stroke="";
+    for(var k=0;k<steps.length;k++){ steps[k].className=""; }
+    cue.innerHTML='<div class="cname">準　備</div><div class="cline">站著、坐著都可以</div>'+
+      '<div class="ctxt">身坐正，肩放下，手放在腿上。眼睛可閉可不閉——這一關不靠眼睛。'+
+      '現場若人聲嘈雜，正好；<b>吵雜本身就是這個法門的材料</b>。</div>';
+    go.hidden=false; go.disabled=false; go.textContent="開　始"; reset.hidden=true;
+  });
+})();
+</script>
+</body>
+</html>

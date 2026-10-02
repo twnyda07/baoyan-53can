@@ -46,6 +46,24 @@
   .cross-link:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
   .cross-link .eye{font-size:16px;}
 
+  /* 三關串連：下一關 */
+  .nextgate{margin-top:22px; padding:20px 18px 22px; border-radius:12px; text-align:center;
+    background:linear-gradient(180deg, rgba(43,112,112,.16), rgba(8,12,30,.55));
+    border:1.5px solid rgba(120,190,185,.42); box-shadow:inset 0 0 26px rgba(43,112,112,.16);}
+  .nextgate .ng-k{font-size:12px; letter-spacing:.34em; text-indent:.34em; color:#8fd0c9;}
+  .nextgate .ng-t{font-size:19px; font-weight:700; letter-spacing:.14em; color:#eaf6f4; margin-top:8px;}
+  .nextgate .ng-x{font-size:14px; line-height:1.9; color:var(--ink-soft); margin-top:9px;
+    max-width:330px; margin-left:auto; margin-right:auto;}
+  .nextgate .ng-x b{color:#bfe6e0;}
+  .nextgate .ng-b{display:inline-block; margin-top:15px; text-decoration:none; font-weight:700;
+    font-size:15.5px; letter-spacing:.2em; text-indent:.2em; padding:12px 28px; border-radius:30px;
+    color:#06201e; background:linear-gradient(180deg,#bfe6e0,#79bdb5 60%,#4e968e);
+    border:1.5px solid #d6f2ee; box-shadow:0 6px 18px rgba(0,0,0,.4); transition:transform .15s;}
+  .nextgate .ng-b:hover{transform:translateY(-2px);}
+  .nextgate .ng-h{display:block; margin-top:13px; font-size:12.5px; letter-spacing:.1em;
+    color:var(--ink-soft); text-decoration:none; opacity:.85;}
+  .nextgate .ng-h:hover{opacity:1; color:var(--gold-light);}
+
   .stage{margin:26px auto 4px; display:flex; flex-direction:column; align-items:center;}
 
   /* 翻牌 */
@@ -150,6 +168,7 @@
       請先合掌靜心、默想所求之事，再抽取一張善知識卡。
     </p>
     <a class="cross-link" href="face.html"><span class="eye">👁️‍🗨️</span>改用「面相觀照」· 以鏡頭或照片相應善知識 →</a>
+    <a class="cross-link" href="fahui.html" style="font-size:13.5px; padding:8px 20px; margin-top:10px;"><span class="eye">❖</span>楞嚴三關觀照 · 面相→掌紋→修法 →</a>
   </header>
 
   <div class="stage">
@@ -259,9 +278,22 @@ function showPanel(s){
     </div>
     <div class="source"><a href="${src.url}" target="_blank" rel="noopener"><span class="yt"></span>聆聽出處 · ${src.label}</a></div>`;
   BaoyanMail.mount(panel, {mode:"draw", n:s.n});
+  /* 三關串連：關一（抽籤／面相）→ 關二（掌紋．二十五圓通） */
+  panel.insertAdjacentHTML("beforeend", NEXT_GATE_HTML);
   panel.classList.add("show");
   panel.scrollIntoView({behavior:"smooth", block:"nearest"});
 }
+
+/* 楞嚴三關觀照 · 第二關入口 */
+const NEXT_GATE_HTML = `
+  <div class="nextgate">
+    <div class="ng-k">楞 嚴 三 關 觀 照 ・ 第 二 關</div>
+    <div class="ng-t">掌紋觀照 ・ 二十五圓通</div>
+    <div class="ng-x">善財童子參的是五十三位善知識，楞嚴會上是二十五位聖者——
+      <b>每一位入道的那一道門都不一樣</b>。<br>攤開慣用手，於二十五門中請出一門。</div>
+    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/" target="_blank" rel="noopener">進第二關 →</a>
+    <a class="ng-h" href="fahui.html">／　回三關入口 · 看完整三關</a>
+  </div>`;
 
 flip.addEventListener("click",()=>{ if(!flipped) draw(); });
 drawBtn.addEventListener("click",draw);
