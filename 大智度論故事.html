@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大智度論故事集 — 標題．出處．故事．法義</title>
+<meta name="description" content="《大智度論》（龍樹菩薩造．鳩摩羅什譯．大正藏 T25 no.1509）中十八則本生與因緣故事，每則標明標題、出處卷次、故事與法義。">
+<style>
+  :root{
+    --navy:#0a0e24; --navy2:#131a40; --navy3:#1d2552;
+    --gold:#d4af37; --gold-light:#f3e0a3; --gold-deep:#9c7a1e;
+    --ink:#ede6cf; --ink-soft:#b9b08f;
+    --panel:rgba(18,24,58,.78); --panel-line:rgba(212,175,55,.45);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif TC","Songti TC","STSong","PMingLiU",serif;
+    color:var(--ink);
+    background:
+      radial-gradient(ellipse at 50% -8%, #28306e 0%, var(--navy2) 32%, var(--navy) 70%, #05070f 100%) fixed;
+    min-height:100%; padding:28px 16px 60px; position:relative; overflow-x:hidden;
+    line-height:1.9;
+  }
+  .stars{position:fixed; inset:0; pointer-events:none; z-index:0;}
+  .stars i{position:absolute; background:#fff; border-radius:50%; opacity:.8; animation:tw 3s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.15;}50%{opacity:.9;}}
+  .dust{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .dust span{position:absolute; bottom:-20px; border-radius:50%;
+    background:radial-gradient(circle,var(--gold-light),transparent 70%); opacity:.5; animation:rise linear infinite;}
+  @keyframes rise{to{transform:translateY(-110vh) translateX(28px); opacity:0;}}
+
+  .wrap{width:100%; max-width:760px; margin:0 auto; position:relative; z-index:1;}
+
+  header{text-align:center; margin-bottom:30px;}
+  .temple{color:var(--gold-light); letter-spacing:.55em; font-size:14px; text-indent:.55em;
+    margin-bottom:16px; text-shadow:0 0 14px rgba(212,175,55,.5);}
+  h1{color:#fff; font-size:33px; font-weight:700; line-height:1.4; text-shadow:0 0 22px rgba(120,140,255,.4);}
+  h1 .grad{background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  .sub{color:var(--gold-light); font-size:14px; letter-spacing:.14em; margin-top:12px;}
+  .lead{color:var(--ink-soft); font-size:14.5px; margin-top:16px; line-height:1.95; max-width:620px; margin-inline:auto;}
+  .toc{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px;}
+  .toc a{text-decoration:none; color:var(--gold-light); font-size:13.5px; font-weight:700; letter-spacing:.1em;
+    padding:8px 17px; border-radius:30px; background:rgba(212,175,55,.12);
+    border:1.5px solid var(--gold); box-shadow:0 0 16px rgba(212,175,55,.18); transition:.15s;}
+  .toc a:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
+
+  section{margin-top:46px; scroll-margin-top:16px;}
+  .sec-no{display:block; color:var(--gold); font-size:13px; letter-spacing:.4em; text-indent:.4em; text-align:center; opacity:.85;}
+  .sec-h{color:#fff; font-size:24px; font-weight:700; text-align:center; margin-top:8px;
+    text-shadow:0 0 16px rgba(120,140,255,.35);}
+  .sec-sub{color:var(--ink-soft); font-size:13.5px; text-align:center; margin-top:8px; letter-spacing:.05em;}
+  .rule{width:60px; height:2px; margin:18px auto 26px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+
+  /* 故事卡 */
+  .story{background:var(--panel); border:1.5px solid var(--panel-line); border-radius:16px;
+    box-shadow:0 16px 40px rgba(0,0,0,.5), inset 0 0 30px rgba(40,55,120,.25);
+    padding:22px 24px 20px; margin-bottom:22px;
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .story .no{color:var(--gold); font-size:12px; letter-spacing:.3em; opacity:.8;}
+  .story h3{color:#fff; font-size:20px; font-weight:700; line-height:1.5; margin-top:4px;
+    text-shadow:0 0 14px rgba(120,140,255,.3);}
+  .src{display:inline-block; margin-top:10px; font-size:12.5px; letter-spacing:.06em; color:var(--gold);
+    border:1px solid rgba(212,175,55,.5); border-radius:20px; padding:4px 13px; line-height:1.6;}
+  .story .tale{font-size:15.5px; margin-top:14px;}
+  .story .tale + .tale{margin-top:10px;}
+  .story b, .story strong{color:var(--gold-light);}
+  .quote{border-left:3px solid var(--gold); background:rgba(8,12,30,.5); border-radius:0 10px 10px 0;
+    padding:11px 15px; margin-top:12px; font-size:14.5px; color:var(--gold-light); letter-spacing:.02em;}
+  .dharma{border:1.5px solid var(--gold); background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(212,175,55,.05));
+    border-radius:14px; padding:15px 18px; margin-top:16px; box-shadow:0 0 22px rgba(212,175,55,.14);}
+  .dharma .h{color:var(--gold-light); font-size:13px; font-weight:700; letter-spacing:.3em; text-indent:.3em;}
+  .dharma p{font-size:15px; margin-top:8px;}
+
+  .card{background:var(--panel); border:1.5px solid var(--panel-line); border-radius:16px;
+    box-shadow:0 16px 40px rgba(0,0,0,.5), inset 0 0 30px rgba(40,55,120,.25);
+    padding:22px 24px; margin-bottom:20px;
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .card p{font-size:15.5px; margin-top:10px;}
+  .card p:first-child{margin-top:0;}
+  .card b{color:var(--gold-light);}
+  .note{border-left:3px solid var(--gold); background:rgba(8,12,30,.5); border-radius:0 10px 10px 0;
+    padding:13px 16px; margin-top:14px; font-size:13.5px; color:var(--ink-soft); line-height:1.85;}
+  .note b{color:var(--gold-light);}
+
+  .cross-link{display:block; width:fit-content; margin:26px auto 0; text-decoration:none;
+    color:var(--gold-light); font-size:14px; padding:10px 24px; border-radius:30px;
+    background:rgba(212,175,55,.1); border:1.5px solid var(--gold); transition:.15s;}
+  .cross-link:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
+
+  .top{display:block; text-align:center; margin-top:10px; color:var(--ink-soft); font-size:12.5px;
+    text-decoration:none; letter-spacing:.12em;}
+  .top:hover{color:var(--gold-light);}
+
+  footer{margin-top:48px; padding-top:22px; border-top:1px solid rgba(212,175,55,.2);
+    color:var(--ink-soft); font-size:12px; line-height:1.95; text-align:center;}
+  footer .prov{font-size:11.5px; opacity:.85; margin-top:8px;}
+  footer b{color:var(--gold-light);}
+
+  @media(max-width:480px){
+    h1{font-size:25px;} .sec-h{font-size:20px;} .story h3{font-size:18px;}
+    .story{padding:18px 16px 16px;} .card{padding:18px 16px;}
+  }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="dust" id="dust"></div>
+
+<div class="wrap" id="top">
+  <header>
+    <div class="temple">寶 嚴 工 作 坊</div>
+    <h1><span class="grad">大智度論．故事集</span></h1>
+    <div class="sub">龍樹菩薩造　鳩摩羅什譯　大正藏 T25 no.1509</div>
+    <p class="lead">
+      《大智度論》一百卷，是《大品般若經》的釋論，也是漢傳佛教最大的一座「譬喻寶庫」。<br>
+      龍樹講法，每到關鍵處便說一個故事；故事說完，法義自明。<br>
+      以下彙集十八則，每則皆具：<b style="color:var(--gold-light)">標題</b>．<b style="color:var(--gold-light)">出處</b>．<b style="color:var(--gold-light)">故事</b>．<b style="color:var(--gold-light)">法義</b>。
+    </p>
+    <nav class="toc">
+      <a href="#dana">壹　布施</a>
+      <a href="#sila">貳　持戒</a>
+      <a href="#ksanti">參　忍辱</a>
+      <a href="#virya">肆　精進</a>
+      <a href="#dhyana">伍　禪定</a>
+      <a href="#prajna">陸　般若</a>
+      <a href="#sangha">柒　佛德僧事</a>
+    </nav>
+  </header>
+
+  <div class="card">
+    <p><b>怎麼讀這一頁。</b>六度為序：布施、持戒、忍辱、精進、禪定、般若，正是《大智度論》自己安排故事的次第——龍樹解釋哪一度，就在哪一度下說故事。最後一輯「佛德．僧事」，收的是佛陀與弟子們的現前因緣。</p>
+    <div class="note">
+      <b>關於出處：</b>卷次依 <b>CBETA 大正藏 T25 no.1509</b> 標示。故事為白話轉述，非逐字翻譯；引號內短句依原文語意節錄，欲深究請對讀原典該卷。
+    </div>
+  </div>
+
+  <!-- ===== 壹 布施 ===== -->
+  <section id="dana">
+    <span class="sec-no">壹</span>
+    <h2 class="sec-h">布　施</h2>
+    <p class="sec-sub">檀波羅蜜 · 捨的極限在哪裡</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其　一</div>
+      <h3>尸毘王割肉貿鴿</h3>
+      <div class="src">《大智度論》卷四 · 釋初品中檀相義</div>
+      <p class="tale">一隻鴿被鷹追逐，投入尸毘王腋下求救。鷹說：王救鴿命，那我的命呢？我不食肉便死。王說：那就用我的肉換。於是取秤，一端放鴿，一端割自己的股肉。肉割盡了，秤仍不平；兩股、兩臂、兩脅都割盡，仍不平。王便舉身自投秤盤——<b>「我以身代，終不悔也。」</b></p>
+      <p class="tale">大地震動，諸天雨花。那鷹與鴿，原是帝釋與毘首羯磨所化，來試菩薩是否真能捨。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>布施的難處不在「給多少」，而在<b>給到自己也沒有了</b>還不後悔。前面割股、割臂都還是「以物換物」，最後「舉身自投」才是檀波羅蜜——施者、受者、所施三者俱空，稱為<b>三輪體空</b>。鷹是來試的：真心給出去的東西，往往會被人懷疑、被人試探，心若為此動搖，布施就退回成了交易。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其　二</div>
+      <h3>一掬土的供養 — 阿輸伽王的前身</h3>
+      <div class="src">《大智度論》卷十二 · 釋初品中檀波羅蜜</div>
+      <p class="tale">佛在路上行乞，兩個小孩在沙地遊戲。一個孩子見佛相好，心大歡喜，手邊沒有別的，便捧起一掬<b>沙土</b>，當作「麥麨」供養佛，還請同伴隨喜。佛受了，令以土塗地。</p>
+      <p class="tale">論中說：此兒以土施佛，後世得作<b>閻浮提大王——阿輸伽王（阿育王）</b>，統領一方，廣建八萬四千塔。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>果報的大小，不隨<b>物</b>的貴賤，而隨三件事轉：<b>施者的心</b>、<b>受者的德</b>、<b>所施的時節</b>。一掬土本無價值，但出自一個全然歡喜、毫無計較的心，又遇上福田中的佛，便結出王位之果。所以貧者不必自棄——你沒有的是財，不是心。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其　三</div>
+      <h3>舍利弗施眼．六十劫退大心</h3>
+      <div class="src">《大智度論》卷十二 · 釋初品中檀波羅蜜</div>
+      <p class="tale">舍利弗曾行菩薩道六十劫，欲渡布施之河。有乞者來索他的<b>眼睛</b>。舍利弗說：眼於你何用？若需我身我財，直說便是。那人堅持只要眼。舍利弗便挖出一眼給他。</p>
+      <p class="tale">那人接過，當面嗅了嗅，嫌臭，<b>唾棄於地，又以腳踏之</b>。舍利弗心想：「此輩人難度！眼實無用而強索之，得而棄之、踏之——如此之人不可度也。不如自調，早脫生死。」念已，<b>退失菩薩道，回入小乘</b>。論中稱此為「不到彼岸」。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>六十劫的修行，毀在一念<b>「眾生難度」</b>的灰心上。給得出眼睛不難，難的是<b>給出去之後被糟蹋，心仍不改</b>。布施若還盯著對方「值不值得」「領不領情」，施的就不是波羅蜜，是期待。退心最常見的樣子，從來不是貪，而是<b>失望</b>。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 貳 持戒 ===== -->
+  <section id="sila">
+    <span class="sec-no">貳</span>
+    <h2 class="sec-h">持　戒</h2>
+    <p class="sec-sub">尸羅波羅蜜 · 守到什麼地步才叫守</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其　四</div>
+      <h3>須陀須摩王．為一句實語而赴死</h3>
+      <div class="src">《大智度論》卷四 · 釋初品中尸羅波羅蜜（並見卷十三）</div>
+      <p class="tale">食人的<b>鹿足王（斑足王）</b>擄走須陀須摩王，將以為食。須陀須摩王涕泣，鹿足王怪他貪生。王說：我不惜死，只是今晨出門時，<b>已許一位婆羅門回來供養聽法</b>，怕失信。鹿足王許他七日。</p>
+      <p class="tale">王歸國，布施說法已畢，國人跪留，王曰：<b>「實語者，第一戒也。」</b>如期自赴虎口。鹿足王大驚：天下竟有如此守信之人！遂受其法化，捨食人之惡。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>戒不是怕犯錯，而是<b>把自己的話當成命來守</b>。論中以「實語」為諸戒之本：妄語一起，所有的戒就都只是場面話。更深一層——須陀須摩王守住的那句話，<b>度了吃人的王</b>。你守戒，從來不只是自己的事；它是旁人願不願意相信「善是真的」的唯一證據。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其　五</div>
+      <h3>持戒之龍．寧捨皮肉不捨戒</h3>
+      <div class="src">《大智度論》卷十四 · 釋初品中尸羅波羅蜜之餘</div>
+      <p class="tale">一條大力毒龍，受<b>一日戒</b>，出家入林中靜坐，久而睡去，身現蛇形。獵人見其皮文采斐然，以杖按頭，<b>以刀剝皮</b>。龍自念：我力足以傾覆一國，此人微小；但我今受戒，<b>不惜此身，當護佛戒</b>。於是閉目忍受，不生瞋恨。</p>
+      <p class="tale">皮既剝去，赤肉在地，日曝沙熱，諸蟲來食。龍為持戒故，<b>身不動、心不悔</b>，捨命而終，生忉利天。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>戒的分水嶺是：<b>「我有能力反擊，但我不用」</b>。龍不是弱，是<b>把力氣交給了戒</b>。一日戒看似輕，受了便重如山——戒之所以為波羅蜜，不在條目多，而在那一刻你是否肯用命去兌現它。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其　六</div>
+      <h3>羅睺羅的玩笑話</h3>
+      <div class="src">《大智度論》卷十三 · 釋初品中尸羅波羅蜜（妄語戒）</div>
+      <p class="tale">羅睺羅年少出家，愛開玩笑。有人來問：「佛在何處？」佛明明在竹園，他偏說在耆闍崛山；佛在山上，他偏說在竹園。來人奔波往返，空跑一場，他在後面笑。</p>
+      <p class="tale">佛知之，呵責羅睺羅，為說妄語之過：<b>「如覆瓶水，水不得入。」</b>心既覆蓋於誑，法水便入不來；妄語之人，後世多被誹謗、所言不為人信。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>這一則特別，因為主角不是大惡人，是<b>一個愛鬧的孩子</b>——妄語常常不是為了害人，只是為了好玩、為了面子、為了省事。可是「覆瓶」的比喻很重：<b>法進不來，不是因為你壞，是因為你口是心非慣了，心口之間已無縫可通</b>。修行的第一道門，往往不是斷惡，是把話說真。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 參 忍辱 ===== -->
+  <section id="ksanti">
+    <span class="sec-no">參</span>
+    <h2 class="sec-h">忍　辱</h2>
+    <p class="sec-sub">羼提波羅蜜 · 被割截時的那一念</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其　七</div>
+      <h3>羼提仙人．血化為乳</h3>
+      <div class="src">《大智度論》卷十四 · 釋初品中羼提波羅蜜</div>
+      <p class="tale">羼提（忍辱）仙人在大林中修忍行慈。迦利王帶著婇女入林遊戲，王睡後，婇女們四散採花，見仙人端坐，便圍坐聽法；仙人為說<b>慈忍</b>。</p>
+      <p class="tale">王醒來，見此光景大怒，拔劍問：「汝得何道？」答：「修忍辱。」王即<b>截其耳鼻、斬其手足</b>，問：「心動否？」仙人答：「我修慈忍，心不動也。」王不信。仙人乃立誓：<b>「若我實修慈忍，血當為乳。」</b>言訖，<b>血即化為乳</b>。</p>
+      <p class="tale">王大驚怖而去。林中龍神為仙人震怒，雷電霹靂，王遂不還宮。而仙人臨終之際，仍發願：<b>他日我成道，當先度此王。</b></p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>忍辱不是咬牙硬撐——硬撐的忍，心裡是血。真忍是<b>心裡流出來的是乳</b>：不但不恨，還願意先度那個傷你的人。論中分忍為「生忍」（忍眾生之惱）與「法忍」（忍諸法實相），這一則是兩者同時現前：身可截，而<b>慈心不隨身斷</b>。後來佛在《金剛經》自述此事，正是為顯「無我相、無人相」——若有我，一刀便痛徹心髓；無我，則刀無所傷。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 肆 精進 ===== -->
+  <section id="virya">
+    <span class="sec-no">肆</span>
+    <h2 class="sec-h">精　進</h2>
+    <p class="sec-sub">毘梨耶波羅蜜 · 明知做不完，還是做</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其　八</div>
+      <h3>雉鳥以兩翅取水救林火</h3>
+      <div class="src">《大智度論》卷十六 · 釋初品中毘梨耶波羅蜜</div>
+      <p class="tale">大林失火，眾獸奔逃。林中一隻小<b>雉鳥</b>，往返飛入水中，<b>以羽翅沾水，灑向火場</b>，來來回回，不肯停息。</p>
+      <p class="tale">天帝釋現身問：林火如此之大，你兩翅之水能有幾滴？何苦自苦。雉鳥答：<b>我心無量，精進不懈；此林養我，我欲救之，若不盡此命，誓不休息。</b>天帝感其志，為降大雨，火乃滅。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>精進的定義，不是「算得出成果才做」。<b>力小不是懈怠的理由，心量小才是。</b>論中說精進有「身精進」與「心精進」——翅上那幾滴水是身精進，「若不盡此命誓不休息」是心精進，而感天降雨的是後者。眾生無邊誓願度，正是一隻雉鳥的姿勢。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其　九</div>
+      <h3>大施菩薩抒大海水</h3>
+      <div class="src">《大智度論》卷十二（本事）· 卷十六（精進引證）</div>
+      <p class="tale">大施（好施）菩薩見閻浮提人貧苦，欲周濟而財物不足，竟至啼泣。有人說：海中龍王頭上有<b>如意寶珠</b>，得之則所求如意。菩薩便入大海求珠。</p>
+      <p class="tale">珠既得而復失落海中。菩薩不索他法，<b>執器抒海</b>——一瓢一瓢往外舀。海神笑問：海水無量，你何時舀得盡？菩薩答：<b>「正使筋骨枯盡，終不懈廢；此生不盡，有來世在。」</b>海神驚其志，還珠與之。菩薩得珠，遍施一切眾生。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>這是精進波羅蜜最赤裸的樣子：<b>不計成敗，只論盡不盡力</b>。「筋骨枯盡，終不懈廢」八個字，是把時間從「這一生」拉長成「生生世世」之後，才說得出口的話。注意他求珠的動機——不是為己，是因為<b>「給不起」而哭</b>；精進若無悲心托底，不過是另一種好勝。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 伍 禪定 ===== -->
+  <section id="dhyana">
+    <span class="sec-no">伍</span>
+    <h2 class="sec-h">禪　定</h2>
+    <p class="sec-sub">禪波羅蜜 · 定可以多深，也可以多脆</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其　十</div>
+      <h3>螺髻仙人．為一窩鳥卵不起定</h3>
+      <div class="src">《大智度論》卷十七 · 釋初品中禪波羅蜜</div>
+      <p class="tale">菩薩往昔為<b>螺髻仙人（尚闍梨）</b>，常入第四禪，出入息斷，樹下兀然不動。有鳥以為是枯木，<b>就在他的髮髻中產卵</b>。</p>
+      <p class="tale">菩薩出定，覺頭上有卵，便想：<b>我若起身，鳥母必不再來；母不來，卵必壞。</b>於是<b>還入禪定</b>，直到雛鳥孵出、羽成飛去，方才起身。論稱此為<b>禪波羅蜜之滿相</b>。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>定的深淺不看坐得久，看<b>為誰而坐</b>。凡夫入定為求輕安，外道入定為求神通；菩薩出定的那一刻想的卻是「鳥母會不會不敢回來」。<b>定而不失慈，才叫波羅蜜</b>——否則深定只是高級的躲藏。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其十一</div>
+      <h3>一角仙人．一失足而五通俱失</h3>
+      <div class="src">《大智度論》卷十七 · 釋初品中禪波羅蜜</div>
+      <p class="tale"><b>一角仙人</b>久居山林，苦行得五神通，能行雨止雨，威力動國。國王患其能，遣婬女入山。女以美言、酒食、歡樂相誘，仙人受之，<b>禪定既失，神通亦亡</b>，終被女負出山林，為王所用。</p>
+      <p class="tale">論中佛自言：爾時一角仙人，即是我身。——連菩薩前身，也曾在此跌倒。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>五通是<b>定的副產品</b>，不是果位；定一退，神通隨之成空。欲之可怕不在它強，在於它<b>來得像是善意</b>：先是一口好食、一句好話。論中因此把「離欲」擺在禪定之前——<b>不是先坐得住，而是先捨得下</b>。並且此則由佛親自認領為自己的前身：跌倒不是羞恥，不認跌倒才是。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其十二</div>
+      <h3>五百仙人聞歌失定</h3>
+      <div class="src">《大智度論》卷十七 · 釋初品中禪波羅蜜</div>
+      <p class="tale">雪山中有五百仙人，各得禪定。<b>甄陀羅女</b>於池中沐浴歌唱，聲音清妙。五百仙人聞之，<b>心皆迷醉，禪定一時俱失</b>，狂亂不能自持。</p>
+      <p class="tale">論中又舉：天樂（甄迦羅琴）一奏，連修行多年的大德也座上動身——<b>未至究竟，皆有可搖之處</b>。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>定若只是「壓住」煩惱，<b>一個聲音就足以掀開石頭下的草</b>。論中說世間禪如石壓草，出世間慧如拔其根。所以禪定須與般若並行：<b>定使心不散，慧使心不迷</b>。五百人同時失定，也是提醒——人多、共修、道場興盛，都不等於道力深。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 陸 般若 ===== -->
+  <section id="prajna">
+    <span class="sec-no">陸</span>
+    <h2 class="sec-h">般　若</h2>
+    <p class="sec-sub">般若波羅蜜 · 連「不執著」也不執著</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其十三</div>
+      <h3>長爪梵志．「一切法不受」</h3>
+      <div class="src">《大智度論》卷一 · 釋初品</div>
+      <p class="tale">長爪梵志（舍利弗之舅）善辯，立一宗旨：<b>「一切法不受」</b>——任何主張都能破，所以我什麼都不接受。他持此見詣佛，欲折服佛。</p>
+      <p class="tale">佛只問一句：<b>「汝言『一切法不受』，是見受不受？」</b>——你這個「什麼都不接受」的見解，你自己接不接受？</p>
+      <p class="tale">梵志語塞：說「受」，則自破其宗；說「不受」，則此言亦無所立。論中說他如好馬見鞭影而行，當下知負，於佛法中得法眼淨；其甥舍利弗侍立在側，聞之即證阿羅漢。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>這是般若的刀口所在：<b>空，不是另一個可以站的立場</b>。凡把「空」「無執」拿來當武器的，第一個被破的就是自己。論中因此說「般若波羅蜜中，<b>亦不著般若</b>」——法尚應捨，何況非法。修行人最後一關，常常不是貪財色名，而是貪<b>自己那套見解的正確</b>。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其十四</div>
+      <h3>薩陀波崙賣身求法</h3>
+      <div class="src">《大智度論》卷九十六～九十八 · 釋薩陀波崙品、曇無竭品</div>
+      <p class="tale"><b>薩陀波崙（常啼）菩薩</b>為求般若，空中有聲教他東行，莫問疲極、莫念飲食，但念般若。他依言東行，至一城，欲以香花供養說法的<b>曇無竭菩薩</b>，卻身無一物——遂於市中<b>自賣其身</b>，高聲喚：「誰要買人？」</p>
+      <p class="tale">帝釋化作婆羅門試之，索其心、血、髓。薩陀波崙即刻破臂出血、剝髀取髓，無一念悔。長者女見之而大受感動，與五百侍女同發心，共持珍寶，隨他往見曇無竭。曇無竭為說般若，<b>薩陀波崙即得六百萬三昧</b>，見十方佛。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>般若不是讀來的，是<b>拿命換來的</b>。論中把這段放在一百卷的末尾，用意極深：講了九十五卷的「空」，最後告訴你——<b>空不是懶得去求的理由</b>。「東行莫問，但念般若」八字，是學人之路：不要邊走邊算得失，走就是了。「常啼」之名也值得玩味：<b>為法而哭的人，才哭得對。</b></p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 柒 佛德．僧事 ===== -->
+  <section id="sangha">
+    <span class="sec-no">柒</span>
+    <h2 class="sec-h">佛德．僧事</h2>
+    <p class="sec-sub">佛與弟子之間，最生動的四則</p>
+    <div class="rule"></div>
+
+    <div class="story">
+      <div class="no">其十五</div>
+      <h3>鴿入佛影．怖畏即止</h3>
+      <div class="src">《大智度論》卷十一</div>
+      <p class="tale">鷹逐一鴿，鴿飛入<b>舍利弗的影子</b>裡，仍然<b>戰慄不止</b>。移入<b>佛的影子</b>中，立刻<b>安然不動，無聲無怖</b>。</p>
+      <p class="tale">舍利弗問佛何故。佛言：汝三毒習氣未盡，故汝影中猶有怖；佛三毒及習俱盡，故鴿入佛影而得安。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>斷煩惱，與<b>斷煩惱的氣味</b>，是兩件事。阿羅漢已斷三毒，<b>習氣</b>卻如香盡而器猶存——只有佛是連影子都無害。這一則也給了修行者一把尺：<b>你的「德」不必自己說，看靠近你的人會不會鬆一口氣就知道了。</b></p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其十六</div>
+      <h3>畢陵伽婆蹉喚河神「小婢」</h3>
+      <div class="src">《大智度論》卷二 · 論「煩惱已斷，習氣未盡」</div>
+      <p class="tale">畢陵伽婆蹉尊者已證阿羅漢，每要渡恆河，便呼：<b>「小婢，住莫流！」</b>——河水即斷，讓他過去。河神忿而訴佛。</p>
+      <p class="tale">佛令尊者向河神懺悔。尊者合掌說：<b>「小婢，莫瞋，今懺悔。」</b>眾皆失笑。佛為解釋：他本是五百世婆羅門家出身，貴族習氣未除，口中慣語如此，<b>心中實無慢意</b>。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>聖人也會有改不掉的口頭禪。論中借此分判<b>二乘與佛之別</b>：煩惱可斷，習氣難盡，唯佛究竟。對我們的用處是兩面的——<b>看人莫以習氣定其證量</b>（他可能心無瞋慢），<b>律己莫以「我本無惡意」自恕</b>（別人聽到的仍是「小婢」）。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其十七</div>
+      <h3>舍衛城九億家．三億人不曾見佛</h3>
+      <div class="src">《大智度論》卷九</div>
+      <p class="tale">佛住舍衛國二十五年。城中九億家：<b>三億家親眼見佛</b>，<b>三億家聞有佛而不曾見</b>，<b>三億家既不聞、亦不見</b>。</p>
+      <p class="tale">佛日日入城乞食，走過他們門前——而他們一生不知佛在城中。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>法不是不在，是<b>緣不到</b>。佛的神通不能強度無緣之人，所謂<b>「佛不度無緣之人」</b>——不是佛吝惜，是門得由裡面開。反過來看：你今天能聽到一句佛法，不是理所當然，是當年舍衛城裡<b>三家只有一家</b>的機率。<b>人身難得，佛法難聞</b>八個字，這一則是它的統計學。</p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+
+    <div class="story">
+      <div class="no">其十八</div>
+      <h3>阿難被擯．一夜成道而後入結集</h3>
+      <div class="src">《大智度論》卷二 · 佛滅後第一結集</div>
+      <p class="tale">佛滅度後，大迦葉於王舍城集五百阿羅漢結集法藏。阿難多聞第一，佛所說法無不憶持——<b>但他尚未漏盡</b>，不得入眾。迦葉當眾舉其過失，令出。</p>
+      <p class="tale">阿難慚愧奮發，<b>通夜經行，精勤不懈</b>。至將曉時，疲極欲臥，頭未至枕之際，<b>廓然大悟，得阿羅漢</b>。乃還入眾，升法座，誦出<b>「如是我聞：一時，佛在……」</b>——眾中羅漢聞之，皆念佛而泣。</p>
+      <div class="dharma">
+        <div class="h">法　義</div>
+        <p>記得再多，<b>不等於證得</b>——這是對所有「聽過很多法」的人最直接的一記。阿難的轉機也耐人尋味：<b>開悟不在他用力的時候，在他放下身心、頭將落枕的那一瞬</b>。太緊不成，太鬆亦不成。而今日我們讀的每一部經，開頭四個字都來自那一夜：<b>如是我聞。</b></p>
+      </div>
+      <a class="top" href="#top">↑ 回目次</a>
+    </div>
+  </section>
+
+  <!-- ===== 一句話收攝 ===== -->
+  <section id="end">
+    <div class="card">
+      <p style="text-align:center; color:var(--gold-light); font-size:16px; line-height:2;">
+        尸毘王給到身上無肉，<br>
+        雉鳥救到翅上無水，<br>
+        螺髻仙人為一窩鳥卵不動，<br>
+        常啼菩薩為一句般若賣身——<br>
+        <b>六度不是六個德目，是同一顆心的六種姿勢。</b>
+      </p>
+    </div>
+    <a class="cross-link" href="index.html">❖　回五十三參抽籤 →</a>
+  </section>
+
+  <footer>
+    本頁為《大智度論》故事選輯，供聞思與講說參考之用。<br>
+    <span class="prov">出處：<b>《大智度論》</b>（Mahāprajñāpāramitā-upadeśa）龍樹菩薩造．後秦 鳩摩羅什譯．<b>CBETA 大正藏 T25 no.1509</b>，全一百卷</span><br>
+    <span class="prov">故事為白話轉述，法義為提要；卷次已逐則查核，深究請對讀原典該卷原文。</span><br>
+    <span class="prov">© 寶嚴工作坊　Baoyan Workshop</span>
+  </footer>
+</div>
+
+<script>
+/* 星空 + 金塵（自包含，無外部依賴） */
+(function(){
+  const st=document.getElementById("stars");
+  for(let i=0;i<80;i++){const s=document.createElement("i");
+    const sz=Math.random()*2+0.6; s.style.width=s.style.height=sz+"px";
+    s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*3)+"s"; st.appendChild(s);}
+  const du=document.getElementById("dust");
+  for(let i=0;i<16;i++){const sp=document.createElement("span");
+    sp.style.left=Math.random()*100+"%"; sp.style.animationDuration=(7+Math.random()*8)+"s";
+    sp.style.animationDelay=(Math.random()*8)+"s"; const sz=3+Math.random()*7;
+    sp.style.width=sp.style.height=sz+"px"; du.appendChild(sp);}
+})();
+</script>
+</body>
+</html>
