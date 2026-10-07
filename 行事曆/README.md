@@ -140,3 +140,27 @@ python3 -c "import fitz;d=fitz.open('2027行事曆_華嚴海會更新版.pdf');p
 
 輸出須含 `NotoSansCJKtc-Regular` 與 `-Bold`；若只看到 LinuxLibertine／DejaVu 等拉丁字型，
 代表中文全部沒印出來，須補字型後重轉。
+
+### 列高一律用 `fit_height()` 算，不可寫死
+列高寫死而文字放不下時，**LibreOffice 會直接把超出的文字裁掉且不報錯**，
+PDF 看起來只是少了幾個字。先前 `活動總表`、`更新說明` 等處即因此裁掉 23 格文字。
+
+- `vis_width()` 用 `unicodedata.east_asian_width` 判寬，W／F／**A**（如 `→` `–` `※`）都算 2。
+  漏掉 A 類會低估寬度，像「8/8 → 8/15」就會被裁掉。
+- `fit_height(各格文字, 各欄寬)` 回傳足夠的列高；合併儲存格要把合併範圍的欄寬相加後傳入。
+- 欄寬改成 `W2`／`W3`／`W4`／`W5` 常數，與列高計算共用同一組數值，改欄寬不必同步改列高。
+
+每次轉完用下列指令驗證有無文字被裁（應為 0）：
+
+```bash
+python3 -c "
+import fitz,re
+from openpyxl import load_workbook
+d=fitz.open('2027行事曆_華嚴海會更新版.pdf'); t=''.join(p.get_text() for p in d)
+wb=load_workbook('2027行事曆_華嚴海會更新版.xlsx')
+want={ch for ws in wb for r in ws.iter_rows() for c in r if isinstance(c.value,str) for ch in c.value}
+print('缺字:',[c for c in want-set(t) if not c.isspace()])"
+```
+
+以**字元層級**比對（而非整串比對）：整串比對會因字型遞補把 `→` 切成獨立區塊而誤報，
+`更新說明 A26`「8/8 → 8/15」即為此類誤報，實際有正常顯示。

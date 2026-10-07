@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """2027 行事曆（更新版）：華嚴海會 2027/12/11–12/22，共 12 天。
 由原始 PDF 逐格擷取既有內容，只調整華嚴海會相關排程後重建 Excel／PDF。"""
-import json, re, calendar, datetime
+import json, re, calendar, datetime, unicodedata
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -373,10 +373,33 @@ EVENTS = [_event_row(r) for r in EVENTS]
 
 
 CAL_COL_WIDTH = 16          # 月曆欄寬（Excel 字元單位）
-def vis_lines(text):
-    """估算一段文字在月曆格內換行後佔用的行數。"""
-    w = sum(2 if ord(ch) > 0x2E7F else 1 for ch in text)
-    return max(1, -(-w // CAL_COL_WIDTH))
+LINE_H = 13.5               # 字級 10 時每行高度（點）
+
+def vis_width(text):
+    """以半形 1、全形 2 估算字串顯示寬度（Excel 字元單位）。
+
+    用 east_asian_width 判定：W（寬）、F（全形）當然是 2，
+    A（寬度未定，如 → – ※ ）在中文環境同樣以全形呈現，也必須算 2，
+    否則像「8/8 → 8/15」會被低估寬度而遭裁切。
+    """
+    return sum(2 if unicodedata.east_asian_width(ch) in 'WFA' else 1
+               for ch in str(text))
+
+def vis_lines(text, width=CAL_COL_WIDTH):
+    """估算一段文字在指定欄寬內換行後佔用的行數（含手動換行）。"""
+    return sum(max(1, -(-vis_width(seg) // width))
+               for seg in str(text).split('\n'))
+
+def fit_height(values, widths, *, minimum=20, pad=6, line_h=LINE_H):
+    """依每格文字與其欄寬，算出足以完整顯示的列高。
+
+    列高寫死時，超出的文字會被 LibreOffice 直接裁掉且不會報錯，
+    PDF 看起來只是少了幾個字，故所有資料列一律用本函式計算列高。
+    合併儲存格請把合併範圍的欄寬相加後傳入。
+    """
+    lines = max((vis_lines(v, w) for v, w in zip(values, widths)
+                 if v not in (None, '')), default=1)
+    return max(minimum, lines * line_h + pad)
 
 # ---------- 4. 建立活頁簿 ----------
 wb = Workbook()
@@ -397,10 +420,13 @@ r = 1
 ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=7)
 style(ws.cell(r, 1, '2027 年全年行事曆（更新版）'), size=18, bold=True, h='left', border=False)
 ws.row_dimensions[r].height = 30; r += 1
-style(ws.cell(r, 1, '每日顯示農曆日期；本版更新：華嚴海會 2027/12/15–2027/12/26（共 12 天），前置作業 2027/12/13–2027/12/14（共 2 天）；該期間原排定之其他活動均已取消。'),
-      size=9, color="7F7F7F", border=False)
+_intro = ('每日顯示農曆日期；本版更新：華嚴海會 2027/12/15–2027/12/26（共 12 天），'
+          '前置作業 2027/12/13–2027/12/14（共 2 天）；該期間原排定之其他活動均已取消。')
+style(ws.cell(r, 1, _intro), size=9, color="7F7F7F", border=False)
 ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=7)
-ws.row_dimensions[r].height = 18; r += 2
+ws.row_dimensions[r].height = fit_height([_intro], [CAL_COL_WIDTH * 7],
+                                         minimum=18, line_h=12)
+r += 2
 
 month_start_rows = []
 for m in range(1, 13):
@@ -455,7 +481,8 @@ for i in range(2, 12, 2):            # 每 2 個月換頁
 
 # --- 工作表 2：活動總表 ---
 ws2 = wb.create_sheet('活動總表')
-for col, w in zip('ABCDEFG', (34, 12, 24, 16, 14, 30, 42)):
+W2 = (34, 12, 26, 16, 14, 30, 52)        # 活動總表欄寬
+for col, w in zip('ABCDEFG', W2):
     ws2.column_dimensions[col].width = w
 r = 1
 style(ws2.cell(r, 1, '2027 年活動總表（更新版）'), size=16, bold=True, border=False)
@@ -470,7 +497,9 @@ for name, n, dates in COURSES:
     style(ws2.cell(r, 2, n), bg=CREAM, h='center')
     style(ws2.cell(r, 3, dates), bg=CREAM)
     ws2.merge_cells(start_row=r, start_column=3, end_row=r, end_column=7)
-    ws2.row_dimensions[r].height = 30; r += 1
+    ws2.row_dimensions[r].height = fit_height([name, n, dates],
+                                              [W2[0], W2[1], sum(W2[2:])], minimum=30)
+    r += 1
 r += 1
 
 style(ws2.cell(r, 1, '二、活動明細'), size=12, bold=True, border=False); r += 1
@@ -484,7 +513,7 @@ for row in EVENTS:
     for i, val in enumerate(row):
         c = style(ws2.cell(r, i + 1, val), bg=HILITE if hl else (BAGUANBG if bg_row else None))
         if hl: c.font = Font(name=FONT, size=10, bold=True, color="9C0006")
-    ws2.row_dimensions[r].height = 34 if len(row[0]) < 60 else 46
+    ws2.row_dimensions[r].height = fit_height(row, W2, minimum=34)
     r += 1
 ws2.freeze_panes = 'A%d' % (hdr_row + 1)
 ws2.page_margins.left = ws2.page_margins.right = 0.3
@@ -499,7 +528,8 @@ ws2.print_title_rows = '%d:%d' % (hdr_row, hdr_row)
 
 # --- 工作表 3：見輝法師授課 ---
 ws5 = wb.create_sheet('見輝法師授課')
-for col, w in zip('ABCDE', (26, 20, 32, 12, 54)):
+W5 = (26, 20, 32, 20, 62)                # 見輝法師授課欄寬（D 欄兼作堂數與地點，取較寬者）
+for col, w in zip('ABCDE', W5):
     ws5.column_dimensions[col].width = w
 r = 1
 style(ws5.cell(r, 1, '%s 2027 年授課一覽' % TEACHER), size=16, bold=True, border=False)
@@ -511,7 +541,8 @@ style(ws5.cell(r, 1, '合計 %d 堂；日期落在華嚴海會封鎖區間（12/
 ws5.merge_cells(start_row=r, start_column=1, end_row=r, end_column=5)
 r += 2
 
-style(ws5.cell(r, 1, '一、課程總覽'), size=12, bold=True, border=False); r += 1
+style(ws5.cell(r, 1, '一、課程總覽'), size=12, bold=True, border=False)
+ws5.merge_cells(start_row=r, start_column=1, end_row=r, end_column=5); r += 1
 for i, h in enumerate(['課程', '開課規則', '地點', '堂數', '日期']):
     style(ws5.cell(r, i + 1, h), bold=True, color="FFFFFF", bg=NAVY, h='center', v='center')
 ws5.row_dimensions[r].height = 22; r += 1
@@ -519,12 +550,14 @@ for name, rule, place, keep, drop in teacher_rows:
     txt = '、'.join(d.strftime('2027/%-m/%-d') for d in keep)
     if drop:
         txt += '　（取消：%s）' % '、'.join(d.strftime('%-m/%-d') for d in drop)
-    for i, val in enumerate([name, rule, place, '%d 堂' % len(keep), txt]):
+    vals = [name, rule, place, '%d 堂' % len(keep), txt]
+    for i, val in enumerate(vals):
         style(ws5.cell(r, i + 1, val), bg=CREAM, h='center' if i == 3 else 'left')
-    ws5.row_dimensions[r].height = 32; r += 1
+    ws5.row_dimensions[r].height = fit_height(vals, W5, minimum=32); r += 1
 r += 1
 
-style(ws5.cell(r, 1, '二、授課行程（依日期排序）'), size=12, bold=True, border=False); r += 1
+style(ws5.cell(r, 1, '二、授課行程（依日期排序）'), size=12, bold=True, border=False)
+ws5.merge_cells(start_row=r, start_column=1, end_row=r, end_column=5); r += 1
 hdr5 = r
 for i, h in enumerate(['日期', '星期', '課程', '地點', '備註']):
     style(ws5.cell(r, i + 1, h), bold=True, color="FFFFFF", bg=NAVY, h='center', v='center')
@@ -538,9 +571,10 @@ for d, name, place in sched:
     prev_month = d.month
     same_day = [n for dd, n, _ in sched if dd == d and n != name]
     note = '同日另有：' + '、'.join(same_day) if same_day else ''
-    for i, val in enumerate([d.strftime('2027/%-m/%-d'), wd(d), name, place, note]):
+    vals = [d.strftime('2027/%-m/%-d'), wd(d), name, place, note]
+    for i, val in enumerate(vals):
         style(ws5.cell(r, i + 1, val), h='center' if i in (0, 1) else 'left')
-    ws5.row_dimensions[r].height = 20; r += 1
+    ws5.row_dimensions[r].height = fit_height(vals, W5); r += 1
 ws5.freeze_panes = 'A%d' % (hdr5 + 1)
 ws5.page_margins.left = ws5.page_margins.right = 0.3
 ws5.page_margins.top = ws5.page_margins.bottom = 0.35
@@ -554,7 +588,8 @@ ws5.print_title_rows = '%d:%d' % (hdr5, hdr5)
 
 # --- 工作表 3：活動重疊檢查 ---
 ws3 = wb.create_sheet('活動重疊檢查')
-for col, w in zip('ABCD', (16, 10, 12, 76)):
+W3 = (16, 10, 12, 88)                    # 活動重疊檢查欄寬
+for col, w in zip('ABCD', W3):
     ws3.column_dimensions[col].width = w
 r = 1
 style(ws3.cell(r, 1, '2027 年活動重疊檢查'), size=16, bold=True, border=False)
@@ -579,7 +614,7 @@ for m in range(1, 13):
             c = style(ws3.cell(r, i + 1, val), bg=HILITE if hl else None,
                       h='center' if i in (0, 1, 2) else 'left')
             if hl: c.font = Font(name=FONT, size=10, bold=True, color="9C0006")
-        ws3.row_dimensions[r].height = 20; r += 1
+        ws3.row_dimensions[r].height = fit_height(vals, W3); r += 1
 ws3.freeze_panes = 'A%d' % (hdr3 + 1)
 ws3.page_margins.left = ws3.page_margins.right = 0.3
 ws3.page_margins.top = ws3.page_margins.bottom = 0.35
@@ -593,8 +628,23 @@ ws3.print_title_rows = '%d:%d' % (hdr3, hdr3)
 
 # --- 工作表 4：更新說明 ---
 ws4 = wb.create_sheet('更新說明')
-ws4.column_dimensions['A'].width = 18
-ws4.column_dimensions['B'].width = 96
+
+# 個別調整明細先組好，A 欄欄寬才能依最長的標籤算出來（標籤一律不換行）
+_ACT = {'cancel': '取消', 'move': '改期', 'add': '加排'}
+ADJ_ROWS = []
+for name, act, o, n_, why in adj_log:
+    when = ('%d/%d → %d/%d' % (o + n_)) if act == 'move' else ('%d/%d' % (o or n_))
+    ADJ_ROWS.append(('%s　%s　%s' % (_ACT[act], name, when), why))
+ADJ_ROWS += [('時間　%s　%d/%d' % (cn, md[0], md[1]), '改為 %s 上課' % t)
+             for (cn, md), t in TIME_OVERRIDE.items()]
+ADJ_ROWS += [('加註　%s　%d/%d' % (cn, md[0], md[1]), '該堂為%s' % s)
+             for (cn, md), s in LABEL_SUFFIX.items()]
+ADJ_ROWS += [('取消　%s　7/18' % BAGUAN, '兒童夏令營 第2梯'),
+             ('拆分　浴佛節', '5/8 浴佛節法會；5/9–5/16 浴佛週')]
+
+W4 = (max(18, max(vis_width(k) for k, _ in ADJ_ROWS) + 2), 96)   # 更新說明欄寬
+for col, w in zip('AB', W4):
+    ws4.column_dimensions[col].width = w
 cancel_summary = {}
 for day, evs in cancelled:
     for e in evs:
@@ -631,7 +681,7 @@ for k, v in rows:
     if k.startswith('取消活動'):
         c.font = Font(name=FONT, size=10, bold=True, color="9C0006")
         c.fill = PatternFill('solid', fgColor=HILITE)
-    ws4.row_dimensions[r].height = max(34, 14 * (str(v).count(chr(10)) + 1) + 8)
+    ws4.row_dimensions[r].height = fit_height([k, v], W4, minimum=34, line_h=14)
     r += 1
 ws4.page_margins.left = ws4.page_margins.right = 0.3
 ws4.page_margins.top = ws4.page_margins.bottom = 0.35
@@ -645,22 +695,11 @@ r += 1
 style(ws4.cell(r, 1, '本次個別調整明細'), size=12, bold=True, border=False)
 ws4.merge_cells(start_row=r, start_column=1, end_row=r, end_column=2)
 ws4.row_dimensions[r].height = 24; r += 1
-_ACT = {'cancel': '取消', 'move': '改期', 'add': '加排'}
-for name, act, o, n_, why in adj_log:
-    when = ('%d/%d → %d/%d' % (o + n_)) if act == 'move' else ('%d/%d' % (o or n_))
-    style(ws4.cell(r, 1, '%s　%s　%s' % (_ACT[act], name, when)), bold=True, bg=HEADBG)
-    style(ws4.cell(r, 2, why))
-    ws4.row_dimensions[r].height = 20; r += 1
-for (cn, md), t in TIME_OVERRIDE.items():
-    style(ws4.cell(r, 1, '時間　%s　%d/%d' % (cn, md[0], md[1])), bold=True, bg=HEADBG)
-    style(ws4.cell(r, 2, '改為 %s 上課' % t)); ws4.row_dimensions[r].height = 20; r += 1
-for (cn, md), s in LABEL_SUFFIX.items():
-    style(ws4.cell(r, 1, '加註　%s　%d/%d' % (cn, md[0], md[1])), bold=True, bg=HEADBG)
-    style(ws4.cell(r, 2, '該堂為%s' % s)); ws4.row_dimensions[r].height = 20; r += 1
-style(ws4.cell(r, 1, '取消　%s　7/18' % BAGUAN), bold=True, bg=HEADBG)
-style(ws4.cell(r, 2, '兒童夏令營 第2梯')); ws4.row_dimensions[r].height = 20; r += 1
-style(ws4.cell(r, 1, '拆分　浴佛節'), bold=True, bg=HEADBG)
-style(ws4.cell(r, 2, '5/8 浴佛節法會；5/9–5/16 浴佛週')); ws4.row_dimensions[r].height = 20; r += 1
+for k, v in ADJ_ROWS:
+    style(ws4.cell(r, 1, k), bold=True, bg=HEADBG)
+    style(ws4.cell(r, 2, v))
+    ws4.row_dimensions[r].height = fit_height([k, v], W4)
+    r += 1
 ws4.print_area = 'A1:B%d' % (r - 1)
 
 out = '2027行事曆_華嚴海會更新版.xlsx'
