@@ -97,6 +97,14 @@ WD = '日一二三四五六'
 def wd(dt):
     return '星期' + WD[(dt.weekday() + 1) % 7]
 
+# ---------- 2a. 浴佛節拆分：5/8 浴佛節法會、5/9–5/16 浴佛週 ----------
+for day in daterange(datetime.date(2027, 5, 8), datetime.date(2027, 5, 16)):
+    ev = cells[5][day.day]['ev']
+    for i, e in enumerate(ev):
+        if e == '浴佛節':
+            ev[i] = '浴佛節法會' if day.day == 8 else '浴佛週'
+print('浴佛節拆分：5/8 浴佛節法會、5/9–5/16 浴佛週')
+
 # ---------- 2b. 八關齋戒暨共修法會：每月第三個星期日，逢法會之月份停辦 ----------
 BAGUAN = '八關齋戒暨共修法會'
 FAHUI_KEY = ('法會', '浴佛節', '華嚴海會')      # 判定「該月有法會」的關鍵字
@@ -106,12 +114,15 @@ def third_sunday(month):
             if datetime.date(2027, month, d).weekday() == 6]
     return days[2]
 
-baguan_held, baguan_skipped = [], []     # [(date, …)] / [(date, [該月法會])]
+BAGUAN_SKIP = {(7, 18): '兒童夏令營 第2梯'}      # 個別停辦（非整月停辦）
+baguan_held, baguan_skipped = [], []     # [(date, …)] / [(date, [原因])]
 for m in range(1, 13):
     fahui = sorted({e for v in cells[m].values() for e in v['ev']
                     if any(k in e for k in FAHUI_KEY)})
     day = datetime.date(2027, m, third_sunday(m))
-    if fahui:
+    if (m, day.day) in BAGUAN_SKIP:
+        baguan_skipped.append((day, [BAGUAN_SKIP[(m, day.day)]]))
+    elif fahui:
         baguan_skipped.append((day, fahui))
     else:
         cells[m][day.day]['ev'].append(BAGUAN)
@@ -120,41 +131,102 @@ print('%s：舉辦 %d 場 → %s' % (BAGUAN, len(baguan_held), fmt(baguan_held))
 for day, fahui in baguan_skipped:
     print('   停辦 %s（%d 月有 %s）' % (day.strftime('2027/%-m/%-d'), day.month, '、'.join(fahui)))
 
-# ---------- 2c. 見輝法師授課課程（日期落在封鎖區間者自動剔除） ----------
+# ---------- 2c. 課程定義（sync=True 者月曆與課程場次完全同步） ----------
 TEACHER = '見輝法師'
-TEACHER_COURSES = [
-    ('企業專班：台北',   '每月第一個星期六', '善首講堂', '企業專班：善首',
-     [(3, 6), (4, 3), (5, 1), (6, 5), (8, 7), (10, 2), (11, 6), (12, 4)]),
-    ('企業專班：高雄',   '每月第一個星期日', '圓道禪寺（高雄）', '企業專班：高雄',
-     [(3, 7), (4, 4), (5, 2), (6, 6), (8, 1), (10, 3), (11, 7), (12, 5)]),
-    ('企業專班：台中',   '每月第二個星期日', 'EPIC 禪藝實相人文空間（台中）', '企業專班：台中',
-     [(3, 14), (4, 11), (5, 9), (6, 13), (8, 8), (10, 10), (11, 14), (12, 12)]),
-    ('好好讀楞嚴：板橋', '每月第二週週六',   '善覺講堂', '好好讀楞嚴（善覺）',
-     [(3, 13), (4, 10), (5, 8), (6, 12), (10, 9), (11, 13), (12, 11)]),
-    ('一日禪（新加坡）', '依各列日期',       '新加坡', '一日禪（新加坡）',
-     [(3, 20), (4, 17), (5, 15), (7, 17), (9, 18), (10, 16), (11, 20), (12, 18)]),
-    ('楞嚴經（新加坡）', '依各列日期',       '新加坡', '楞嚴經（新加坡）',
-     [(3, 21), (4, 18), (5, 16), (7, 18), (9, 19), (10, 17), (11, 21), (12, 19)]),
+#  (課程, 規則, 地點, 月曆標籤, [(月,日)…], 見輝法師, 月曆同步)
+COURSE_DEFS = [
+    ('企業專班：台北',    '每月第一個星期六', '善首講堂', '企業專班：善首',
+     [(3, 6), (4, 3), (5, 1), (6, 5), (8, 7), (10, 2), (11, 6), (12, 4)], True, True),
+    ('企業專班：高雄',    '每月第一個星期日', '圓道禪寺（高雄）', '企業專班：高雄',
+     [(3, 7), (4, 4), (5, 2), (6, 6), (8, 1), (10, 3), (11, 7), (12, 5)], True, True),
+    ('企業專班：台中',    '每月第二個星期日', 'EPIC 禪藝實相人文空間（台中）', '企業專班：台中',
+     [(3, 14), (4, 11), (5, 9), (6, 13), (8, 8), (10, 10), (11, 14), (12, 12)], True, True),
+    ('好好讀楞嚴：板橋',  '每月第二週週六', '善覺講堂', '好好讀楞嚴（善覺）',
+     [(3, 13), (4, 10), (5, 8), (6, 12), (10, 9), (11, 13), (12, 11)], True, True),
+    ('一日禪（新加坡）',  '依各列日期', '新加坡', '一日禪（新加坡）',
+     [(3, 20), (4, 17), (5, 15), (7, 17), (9, 18), (10, 16), (11, 20), (12, 18)], True, True),
+    ('楞嚴經（新加坡）',  '依各列日期', '新加坡', '楞嚴經（新加坡）',
+     [(3, 21), (4, 18), (5, 16), (7, 18), (9, 19), (10, 17), (11, 21), (12, 19)], True, True),
+    # 以下非見輝法師授課；月曆沿用原檔（只移除、不回補）
+    ('英文一日禪（新加坡）', '每月第一個星期六', '新加坡', '英文一日禪（新加坡）',
+     [(3, 13), (4, 3), (5, 1), (6, 5), (8, 7), (10, 2), (11, 6), (12, 4)], False, False),
+    ('英文楞嚴經（新加坡）', '每月第一個星期日', '新加坡', '英文楞嚴經（新加坡）',
+     [(3, 14), (4, 4), (5, 2), (6, 6), (8, 1), (10, 3), (11, 7), (12, 5)], False, False),
 ]
-backfilled = []
-teacher_rows = []        # (課程, 規則, 地點, [保留日期], [取消日期])
-for name, rule, place, cal_label, mds in TEACHER_COURSES:
-    keep, drop = [], []
-    for m, d in mds:
+
+# ---------- 2d. 個別調整（本次新增，依排程決議逐筆記錄） ----------
+#  (課程, 動作, 原日期, 新日期, 原因)
+ADJUSTMENTS = [
+    ('好好讀楞嚴：板橋',   'cancel', (3, 13), None,    '3/13 三案重疊，以新加坡禪七為主'),
+    ('英文一日禪（新加坡）', 'cancel', (3, 13), None,    '3/13 三案重疊，以新加坡禪七為主'),
+    ('企業專班：台中',     'move',   (3, 14), (3, 21), '3/14 適逢新加坡禪七'),
+    ('楞嚴經（新加坡）',   'cancel', (3, 21), None,    '合併至新加坡禪七'),
+    ('英文一日禪（新加坡）', 'cancel', (4, 3),  None,    '清明法會放蒙山（台中）'),
+    ('企業專班：台中',     'move',   (8, 8),  (8, 15), '8/8 彰化供佛齋僧大會'),
+    ('好好讀楞嚴：板橋',   'add',    None,    (8, 14), '善覺講堂加排'),
+    ('企業專班：台北',     'add',    None,    (7, 3),  '7 月場次補排'),
+    ('企業專班：高雄',     'add',    None,    (7, 4),  '7 月場次補排'),
+    ('好好讀楞嚴：板橋',   'add',    None,    (7, 10), '7 月場次補排'),
+    ('企業專班：台中',     'add',    None,    (7, 11), '7 月場次補排'),
+    ('企業專班：台北',     'add',    None,    (9, 4),  '9 月場次補排'),
+    ('企業專班：高雄',     'add',    None,    (9, 5),  '9 月場次補排'),
+    ('好好讀楞嚴：板橋',   'add',    None,    (9, 11), '9 月場次補排'),
+    ('企業專班：台中',     'add',    None,    (9, 12), '9 月場次補排'),
+]
+TIME_OVERRIDE = {('好好讀楞嚴：板橋', (5, 8)): '14:00'}   # 單場上課時間調整
+
+_dates = {c[0]: list(c[4]) for c in COURSE_DEFS}
+adj_log = []
+for name, act, old, new_, why in ADJUSTMENTS:
+    ds = _dates[name]
+    if act in ('cancel', 'move'):
+        assert old in ds, (name, act, old)
+        ds.remove(old)
+    if act in ('move', 'add'):
+        assert new_ not in ds, (name, act, new_)
+        ds.append(new_)
+    adj_log.append((name, act, old, new_, why))
+for ds in _dates.values():
+    ds.sort()
+
+# ---------- 2e. 套用至月曆，並建立授課資料 ----------
+backfilled, dropped = [], []
+course_rows = []     # (課程, 規則, 地點, [保留日期], [封鎖取消日期], 見輝法師)
+for name, rule, place, cal_label, _base, is_teacher, sync in COURSE_DEFS:
+    keep, blocked = [], []
+    for m, d in _dates[name]:
         dt = datetime.date(2027, m, d)
-        (drop if BLOCK_START <= dt <= BLOCK_END else keep).append(dt)
-    # 月曆漏列者回補，使月曆與「一、課程場次」一致
-    for dt in keep:
-        ev = cells[dt.month][dt.day]['ev']
-        if cal_label not in ev:
-            ev.append(cal_label)
-            backfilled.append((dt, cal_label))
-    teacher_rows.append((name, rule, place, keep, drop))
+        (blocked if BLOCK_START <= dt <= BLOCK_END else keep).append(dt)
+    want = {(d.month, d.day) for d in keep}
+    for m in range(1, 13):                       # 不在清單上的場次一律自月曆移除
+        for d, v in cells[m].items():
+            hit = [e for e in v['ev'] if e == cal_label or e.startswith(cal_label + ' ')]
+            if hit and (m, d) not in want:
+                for e in hit:
+                    v['ev'].remove(e)
+                dropped.append((datetime.date(2027, m, d), cal_label))
+    if sync:                                     # 清單上缺的場次回補月曆
+        for dt in keep:
+            t = TIME_OVERRIDE.get((name, (dt.month, dt.day)))
+            label = cal_label + (' ' + t if t else '')
+            ev = cells[dt.month][dt.day]['ev']
+            if label not in ev:
+                for e in list(ev):
+                    if e == cal_label or e.startswith(cal_label + ' '):
+                        ev.remove(e)
+                ev.append(label)
+                backfilled.append((dt, label))
+    course_rows.append((name, rule, place, keep, blocked, is_teacher))
+teacher_rows = [r[:5] for r in course_rows if r[5]]
+
+for name, act, old, new_, why in adj_log:
+    d = lambda x: '%d/%d' % x if x else '—'
+    print('調整：%-18s %-6s %-6s → %-6s  %s' % (name, act, d(old), d(new_), why))
+for dt, lab in dropped:
+    print('月曆移除：%s %s' % (dt.strftime('2027/%-m/%-d'), lab))
 for dt, lab in backfilled:
-    print('月曆回補：%s %s' % (dt.strftime('2027/%-m/%-d'), lab))
-print('%s授課合計 %d 堂（取消 %d 堂）'
-      % (TEACHER, sum(len(r[3]) for r in teacher_rows),
-         sum(len(r[4]) for r in teacher_rows)))
+    print('月曆新增：%s %s' % (dt.strftime('2027/%-m/%-d'), lab))
+print('%s授課合計 %d 堂' % (TEACHER, sum(len(r[3]) for r in teacher_rows)))
 
 # ---------- 3. 活動總表 ----------
 COURSES = [
@@ -174,21 +246,37 @@ COURSES = [
 ]
 
 # 見輝法師 6 門課改由 teacher_rows 產生（取消場次自動扣除），並加入八關齋戒
-_tc = {r[0]: r for r in teacher_rows}
+_tc = {r[0]: r[:5] for r in course_rows}
+_adj_by_course = {}
+for name, act, o, n_, why in adj_log:
+    if act == 'cancel':
+        txt = '%d/%d 取消（%s）' % (o[0], o[1], why)
+    elif act == 'move':
+        txt = '%d/%d 改至 %d/%d（%s）' % (o[0], o[1], n_[0], n_[1], why)
+    else:
+        txt = '%d/%d 加排（%s）' % (n_[0], n_[1], why)
+    _adj_by_course.setdefault(name, []).append(txt)
+def _notes(name):
+    out = list(_adj_by_course.get(name, []))
+    blocked = _tc[name][4] if name in _tc else []
+    out += ['%s 取消（華嚴海會）' % d.strftime('%-m/%-d') for d in blocked]
+    for (cn, md), t in TIME_OVERRIDE.items():
+        if cn == name:
+            out.append('%d/%d 改為 %s 上課' % (md[0], md[1], t))
+    return out
 def _course_row(name, n, dates):
     if name not in _tc:
         return (name, n, dates)
-    _, _, _, keep, drop = _tc[name]
+    _, _, _, keep, _blocked = _tc[name]
     txt = '、'.join(d.strftime('2027/%-m/%-d') for d in keep)
-    if drop:
-        txt += '（原 %d 堂，%s 因華嚴海會取消）' % (
-            len(keep) + len(drop), '、'.join(d.strftime('%-m/%-d') for d in drop))
+    notes = _notes(name)
+    if notes:
+        txt += '　※ ' + '；'.join(notes)
     return (name, '共 %d 堂' % len(keep), txt)
 COURSES = [_course_row(*c) for c in COURSES]
+_bg_skip = '、'.join('%d/%d（%s）' % (d.month, d.day, r[0]) for d, r in baguan_skipped)
 COURSES.append((BAGUAN, '共 %d 場' % len(baguan_held),
-                '%s（每月第三個星期日；%s 月逢法會停辦）'
-                % (fmt(baguan_held),
-                   '、'.join(str(d.month) for d, _ in baguan_skipped))))
+                '%s　※ 每月第三個星期日；停辦：%s' % (fmt(baguan_held), _bg_skip)))
 
 EVENTS = [
     ('2027/1/1、2027/1/2、2027/1/3、2027/1/9、2027/1/10、2027/1/16、2027/1/17、2027/1/23、2027/1/24、2027/1/30、2027/1/31',
@@ -218,8 +306,8 @@ EVENTS = [
     ('2027/12/15–2027/12/26', '%s～%s' % (wd(HY_START), wd(HY_END)), '華嚴海會', '法會／大型活動', '待確認', '各分院',
      '共 12 天（本次更新）；原「歲末大型華嚴法會」2027/12/25–2028/1/2 調整為本案；本期間為重大活動，原有之其他活動均已取消'),
     ('%s' % fmt(baguan_held), '每月第三個星期日', BAGUAN, '法會／大型活動', '待確認', '各分院',
-     '共 %d 場；配合全年度開課行事曆，遇華嚴海會、清明法會等法會之月份（%s 月）停辦'
-     % (len(baguan_held), '、'.join(str(d.month) for d, _ in baguan_skipped))),
+     '共 %d 場；配合全年度開課行事曆，遇華嚴海會、清明法會等法會之月份停辦。停辦：%s'
+     % (len(baguan_held), _bg_skip)),
     ('2027/3/7 起每週日', '每週日', '兒童哲學班（春季）', '兒童教育', '待確認', '各分院', '共 16 堂；日期詳見上方課程場次表'),
     ('2027/9/26 起每週日', '每週日', '兒童哲學班（秋季）', '兒童教育', '待確認', '各分院', '共 12 堂（原 14 堂；12/19、12/26 因華嚴海會取消）；日期詳見上方課程場次表'),
     ('2027/7/11–2027/7/17', '星期日～星期六', '兒童夏令營 第1梯', '兒童教育', '待確認', '各分院', '第 1 梯次'),
@@ -245,13 +333,21 @@ def _event_row(row):
     key = _EV2TC.get(row[2])
     if key is None:
         return row
-    _, rule, place, keep, drop = _tc[key]
-    note = '%s；共 %d 堂（3 月起）' % (rule, len(keep))
-    if drop:
-        note += '；%s 因華嚴海會取消' % '、'.join(d.strftime('%-m/%-d') for d in drop)
+    _, rule, place, keep, _b = _tc[key]
+    note = '%s；共 %d 堂' % (rule, len(keep))
+    extra = _notes(key)
+    if extra:
+        note += '；' + '；'.join(extra)
     return ('、'.join(d.strftime('2027/%-m/%-d') for d in keep),
             '依各列日期', row[2], row[3], row[4], place, note)
 EVENTS = [_event_row(r) for r in EVENTS]
+
+
+CAL_COL_WIDTH = 16          # 月曆欄寬（Excel 字元單位）
+def vis_lines(text):
+    """估算一段文字在月曆格內換行後佔用的行數。"""
+    w = sum(2 if ord(ch) > 0x2E7F else 1 for ch in text)
+    return max(1, -(-w // CAL_COL_WIDTH))
 
 # ---------- 4. 建立活頁簿 ----------
 wb = Workbook()
@@ -267,7 +363,7 @@ def style(c, *, size=10, bold=False, color="000000", bg=None, h='left', v='top',
 ws = wb.active
 ws.title = '2027行事曆'
 for i in range(1, 8):
-    ws.column_dimensions[get_column_letter(i)].width = 16
+    ws.column_dimensions[get_column_letter(i)].width = CAL_COL_WIDTH
 r = 1
 ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=7)
 style(ws.cell(r, 1, '2027 年全年行事曆（更新版）'), size=18, bold=True, h='left', border=False)
@@ -302,7 +398,7 @@ for m in range(1, 13):
                 continue
             v = cells[m][d]
             lines = ['%d（農%s）' % (d, v['lunar'])] + v['ev']
-            maxlines = max(maxlines, len(lines))
+            maxlines = max(maxlines, sum(vis_lines(t) for t in lines))
             c.value = '\n'.join(lines)
             dt = datetime.date(2027, m, d)
             hl = HY_START <= dt <= HY_END
@@ -325,7 +421,7 @@ ws.sheet_properties.pageSetUpPr.fitToPage = True
 ws.page_setup.fitToWidth = 1
 ws.page_setup.fitToHeight = 0
 ws.print_area = 'A1:G%d' % (r - 1)
-for i in range(3, 12, 3):            # 每 3 個月換頁
+for i in range(2, 12, 2):            # 每 2 個月換頁
     ws.row_breaks.append(__import__('openpyxl').worksheet.pagebreak.Break(id=month_start_rows[i] - 1))
 
 # --- 工作表 2：活動總表 ---
@@ -509,6 +605,25 @@ ws4.page_setup.orientation = 'landscape'
 ws4.sheet_properties.pageSetUpPr.fitToPage = True
 ws4.page_setup.fitToWidth = 1
 ws4.page_setup.fitToHeight = 0
+ws4.print_area = 'A1:B%d' % (r - 1)
+
+r += 1
+style(ws4.cell(r, 1, '本次個別調整明細'), size=12, bold=True, border=False)
+ws4.merge_cells(start_row=r, start_column=1, end_row=r, end_column=2)
+ws4.row_dimensions[r].height = 24; r += 1
+_ACT = {'cancel': '取消', 'move': '改期', 'add': '加排'}
+for name, act, o, n_, why in adj_log:
+    when = ('%d/%d → %d/%d' % (o + n_)) if act == 'move' else ('%d/%d' % (o or n_))
+    style(ws4.cell(r, 1, '%s　%s　%s' % (_ACT[act], name, when)), bold=True, bg=HEADBG)
+    style(ws4.cell(r, 2, why))
+    ws4.row_dimensions[r].height = 20; r += 1
+for (cn, md), t in TIME_OVERRIDE.items():
+    style(ws4.cell(r, 1, '時間　%s　%d/%d' % (cn, md[0], md[1])), bold=True, bg=HEADBG)
+    style(ws4.cell(r, 2, '改為 %s 上課' % t)); ws4.row_dimensions[r].height = 20; r += 1
+style(ws4.cell(r, 1, '取消　%s　7/18' % BAGUAN), bold=True, bg=HEADBG)
+style(ws4.cell(r, 2, '兒童夏令營 第2梯')); ws4.row_dimensions[r].height = 20; r += 1
+style(ws4.cell(r, 1, '拆分　浴佛節'), bold=True, bg=HEADBG)
+style(ws4.cell(r, 2, '5/8 浴佛節法會；5/9–5/16 浴佛週')); ws4.row_dimensions[r].height = 20; r += 1
 ws4.print_area = 'A1:B%d' % (r - 1)
 
 out = '2027行事曆_華嚴海會更新版.xlsx'
