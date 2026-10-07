@@ -55,6 +55,11 @@ const BaoyanMail = (function(){
     try{ localStorage.removeItem(LS_KEY); }catch(_){ }
   }
 
+  /* 每次掛載給兩個欄位一組隨機的 name：Chrome 對 autocomplete=off 常不理會，
+     會依欄位名稱猜這是「姓名／Email」而跳出上一位存在瀏覽器裡的位址。
+     名稱每次都不一樣，猜不中就不會跳。 */
+  function rnd(){ return Math.random().toString(36).slice(2,10); }
+
   function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
 
   /* 送出：payload 只帶「編號」不帶文案，信件內容由伺服器端依同一份資料重建，
@@ -97,14 +102,15 @@ const BaoyanMail = (function(){
     if(!MAIL_API){ console.warn("[BaoyanMail] 尚未設定 MAIL_API，寄送區塊不顯示。"); return; }
     injectCSS();
     forgetContact();
+    const fid = rnd();
     const box = document.createElement("div");
     box.className = "mailbox";
     box.innerHTML = `
       <div class="mailbox-h">寄 一 份 到 我 的 信 箱</div>
       <p class="mailbox-p">留下姓名與 Email，這張${payload.mode==="face"?"面相觀照":"善知識"}牌卡的完整內容<br>即會寄到您的信箱，隨時回味、依之用功。</p>
       <div class="mailbox-f">
-        <input type="text" class="m-name" maxlength="30" placeholder="您的姓名（稱呼）" autocomplete="off" autocorrect="off" spellcheck="false">
-        <input type="email" class="m-mail" maxlength="80" placeholder="您的 Email" autocomplete="off" autocorrect="off" spellcheck="false" inputmode="email">
+        <input type="text" class="m-name" name="n-${fid}" maxlength="30" placeholder="您的姓名（稱呼）" autocomplete="off" autocorrect="off" spellcheck="false">
+        <input type="email" class="m-mail" name="e-${fid}" maxlength="80" placeholder="您的 Email" autocomplete="off" autocorrect="off" spellcheck="false" inputmode="email">
         <label class="mailbox-agree"><input type="checkbox" class="m-ok" checked>
           <span>我同意寶嚴禪寺以此 Email 寄送本次結果；日後若有法會、課程等法訊，亦歡迎通知我。</span></label>
         <button class="mailbox-btn" type="button">寄 送 結 果</button>
