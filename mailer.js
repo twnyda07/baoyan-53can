@@ -48,11 +48,11 @@ const BaoyanMail = (function(){
     const st = document.createElement("style"); st.textContent = CSS; document.head.appendChild(st);
   }
 
-  function loadContact(){
-    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }catch(_){ return {}; }
-  }
-  function saveContact(name,email){
-    try{ localStorage.setItem(LS_KEY, JSON.stringify({name:name,email:email})); }catch(_){ }
+  /* 不記住任何人的姓名與 Email：道場的平板／電腦是共用的，
+     若自動帶出上一位的位址，下一位沒注意按下去就會把牌卡寄到別人信箱。
+     （順手清掉舊版本可能已經存在這台裝置上的資料） */
+  function forgetContact(){
+    try{ localStorage.removeItem(LS_KEY); }catch(_){ }
   }
 
   function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
@@ -96,21 +96,21 @@ const BaoyanMail = (function(){
   function mount(container, payload){
     if(!MAIL_API){ console.warn("[BaoyanMail] 尚未設定 MAIL_API，寄送區塊不顯示。"); return; }
     injectCSS();
-    const saved = loadContact();
+    forgetContact();
     const box = document.createElement("div");
     box.className = "mailbox";
     box.innerHTML = `
       <div class="mailbox-h">寄 一 份 到 我 的 信 箱</div>
       <p class="mailbox-p">留下姓名與 Email，這張${payload.mode==="face"?"面相觀照":"善知識"}牌卡的完整內容<br>即會寄到您的信箱，隨時回味、依之用功。</p>
       <div class="mailbox-f">
-        <input type="text" class="m-name" maxlength="30" placeholder="您的姓名（稱呼）" value="${(saved.name||"").replace(/"/g,"&quot;")}" autocomplete="name">
-        <input type="email" class="m-mail" maxlength="80" placeholder="您的 Email" value="${(saved.email||"").replace(/"/g,"&quot;")}" autocomplete="email" inputmode="email">
+        <input type="text" class="m-name" maxlength="30" placeholder="您的姓名（稱呼）" autocomplete="off" autocorrect="off" spellcheck="false">
+        <input type="email" class="m-mail" maxlength="80" placeholder="您的 Email" autocomplete="off" autocorrect="off" spellcheck="false" inputmode="email">
         <label class="mailbox-agree"><input type="checkbox" class="m-ok" checked>
           <span>我同意寶嚴禪寺以此 Email 寄送本次結果；日後若有法會、課程等法訊，亦歡迎通知我。</span></label>
         <button class="mailbox-btn" type="button">寄 送 結 果</button>
       </div>
       <div class="mailbox-msg"></div>
-      <div class="mailbox-note">※ 我們只保存您的姓名與 Email 供寄送與法訊之用${payload.mode==="face"?"；您的照片全程留在本機，不會上傳、也不會出現在信中":""}。</div>`;
+      <div class="mailbox-note">※ 我們只保存您的姓名與 Email 供寄送與法訊之用${payload.mode==="face"?"；您的照片全程留在本機，不會上傳、也不會出現在信中":""}。<br>※ 這台裝置不會記住您填的資料（共用裝置請每位自行填寫）。</div>`;
     container.appendChild(box);
 
     const nameEl = box.querySelector(".m-name"), mailEl = box.querySelector(".m-mail"),
@@ -131,7 +131,7 @@ const BaoyanMail = (function(){
       const data = Object.assign({}, payload, {name:name, email:email, page:location.href, rid:box.dataset.rid});
       const res = await post(data);
       if(res && res.ok){
-        saveContact(name, email);
+        nameEl.value = ""; mailEl.value = "";   // 立刻清掉，後面的人看不到也帶不走
         box.classList.add("done");
         say("已寄出！請查收信箱（約一分鐘內；若沒看到請看看「促銷／垃圾郵件」匣）。","ok");
       }else{
