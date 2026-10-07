@@ -123,26 +123,35 @@ for day, fahui in baguan_skipped:
 # ---------- 2c. 見輝法師授課課程（日期落在封鎖區間者自動剔除） ----------
 TEACHER = '見輝法師'
 TEACHER_COURSES = [
-    ('企業專班：台北',   '每月第一個星期六', '善首講堂',
+    ('企業專班：台北',   '每月第一個星期六', '善首講堂', '企業專班：善首',
      [(3, 6), (4, 3), (5, 1), (6, 5), (8, 7), (10, 2), (11, 6), (12, 4)]),
-    ('企業專班：高雄',   '每月第一個星期日', '圓道禪寺（高雄）',
+    ('企業專班：高雄',   '每月第一個星期日', '圓道禪寺（高雄）', '企業專班：高雄',
      [(3, 7), (4, 4), (5, 2), (6, 6), (8, 1), (10, 3), (11, 7), (12, 5)]),
-    ('企業專班：台中',   '每月第二個星期日', 'EPIC 禪藝實相人文空間（台中）',
+    ('企業專班：台中',   '每月第二個星期日', 'EPIC 禪藝實相人文空間（台中）', '企業專班：台中',
      [(3, 14), (4, 11), (5, 9), (6, 13), (8, 8), (10, 10), (11, 14), (12, 12)]),
-    ('好好讀楞嚴：板橋', '每月第二週週六',   '善覺講堂',
+    ('好好讀楞嚴：板橋', '每月第二週週六',   '善覺講堂', '好好讀楞嚴（善覺）',
      [(3, 13), (4, 10), (5, 8), (6, 12), (10, 9), (11, 13), (12, 11)]),
-    ('一日禪（新加坡）', '依各列日期',       '新加坡',
+    ('一日禪（新加坡）', '依各列日期',       '新加坡', '一日禪（新加坡）',
      [(3, 20), (4, 17), (5, 15), (7, 17), (9, 18), (10, 16), (11, 20), (12, 18)]),
-    ('楞嚴經（新加坡）', '依各列日期',       '新加坡',
+    ('楞嚴經（新加坡）', '依各列日期',       '新加坡', '楞嚴經（新加坡）',
      [(3, 21), (4, 18), (5, 16), (7, 18), (9, 19), (10, 17), (11, 21), (12, 19)]),
 ]
+backfilled = []
 teacher_rows = []        # (課程, 規則, 地點, [保留日期], [取消日期])
-for name, rule, place, mds in TEACHER_COURSES:
+for name, rule, place, cal_label, mds in TEACHER_COURSES:
     keep, drop = [], []
     for m, d in mds:
         dt = datetime.date(2027, m, d)
         (drop if BLOCK_START <= dt <= BLOCK_END else keep).append(dt)
+    # 月曆漏列者回補，使月曆與「一、課程場次」一致
+    for dt in keep:
+        ev = cells[dt.month][dt.day]['ev']
+        if cal_label not in ev:
+            ev.append(cal_label)
+            backfilled.append((dt, cal_label))
     teacher_rows.append((name, rule, place, keep, drop))
+for dt, lab in backfilled:
+    print('月曆回補：%s %s' % (dt.strftime('2027/%-m/%-d'), lab))
 print('%s授課合計 %d 堂（取消 %d 堂）'
       % (TEACHER, sum(len(r[3]) for r in teacher_rows),
          sum(len(r[4]) for r in teacher_rows)))
@@ -228,6 +237,21 @@ EVENTS = [
     ('2027/1/9、2027/2/13、2027/3/13、2027/4/10、2027/5/8、2027/6/12、2027/7/10、2027/8/14、2027/9/11、2027/10/9、2027/11/13、2027/12/11',
      '依各列日期', '好好讀楞嚴（善覺）', '一般課程', '待確認', '善覺講堂', '每月第二週週六'),
 ]
+
+# 企業專班與好好讀楞嚴的「活動明細」改採「一、課程場次」版本（8 堂／7 堂，3 月起）
+_EV2TC = {'企業專班：台北': '企業專班：台北', '企業專班：高雄': '企業專班：高雄',
+          '企業專班：台中': '企業專班：台中', '好好讀楞嚴（善覺）': '好好讀楞嚴：板橋'}
+def _event_row(row):
+    key = _EV2TC.get(row[2])
+    if key is None:
+        return row
+    _, rule, place, keep, drop = _tc[key]
+    note = '%s；共 %d 堂（3 月起）' % (rule, len(keep))
+    if drop:
+        note += '；%s 因華嚴海會取消' % '、'.join(d.strftime('%-m/%-d') for d in drop)
+    return ('、'.join(d.strftime('2027/%-m/%-d') for d in keep),
+            '依各列日期', row[2], row[3], row[4], place, note)
+EVENTS = [_event_row(r) for r in EVENTS]
 
 # ---------- 4. 建立活頁簿 ----------
 wb = Workbook()
