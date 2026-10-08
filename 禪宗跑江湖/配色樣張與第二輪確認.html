@@ -1,0 +1,529 @@
+<meta charset="utf-8">
+<title>禪宗祖師跑江湖．配色樣張與第二輪確認</title>
+<style>
+  :root{
+    --paper:#fbfaf7; --card:#fff; --ink:#23201c; --ink2:#6b645b;
+    --rule:#e6e1d8; --accent:#4a5d52; --soft:#eef1ee; --warn:#8a6f3c;
+    /* 六位祖師識別色：同明度、同彩度，彼此協調 */
+    --c1:#3d6ea6; /* 達摩．靛藍 */
+    --c2:#2f8b78; /* 慧可．松石綠 */
+    --c3:#b8822c; /* 僧璨．琥珀 */
+    --c4:#c05540; /* 道信．朱砂 */
+    --c5:#7a5f9e; /* 弘忍．青蓮紫 */
+    --c6:#95683d; /* 惠能．赭石 */
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; padding:0 0 130px; background:var(--paper); color:var(--ink);
+    font-family:"Songti TC","Noto Serif CJK TC","Source Han Serif TC",serif;
+    font-size:18px; line-height:1.9;}
+  .wrap{max-width:900px; margin:0 auto; padding:0 24px;}
+  header{padding:52px 0 26px; border-bottom:1px solid var(--rule); margin-bottom:10px;}
+  h1{font-size:33px; margin:0 0 12px; letter-spacing:2px;}
+  .sub{color:var(--ink2); font-size:17px;}
+  h2{font-size:25px; margin:52px 0 6px; padding-left:14px; border-left:3px solid var(--accent); letter-spacing:1px;}
+  h3{font-size:20px; margin:34px 0 10px; color:var(--ink);}
+  .lead{color:var(--ink2); font-size:16px; margin:0 0 20px; padding-left:17px;}
+  .box{background:var(--card); border:1px solid var(--rule); border-radius:4px; padding:26px 28px; margin-bottom:14px;}
+
+  /* ── 樣張一：祖師亮燈 ── */
+  .lamps{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:10px 0 6px;}
+  .lamp{
+    width:112px; padding:18px 8px 14px; border:1px solid var(--rule); border-radius:6px;
+    background:#fff; text-align:center; cursor:pointer; transition:.35s;
+    position:relative;
+  }
+  .lamp .dot{
+    width:52px; height:52px; margin:0 auto 10px; border-radius:50%;
+    background:#ece8e0; transition:.35s;
+  }
+  .lamp .nm{font-size:20px; letter-spacing:2px;}
+  .lamp .yr{font-size:14px; color:var(--ink2); margin-top:2px;}
+  .lamp.on{border-color:transparent; transform:translateY(-4px);}
+  .lamp.on .dot{background:var(--c); box-shadow:0 0 0 7px color-mix(in srgb, var(--c) 16%, transparent), 0 6px 20px color-mix(in srgb, var(--c) 34%, transparent);}
+  .lamp.on .nm{color:var(--c);}
+  .lamp.on{box-shadow:0 0 0 2px var(--c) inset;}
+  .tip{text-align:center; color:var(--ink2); font-size:15.5px; margin-top:6px;}
+
+  /* ── 樣張二：關鍵詞大色塊 ── */
+  .kw{
+    border-radius:8px; color:#fff; text-align:center; padding:40px 20px 34px; margin-bottom:12px;
+    min-height:196px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .kw .big{font-size:58px; letter-spacing:12px; line-height:1.35; display:block; white-space:nowrap;}
+  .kw .src{font-size:16px; opacity:.88; margin-top:14px; letter-spacing:1px;}
+  .kwrow{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:620px){ .kwrow{grid-template-columns:1fr;} .kw .big{font-size:44px; letter-spacing:8px;} }
+
+  /* ── 樣張三：原文與白話的分野 ── */
+  .orig{
+    background:#fff; border:1px solid var(--rule); border-left:4px solid var(--c1);
+    border-radius:4px; padding:26px 28px; font-size:25px; line-height:2.1; letter-spacing:1px;
+  }
+  .orig .ref{display:block; font-size:15px; color:var(--ink2); letter-spacing:0; margin-top:14px;}
+  .vern{
+    background:#f5f3ee; border:1px dashed var(--rule); border-radius:4px;
+    padding:18px 24px; font-size:17px; color:var(--ink2); line-height:1.95; margin-top:10px;
+  }
+  .vern b{color:var(--ink); font-weight:normal;}
+
+  /* ── 樣張四：路線逐段亮起 ── */
+  .route{position:relative; padding:28px 10px 10px;}
+  .rline{position:absolute; left:8%; right:8%; top:52px; height:2px; background:var(--rule);}
+  .rfill{position:absolute; left:8%; top:52px; height:2px; background:var(--c1); width:0; transition:1.6s;}
+  .rnodes{display:flex; justify-content:space-between; position:relative; padding:0 4%;}
+  .rn{text-align:center; width:19%;}
+  .rn i{display:block; width:18px; height:18px; border-radius:50%; background:#e6e1d8; margin:0 auto 10px; transition:.5s;}
+  .rn.on i{background:var(--c1); box-shadow:0 0 0 6px color-mix(in srgb, var(--c1) 18%, transparent);}
+  .rn b{font-size:17px; font-weight:normal; display:block;}
+  .rn s{font-size:14px; color:var(--ink2); text-decoration:none; display:block;}
+  .rn.on b{color:var(--c1);}
+
+  /* ── 入口一：地圖 ── */
+  .mapwrap{display:grid; grid-template-columns:1.05fr 1fr; gap:16px;}
+  .map{position:relative; background:#f7f5f1; border:1px solid var(--rule); border-radius:6px; height:330px;}
+  .spot{position:absolute; transform:translate(-50%,-50%); text-align:center; cursor:pointer; background:none; border:0; font-family:inherit;}
+  .spot i{display:block; width:17px; height:17px; border-radius:50%; background:#d9d3c8; margin:0 auto 5px; transition:.4s;}
+  .spot b{font-size:16.5px; font-weight:normal; color:var(--ink2); transition:.3s;}
+  .spot.on i{background:var(--c1); box-shadow:0 0 0 7px color-mix(in srgb, var(--c1) 20%, transparent);}
+  .spot.on b{color:var(--c1); font-size:18px;}
+  .mline{position:absolute; inset:0; pointer-events:none;}
+  .panel{border:1px solid var(--rule); border-radius:6px; background:#fff; padding:20px 22px; min-height:330px; overflow:auto;}
+  .panel .ph{color:var(--ink2); font-size:16px; text-align:center; margin-top:120px;}
+  .panel h4{margin:0 0 4px; font-size:21px; font-weight:normal;}
+  .panel .todo{font-size:14.5px; color:var(--warn); margin:0 0 14px;}
+  .panel .ev{font-size:16.5px; color:var(--ink2); margin:0 0 12px;}
+  .panel .qt2{background:#f7f5f1; border-left:3px solid var(--c1); border-radius:3px;
+    padding:14px 16px; font-size:19px; line-height:1.95; margin:0 0 8px;}
+  .panel .rf{font-size:14.5px; color:var(--ink2);}
+  .panel .who{font-size:16px; color:var(--ink2); margin-top:10px;}
+
+  /* ── 入口二：祖師畫像與生平 ── */
+  .portraits{display:flex; flex-wrap:wrap; gap:10px; justify-content:center;}
+  .pt{width:112px; text-align:center; cursor:pointer; border:1px solid var(--rule); border-radius:6px; padding:14px 8px; background:#fff; transition:.3s;}
+  .pt .face{width:72px; height:88px; margin:0 auto 8px; border-radius:40px 40px 34px 34px;
+    background:linear-gradient(180deg,#efebe3,#e3ded4); display:flex; align-items:center; justify-content:center;
+    color:#b3aa9c; font-size:13px; transition:.4s;}
+  .pt b{font-size:19px; font-weight:normal;}
+  .pt.sel{border-color:var(--c); box-shadow:0 0 0 2px var(--c) inset;}
+  .pt.sel .face{background:color-mix(in srgb, var(--c) 22%, #fff); color:var(--c);}
+  .pt.sel b{color:var(--c);}
+  .lifebar{display:flex; justify-content:space-between; align-items:baseline; margin:22px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--rule);}
+  .lifebar span:first-child{font-size:21px;}
+  .lifebar span:last-child{font-size:15.5px; color:var(--ink2);}
+  .lifestage{min-height:150px;}
+  .lamprow{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+  .ln{width:38px; height:38px; border-radius:50%; border:1px solid var(--rule); background:#f7f5f1; cursor:default; font-family:inherit; font-size:15px; color:#c4bcad;}
+  .ln.next{cursor:pointer; border-color:var(--c1); color:var(--c1); animation:pulse 1.6s infinite;}
+  .ln.done{background:var(--c1); border-color:var(--c1); color:#fff;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--c1) 40%,transparent);}50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--c1) 0%,transparent);}}
+  .stagebody{background:#fff; border:1px solid var(--rule); border-radius:6px; padding:18px 22px;}
+
+  /* ── 事實面板：第二題你准了用表格，但字不縮小 ── */
+  .facts{width:100%; border-collapse:collapse; margin:0 0 4px; font-size:16.5px;}
+  .facts th{text-align:left; font-weight:normal; color:var(--ink2); width:6.5em;
+    padding:7px 10px 7px 0; border-bottom:1px solid var(--rule); vertical-align:top;}
+  .facts td{padding:7px 0; border-bottom:1px solid var(--rule); color:var(--ink);}
+
+  /* ── 三本對照 ── */
+  .cmp{display:grid; grid-template-columns:repeat(3,1fr);}
+  .cmpr{border-right:1px solid var(--rule);}
+  .cmpr:last-child{border-right:0;}
+  .cmph{background:#f1f0ec; padding:12px 16px; font-size:15.5px; color:var(--ink2); border-bottom:1px solid var(--rule);}
+  .cmpb{padding:20px 18px; font-size:19px; line-height:2.05;}
+  .cmpn{display:block; font-size:14.5px; color:var(--ink2); line-height:1.8; margin-top:12px;}
+  @media (max-width:620px){
+    .mapwrap{grid-template-columns:1fr;} .cmp{grid-template-columns:1fr;}
+    .cmpr{border-right:0; border-bottom:1px solid var(--rule);}
+  }
+
+  .pal{display:flex; gap:0; border-radius:4px; overflow:hidden; margin:14px 0 6px;}
+  .pal div{flex:1; height:64px; display:flex; align-items:flex-end; justify-content:center; color:#fff; font-size:13.5px; padding-bottom:6px;}
+
+  /* ── 題目 ── */
+  .qbox{background:var(--card); border:1px solid var(--rule); border-radius:4px; padding:24px 26px; margin-bottom:14px;}
+  .qt{font-size:20px; margin:0 0 6px;}
+  .qd{color:var(--ink2); font-size:16px; margin:0 0 16px;}
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opts label{border:1px solid var(--rule); border-radius:4px; padding:12px 18px; cursor:pointer; background:#fff; line-height:1.7;}
+  .opts input{position:absolute; opacity:0; width:0; height:0;}
+  .opts label:has(input:checked){background:var(--soft); border-color:var(--accent);}
+  .opts .d{display:block; color:var(--ink2); font-size:15px; margin-top:3px;}
+  .note textarea{width:100%; min-height:60px; padding:12px 14px; font-size:16px; line-height:1.8;
+    border:1px solid var(--rule); border-radius:4px; font-family:inherit; color:var(--ink); background:#fff;}
+  .note span{color:var(--ink2); font-size:15px;}
+  .bar{position:fixed; left:0; right:0; bottom:0; background:rgba(251,250,247,.97); border-top:1px solid var(--rule); padding:16px 24px;}
+  .bar .inner{max-width:900px; margin:0 auto; display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
+  .count{flex:1; color:var(--ink2); font-size:16px;}
+  .count b{color:var(--accent);}
+  button{font-family:inherit; font-size:17px; padding:11px 26px; border-radius:4px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer;}
+  button.ghost{background:#fff; color:var(--accent);}
+  #out textarea{width:100%; min-height:260px; font-size:15px; line-height:1.8; padding:16px; border:1px solid var(--accent); border-radius:4px; font-family:inherit; background:#fff; color:var(--ink);}
+  .lock{background:#f3f5f3; border:1px solid var(--rule); border-radius:4px; padding:20px 26px; color:var(--ink2); font-size:16.5px;}
+  .lock b{color:var(--ink);}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>配色樣張　與　第二輪確認</h1>
+  <div class="sub">禪宗祖師跑江湖．互動遊戲　2026-10-07<br>
+  上半是你要我「配出協調好看的色」的實際樣子，可以點；下半是還沒定的九件事。</div>
+</header>
+
+<h2>一、六位祖師的識別色</h2>
+<p class="lead">同明度、同彩度配出來的一組，彼此協調不打架。底色維持紙色，色塊只出現在該亮的地方。點一下試試。</p>
+<div class="box">
+  <div class="lamps" id="lamps"></div>
+  <p class="tip">點祖師看亮燈效果。可以同時亮好幾個。</p>
+  <div class="pal">
+    <div style="background:#3d6ea6">靛藍</div>
+    <div style="background:#2f8b78">松石綠</div>
+    <div style="background:#b8822c">琥珀</div>
+    <div style="background:#c05540">朱砂</div>
+    <div style="background:#7a5f9e">青蓮紫</div>
+    <div style="background:#95683d">赭石</div>
+  </div>
+</div>
+
+<h2>二、關鍵詞大色塊（取代原本的黃底）</h2>
+<p class="lead">你說關鍵詞不要黃色，要協調好看的亮色大色塊。這是實際的樣子——滿版大字壓在一塊亮色上，每個關鍵詞用它所屬祖師的色。字全部出自原典，下面附經號卷次。</p>
+<div class="kwrow">
+  <div class="kw" style="background:#3d6ea6"><span class="big">廓然無聖</span><span class="src">景德傳燈錄　卷三</span></div>
+  <div class="kw" style="background:#3d6ea6"><span class="big">不識</span><span class="src">景德傳燈錄　卷三</span></div>
+  <div class="kw" style="background:#95683d"><span class="big">本來無一物</span><span class="src">六祖大師法寶壇經</span></div>
+  <div class="kw" style="background:#2f8b78"><span class="big">覓心了不可得</span><span class="src">景德傳燈錄　卷三</span></div>
+</div>
+<p class="tip">（以上四句是示範版面用的，正式版每一個字都會先回原典核對過才放。）</p>
+
+<h2>三、畫面上只會有這三種字</h2>
+<p class="lead">2026-10-07 你選了「連白話都不要」。所以全站沒有白話翻譯、沒有導讀、沒有我的任何一句轉述。兒童靠圖像與互動去理解，不靠我代講。畫面上的字只剩三種，全部出自原典或事實：</p>
+<div class="box" style="padding:22px 24px">
+  <p style="margin:0 0 10px; font-size:16px; color:var(--ink2)">① 原典原文（逐字，附出處）</p>
+  <div class="orig">
+    光曰。我心未寧。乞師與安。師曰。將心來與汝安。曰覓心了不可得。師曰。我與汝安心竟。
+    <span class="ref">景德傳燈錄　卷三（T2076）　○　逐字取自 CBETA，連句讀都照原樣，未改一字</span>
+  </div>
+  <p style="margin:18px 0 10px; font-size:16px; color:var(--ink2)">② 事實標註：人名‧地名‧年代‧書名（第二題你准了用表格，字一樣大）</p>
+  <table class="facts">
+    <tr><th>年代</th><td>梁　普通年間</td></tr>
+    <tr><th>地點</th><td>嵩山少林寺　（今日省市待歷史地理系統定位）</td></tr>
+    <tr><th>遇到的人</th><td>神光，後改名慧可</td></tr>
+    <tr><th>出處</th><td>景德傳燈錄　卷三</td></tr>
+  </table>
+  <p style="margin:18px 0 10px; font-size:16px; color:var(--ink2)">③ 關鍵詞大色塊（見上一節）</p>
+  <div class="vern">
+    <b>不會有的東西</b>　白話翻譯、導讀、「這段告訴我們……」、勵志收尾、任何我寫的句子。
+    <span style="display:block; margin-top:6px; font-size:15px;">○ 技術上怎麼擋：資料檔只有「原文」「出處」「事實欄位」三種欄位，沒有可以放轉述的地方。</span>
+  </div>
+</div>
+
+<h2>四、遊戲機制（照你 2026-10-07 描述的做）</h2>
+<p class="lead">你說的是兩個入口。這是會動的樣張，用達摩當例子，裡面每一句原文我都已經回《景德傳燈錄》卷三逐字核對過。</p>
+
+<div class="box">
+  <p style="margin:0 0 14px; font-size:17px; color:var(--ink2)">
+    <b style="color:var(--ink)">入口一　點地圖</b>　點到哪裡那裡就亮，右邊出現祖師在那裡發生的事、說過的話、見到的人。
+  </p>
+  <div class="mapwrap">
+    <div class="map" id="map"></div>
+    <div class="panel" id="panel">
+      <p class="ph">點左邊地圖上的任一個地方</p>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <p style="margin:0 0 14px; font-size:17px; color:var(--ink2)">
+    <b style="color:var(--ink)">入口二　點祖師名</b>　先出現祖師的畫像，再點進去就依生平一站一站引導，兒童每點亮一盞就認識一段。
+  </p>
+  <div class="portraits" id="portraits"></div>
+  <div id="life" style="display:none">
+    <div class="lifebar"><span id="lifeName"></span><span id="lifeProg"></span></div>
+    <div class="lifestage" id="lifeStage"></div>
+    <p class="tip"><button class="ghost" onclick="lifeReset()">重來</button></p>
+  </div>
+</div>
+
+<h2>五、我剛查出來的一件事（會影響你的第六題）</h2>
+<p class="lead">為了做上面的樣張，我把三個本子的那首偈逐字調出來比對。結果比我原先跟你說的更複雜——不是兩個版本，是三個，而且完整的那四句只有宗寶本有。</p>
+<div class="box" style="padding:0; overflow:hidden">
+  <div class="cmp">
+    <div class="cmpr">
+      <div class="cmph">六祖大師法寶壇經．宗寶本　T2008</div>
+      <div class="cmpb">菩提本無樹　明鏡亦非臺<br>本來無一物　何處惹塵埃
+        <span class="cmpn">○ 流傳最廣的就是這一首。四句都在。</span></div>
+    </div>
+    <div class="cmpr">
+      <div class="cmph">景德傳燈錄　卷三　T2076</div>
+      <div class="cmpb">菩提本非樹　心鏡亦非臺<br>本來無一物　何假拂塵埃
+        <span class="cmpn">○ 有「本來無一物」，但第一句是「本非樹」、第四句是「何假拂塵埃」，跟大家會背的不一樣。</span></div>
+    </div>
+    <div class="cmpr">
+      <div class="cmph">壇經．敦煌本　T2007</div>
+      <div class="cmpb">有「菩提本無樹」，有「佛性常清淨」<br><span style="color:var(--ink2)">全卷沒有「本來無一物」這五個字</span>
+        <span class="cmpn">○ 我用程式對全卷檢索過，「本來無一物」在敦煌本裡查無此句。</span></div>
+    </div>
+  </div>
+</div>
+<p class="tip" style="text-align:left; padding-left:17px">
+  所以依你定的「用流傳最廣的」，第六題的答案就是宗寶本——它是唯一有完整那四句的本子。<br>
+  （查證方式：CBETA 全文檢索，逐個本子分別查「本來無一物」「菩提本無樹」「佛性常清淨」「何處惹塵埃」四個詞。）
+</p>
+
+<h2>五、已經鎖定的部分</h2>
+<div class="lock">
+  <b>原則</b>：33 條已確認（規則 8、9 要改，見下面第二、三題；18、19、錯7 不適用）。<br>
+  <b>來源</b>：甲級原典 13 部、乙級正史碑銘 5 項、丙級地理 3 家、丁級曆法 1 項，<b>全部可用</b>。戊級現代研究整個不用。<br>
+  <b>傳說</b>：用流傳最廣的版本，不加警語標籤，但每段附經號卷次。<br>
+  <b>效果</b>：我直接寫程式，零成本。<b>美工</b>：走免費路線（見下面第八題）。
+</div>
+
+<h2>六、還沒定的九件事</h2>
+<p class="lead">逐題選一個，選完按最下面複製貼回來給我。</p>
+<div id="app"></div>
+<div class="note"><span>其他要交代的：</span><textarea id="other"></textarea></div>
+</div>
+
+<div class="bar"><div class="inner">
+  <div class="count" id="count"></div>
+  <button class="ghost" onclick="clearAll()">全部清除</button>
+  <button onclick="makeOutput()">複製我的勾選結果</button>
+</div></div>
+
+<div class="wrap" id="out" style="display:none">
+  <h2>勾選結果</h2>
+  <p class="lead">已複製到剪貼簿。沒複製成功就全選下面的文字自己複製，貼回對話給我。</p>
+  <textarea id="outText" readonly></textarea>
+</div>
+
+<script>
+const MASTERS = [
+ {n:"達摩", y:"？–536", c:"var(--c1)"},
+ {n:"慧可", y:"487–593", c:"var(--c2)"},
+ {n:"僧璨", y:"？–606", c:"var(--c3)"},
+ {n:"道信", y:"580–651", c:"var(--c4)"},
+ {n:"弘忍", y:"601–674", c:"var(--c5)"},
+ {n:"惠能", y:"638–713", c:"var(--c6)"},
+];
+document.getElementById("lamps").innerHTML = MASTERS.map(m =>
+  '<div class="lamp" style="--c:'+m.c+'" onclick="this.classList.toggle(\'on\')">'
+  + '<div class="dot"></div><div class="nm">'+m.n+'</div><div class="yr">'+m.y+'</div></div>').join("");
+
+/* ───── 達摩行腳：每一句原文皆取自《景德傳燈錄》卷三（T2076），已逐字核對 ───── */
+/* 依 2026-10-07 第一題「連白話都不要」：面板上沒有任何我寫的轉述句，
+   只有三種東西——事實標註（人名‧地名‧年代‧書名）、原典原文、出處。 */
+const DEMO = [
+ {x:20, y:84, p:"南海", yr:"梁．普通年間", who:"蕭昂（廣州刺史）",
+  q:"達于南海。……廣州刺史蕭昂具主禮迎接。表聞武帝。", ref:"景德傳燈錄　卷三"},
+ {x:46, y:66, p:"金陵", yr:"十月一日", who:"梁武帝",
+  q:"帝又問。如何是聖諦第一義。師曰。廓然無聖。帝曰。對朕者誰。師曰。不識。帝不領悟。", ref:"景德傳燈錄　卷三"},
+ {x:62, y:46, p:"江北", yr:"是月十九日", who:"—",
+  q:"師知機不契。是月十九日潛迴江北。", ref:"景德傳燈錄　卷三"},
+ {x:72, y:30, p:"洛陽", yr:"十一月二十三日", who:"—",
+  q:"十一月二十三日屆于洛陽。", ref:"景德傳燈錄　卷三"},
+ {x:62, y:16, p:"嵩山少林寺", yr:"—", who:"—",
+  q:"寓止于嵩山少林寺。面壁而坐終日默然。人莫之測。謂之壁觀婆羅門。", ref:"景德傳燈錄　卷三"},
+ {x:40, y:24, p:"少林．雪中", yr:"十二月九日夜", who:"神光（後改名慧可）",
+  q:"其年十二月九日夜天大雨雪。光堅立不動。遲明積雪過膝。……潛取利刀自斷左臂。置于師前。師知是法器。乃曰。諸佛最初求道為法忘形。汝今斷臂吾前。求亦可在。師遂因與易名曰慧可。",
+  ref:"景德傳燈錄　卷三"},
+ {x:24, y:42, p:"少林．安心", yr:"—", who:"慧可",
+  q:"光曰。我心未寧。乞師與安。師曰。將心來與汝安。曰覓心了不可得。師曰。我與汝安心竟。",
+  ref:"景德傳燈錄　卷三"},
+ {x:36, y:62, p:"熊耳山", yr:"十二月二十八日", who:"—",
+  q:"其年十二月二十八日葬熊耳山。起塔於定林寺。", ref:"景德傳燈錄　卷三"},
+];
+
+const map = document.getElementById("map");
+map.innerHTML = DEMO.map((d,i)=>
+  '<button class="spot" style="left:'+d.x+'%; top:'+d.y+'%" data-i="'+i+'"><i></i><b>'+d.p+'</b></button>').join("");
+map.addEventListener("click", function(e){
+  const b = e.target.closest(".spot"); if(!b) return;
+  map.querySelectorAll(".spot").forEach(s=>s.classList.remove("on"));
+  b.classList.add("on");
+  showSpot(DEMO[+b.dataset.i]);
+});
+function showSpot(d){
+  document.getElementById("panel").innerHTML =
+    '<h4>'+d.p+'</h4>'
+    + '<p class="todo">今日的省市：待歷史地理系統定位後填入（不自己推算）</p>'
+    + '<table class="facts"><tr><th>年代</th><td>'+d.yr+'</td></tr>'
+    + '<tr><th>遇到的人</th><td>'+d.who+'</td></tr>'
+    + '<tr><th>出處</th><td>'+d.ref+'</td></tr></table>'
+    + '<div class="qt2">'+d.q+'</div>'
+    + '<div class="rf">'+d.ref+'　○ 原文逐字，已回 CBETA 核對</div>';
+}
+
+/* ───── 入口二：祖師畫像 → 生平逐站點亮 ───── */
+const pts = document.getElementById("portraits");
+pts.innerHTML = MASTERS.map((m,i)=>
+  '<div class="pt" style="--c:'+m.c+'" data-i="'+i+'">'
+  + '<div class="face">畫像</div><b>'+m.n+'</b></div>').join("");
+let lifeStep = 0;
+pts.addEventListener("click", function(e){
+  const p = e.target.closest(".pt"); if(!p) return;
+  pts.querySelectorAll(".pt").forEach(x=>x.classList.remove("sel"));
+  p.classList.add("sel");
+  const i = +p.dataset.i;
+  document.getElementById("life").style.display = (i===0) ? "block" : "none";
+  document.getElementById("lifeName").textContent = MASTERS[i].n + "　生平逐站";
+  if(i!==0){
+    document.getElementById("life").style.display="block";
+    document.getElementById("lifeStage").innerHTML =
+      '<div class="stagebody" style="color:var(--ink2)">這一位的生平資料還沒建，樣張只做了達摩一位。點「達摩」看完整的走法。</div>';
+    document.getElementById("lifeProg").textContent="";
+    return;
+  }
+  lifeReset();
+});
+function lifeReset(){
+  lifeStep = 0; renderLife();
+}
+function renderLife(){
+  const total = DEMO.length;
+  document.getElementById("lifeProg").textContent = "已點亮 " + lifeStep + " ／ " + total;
+  let row = '<div class="lamprow">';
+  for(let i=0;i<total;i++){
+    const cls = i<lifeStep ? "done" : (i===lifeStep ? "next" : "");
+    row += '<button class="ln '+cls+'" '+(i===lifeStep?'onclick="lifeNext()"':'disabled')+'>'+(i+1)+'</button>';
+  }
+  row += '</div>';
+  let body;
+  if(lifeStep===0){
+    body = '<div class="stagebody" style="color:var(--ink2)">點那顆會跳動的燈，從第一站開始。</div>';
+  } else if(lifeStep>=total){
+    const last = DEMO[total-1];
+    body = '<div class="stagebody"><b style="font-weight:normal; font-size:20px">走完了。</b><br>'
+      + '<span style="color:var(--ink2); font-size:16.5px">達摩從南海上岸，經金陵、江北、洛陽，止於嵩山少林，付法給慧可，最後葬在熊耳山。</span>'
+      + '<div style="margin-top:14px; font-size:17px">接下來玩：<b style="font-weight:normal; color:var(--c2)">二祖慧可</b></div></div>';
+  } else {
+    const d = DEMO[lifeStep-1];
+    body = '<div class="stagebody"><h4 style="margin:0 0 10px; font-size:21px; font-weight:normal">第 '+lifeStep+' 站　'+d.p+'</h4>'
+      + '<table class="facts"><tr><th>年代</th><td>'+d.yr+'</td></tr>'
+      + '<tr><th>遇到的人</th><td>'+d.who+'</td></tr></table>'
+      + '<div class="qt2">'+d.q+'</div><div class="rf">'+d.ref+'</div></div>';
+  }
+  document.getElementById("lifeStage").innerHTML = row + body;
+}
+function lifeNext(){ lifeStep++; renderLife(); }
+
+// 關鍵詞字卡：字數多的自動縮到剛好一行，不讓它斷行
+function fitKeywords(){
+  document.querySelectorAll(".kw .big").forEach(function(b){
+    var box = b.parentElement.clientWidth - 40;
+    var size = 58;
+    b.style.fontSize = size + "px";
+    b.style.letterSpacing = "12px";
+    while (b.scrollWidth > box && size > 26){
+      size -= 2;
+      b.style.fontSize = size + "px";
+      if (size < 44) b.style.letterSpacing = "8px";
+      if (size < 34) b.style.letterSpacing = "5px";
+    }
+  });
+}
+fitKeywords();
+window.addEventListener("resize", fitKeywords);
+
+const Q = [
+{id:"a1", t:"第一題：「白話是出原典」我的理解對不對？",
+ d:"你在第零條補充了這句。我讀成：淺色說明區的白話也不可以是我自己的話，必須是該段原文的直譯，原文沒有的意思一個字都不加，而且白話與原文一對一綁定、不跨段摻雜。上面第三節就是照這個理解做的。",
+ o:[["理解正確","理解正確，照這樣做","資料檔每段白話綁定它對應的原文段落，程式檢查：有白話就一定要有對應原文，不可有無主的白話。"],
+    ["要更嚴","比這個更嚴：連白話都不要","只放原文，完全不給白話。兒童看不懂的部分靠圖像與互動去理解。"],
+    ["我理解錯了","我理解錯了（請你寫在最後的補充欄）","你的意思是別的，寫下來我重做。"]]},
+
+{id:"a2", t:"第二題：規則 8「禁止表格」你勾了要改，要改成什麼？",
+ d:"原規則是禁止表格、格子、多欄並列，因為影片裡會讓字變小。我當初標的疑問是：年份、今地這類「事實面板」算不算表格？",
+ o:[["事實面板可用表格","事實面板可以用表格，原文區仍嚴禁","朝代／年份／今地這種事實欄位用整齊的表格呈現（字一樣大），但公案原文永遠一屏一句、置中留白。"],
+    ["全站都可以用表格","全站都可以用，只要字夠大","解除這條限制，由我控制字級不要變小。"],
+    ["維持禁止","維持原規則，全部不用表格","事實也用條列呈現，不做成格子。"]]},
+
+{id:"a3", t:"第三題：上面配的這組色可以嗎？",
+ d:"你要「協調好看的亮色大色塊」取代黃底。這組是同明度同彩度配出來的六色（靛藍、松石綠、琥珀、朱砂、青蓮紫、赭石），底色仍是紙色，色塊只出現在關鍵詞卡與亮燈處。另外提醒：這跟你勾「照用」的通則三（不要飽和大色塊、紙墨素雅）表面上牴觸，我的處理是「大色塊限定在關鍵詞卡，頁面底色不動」。",
+ o:[["這組可以","這組可以，就用它","六色定案，關鍵詞卡與祖師識別色都用這組。"],
+    ["方向對要再亮","方向對，但要再亮一點","色相保留，彩度與明度往上調，色塊更跳。"],
+    ["方向對要再沉","方向對，但要再沉一點","往紙墨那邊收，色塊變柔和。"],
+    ["重配","重配一組","這組不行，我重做給你看。"]]},
+
+{id:"a4", t:"第四題：規則 15 改成「下一關」，確認一下。",
+ d:"你補充「遊戲不是薦續讀的清單，是下一個要玩的關」。所以每一關結尾不給書單，直接給下一關的入口。原典出處仍然會跟著每段原文走（第零條要求的），只是不另外做成一份閱讀清單。",
+ o:[["就是這樣","就是這樣","關尾＝下一關入口，不做閱讀清單。"],
+    ["兩個都要","下一關入口要，書單也留一份","結尾以下一關為主，另外在角落留一個可展開的出處清單。"],
+    ["我意思是別的","我的意思是別的（寫在補充欄）",""]]},
+
+{id:"a5", t:"第五題：規則 23「不要夾英文縮寫」你沒勾，怎麼處理？",
+ d:"你在規則 10 補充了「有技術限制就用英文」。規則 23 講的是同一件事的另一半——地理系統名稱這類專有名詞要不要寫中文全名。",
+ o:[["比照第10條","比照第 10 條：畫面文字全中文，技術上躲不掉的地方允許英文","地理系統寫中文全名；網址、原始碼、經號代碼（T2076 這種）允許英文數字。"],
+    ["經號也要中文","連經號也要中文化","T2076 改寫成「大正藏第二○七六號」這種。較長但全中文。"],
+    ["不限制","不特別限制","需要時就用英文，不另外轉寫。"]]},
+
+{id:"a6", t:"第六題：惠能的語錄用哪一個壇經底本？",
+ d:"兩本有名的差異：敦煌本作「佛性常清淨」，宗寶本作「本來無一物」。依你定的「用流傳最廣的」，答案應該是宗寶本。",
+ o:[["只用宗寶本","只用宗寶本（依你「用流傳最廣的」原則）","「本來無一物」出自這裡，是大家會背的那一句。單一底本，兒童不會被兩種文字弄混。"],
+    ["宗寶本為主敦煌本並陳","宗寶本為主、敦煌本並陳","主顯宗寶本，差異處同時列敦煌本文句，兩本都標經號。"],
+    ["只用敦煌本","只用敦煌本","現存最早，但文句與大眾熟悉的通行本差異大，與「用流傳最廣的」相反。"]]},
+
+{id:"a7", t:"第七題：兒童向的尺度要到哪裡？",
+ d:"慧可斷臂既然照演（流傳最廣的是立雪自斷），那斷臂這件事要怎麼跟兒童講就得一起定。另有惠能受衣後被追殺奪衣、南北宗之爭。",
+ o:[["全部呈現不渲染","全部呈現但不渲染","事件照演、原文照引，不加血腥描寫、不配刺激畫面，用平實的敘述帶過。"],
+    ["淡化處理","淡化處理","事件保留在年表與地圖上，但不做成互動關卡，點開只有簡短一行。"],
+    ["整段跳過","整段跳過","不收這些情節，只做行腳、遇見的人、語錄三條線。"]]},
+
+{id:"a8", t:"第八題：美工素材走哪一條免費路線？",
+ d:"你已定案互動效果我寫程式、美工找免費的。免費的路有這幾條。註：Google AI Studio 不能用，免費層明寫會拿資料去訓練。",
+ o:[["公有領域古畫為主","以博物館公有領域古畫為主（我建議這個）","大都會、克利夫蘭、芝加哥藝術學院、V&A、史密森尼、歐洲數位圖書館有大量標示公有領域的禪宗題材真跡：達摩像、蘆葉渡江圖、祖師頂相、六祖圖。零成本、零授權風險，是真跡不是 AI 編的，每張可標館藏出處。我有現成工具可直接檢索下載。"],
+    ["古畫為底再向量補","古畫為主，查不到的我用向量補","僧璨、道信這類圖像稀少的改用線稿補齊，用統一的描邊風格銜接。"],
+    ["全部向量","全部我用程式畫向量線稿","不用圖庫也不用 AI，最素雅、檔案最小，但人物只能是簡化造型。"],
+    ["走訂閱額度生圖","用 Nano Banana Pro 生圖","走你現有的 Google 訂閱額度，不另外花錢。可控、角色一致，但是 AI 生成不是真跡。"]]},
+
+{id:"a9", t:"第九題：放在哪裡？",
+ d:"七處徵心當初是從五十三參站搬出去獨立的，這個建議同樣獨立。",
+ o:[["獨立新站","獨立新站公開上線（我建議這個）","新開一個公開專案，獨立網址，跟五十三參站互不影響。"],
+    ["掛在既有站","掛在既有站底下","放進現有的五十三參站，從首頁連過去。"],
+    ["先做本機版","先只做本機版","先不上線，做好給你在自己電腦點開看。"]]},
+];
+
+document.getElementById("app").innerHTML = Q.map(q =>
+  '<div class="qbox"><p class="qt">'+q.t+'</p><p class="qd">'+q.d+'</p><div class="opts">'
+  + q.o.map(o=>'<label><input type="radio" name="'+q.id+'" value="'+o[0]+'"><span>'+o[1]
+      + (o[2]?'<span class="d">'+o[2]+'</span>':'') +'</span></label>').join("")
+  + '</div></div>').join("");
+
+const KEY="zen-round2-v1";
+function tally(){
+  let done=0; Q.forEach(q=>{ if(document.querySelector('input[name="'+q.id+'"]:checked')) done++; });
+  document.getElementById("count").innerHTML='已選 <b>'+done+'</b> ／ 共 '+Q.length+' 題　　尚有 <b>'+(Q.length-done)+'</b> 題未選';
+}
+function save(){
+  const d={r:{},o:document.getElementById("other").value};
+  document.querySelectorAll('input[type=radio]:checked').forEach(i=>d.r[i.name]=i.value);
+  try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
+}
+function load(){
+  let d; try{d=JSON.parse(localStorage.getItem(KEY)||"{}");}catch(e){return;}
+  for(const k in (d.r||{})){const el=document.querySelector('input[name="'+k+'"][value="'+d.r[k]+'"]'); if(el) el.checked=true;}
+  if(d.o) document.getElementById("other").value=d.o;
+}
+document.body.addEventListener("change",()=>{save();tally();});
+document.body.addEventListener("input",save);
+function clearAll(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>i.checked=false);
+  document.getElementById("other").value="";
+  try{localStorage.removeItem(KEY);}catch(e){}
+  tally(); document.getElementById("out").style.display="none";
+}
+function makeOutput(){
+  let L=["【禪宗祖師跑江湖．第二輪確認結果】",""];
+  Q.forEach(q=>{
+    const el=document.querySelector('input[name="'+q.id+'"]:checked');
+    L.push(q.t.replace(/：.*/,"")+"　"+q.t.replace(/^[^：]*：/,"")+" ⇒ "+(el?el.value:"未選"));
+  });
+  const o=document.getElementById("other").value;
+  if(o){L.push("");L.push("── 其他交代");L.push("　"+o);}
+  const txt=L.join("\n");
+  document.getElementById("out").style.display="block";
+  document.getElementById("outText").value=txt;
+  try{ var pr=navigator.clipboard.writeText(txt); if(pr&&pr.catch) pr.catch(function(){}); }catch(e){}
+  const ta=document.getElementById("outText"); ta.focus(); ta.select();
+  document.getElementById("out").scrollIntoView({behavior:"smooth"});
+}
+load(); tally();
+</script>

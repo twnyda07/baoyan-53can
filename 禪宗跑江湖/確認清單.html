@@ -1,0 +1,426 @@
+<meta charset="utf-8">
+<title>禪宗祖師跑江湖．開工前確認清單</title>
+<style>
+  :root{
+    --paper:#fbfaf7; --card:#ffffff; --ink:#23201c; --ink2:#6b645b;
+    --rule:#e6e1d8; --accent:#4a5d52; --soft:#eef1ee; --warn:#8a6f3c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0 0 120px; background:var(--paper); color:var(--ink);
+    font-family:"Songti TC","Noto Serif CJK TC","Source Han Serif TC",serif;
+    font-size:18px; line-height:1.9; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 24px;}
+  header{padding:56px 0 28px; border-bottom:1px solid var(--rule); margin-bottom:36px;}
+  h1{font-size:34px; margin:0 0 10px; letter-spacing:2px;}
+  .sub{color:var(--ink2); font-size:17px; line-height:2;}
+  h2{
+    font-size:25px; margin:52px 0 6px; padding-left:14px;
+    border-left:3px solid var(--accent); letter-spacing:1px;
+  }
+  .lead{color:var(--ink2); font-size:16px; margin:0 0 22px; padding-left:17px;}
+  .zero{
+    background:var(--card); border:1px solid var(--rule); border-radius:4px;
+    padding:28px 30px; margin:0 0 10px;
+  }
+  .zero .q{font-size:22px; line-height:1.9; margin:0 0 18px;}
+  .zero ul{margin:0; padding-left:22px; color:var(--ink2); font-size:16.5px;}
+  .zero li{margin-bottom:8px;}
+  .zero strong{color:var(--ink);}
+  .item{
+    background:var(--card); border:1px solid var(--rule); border-radius:4px;
+    padding:18px 22px; margin-bottom:10px;
+  }
+  .item.muted{background:#f7f5f1; border-style:dashed;}
+  .item.muted .txt{color:var(--ink2); text-decoration:line-through; text-decoration-color:#cfc9bd;}
+  .item .no{
+    display:inline-block; min-width:42px; color:var(--accent);
+    font-size:15px; letter-spacing:1px;
+  }
+  .item .txt{font-size:18.5px;}
+  .item .how{color:var(--ink2); font-size:16px; margin:6px 0 0 42px;}
+  .item .flag{color:var(--warn); font-size:15.5px; margin:6px 0 0 42px;}
+  .opts{margin:12px 0 0 42px; display:flex; flex-wrap:wrap; gap:8px;}
+  .opts label{
+    display:inline-block; padding:7px 18px; border:1px solid var(--rule);
+    border-radius:999px; font-size:16px; color:var(--ink2); cursor:pointer;
+    background:#fff; user-select:none;
+  }
+  .opts input{position:absolute; opacity:0; width:0; height:0;}
+  .opts input:checked + span{}
+  .opts label:has(input:checked){
+    background:var(--soft); border-color:var(--accent); color:var(--ink);
+  }
+  .opts.wide{flex-direction:column; align-items:flex-start;}
+  .opts.wide label{border-radius:4px; padding:12px 18px; width:100%; line-height:1.7;}
+  .opts.wide .d{display:block; color:var(--ink2); font-size:15px; margin-top:3px;}
+  .note{margin:14px 0 30px 0;}
+  .note textarea{
+    width:100%; min-height:62px; padding:12px 14px; font-size:16px; line-height:1.8;
+    border:1px solid var(--rule); border-radius:4px; background:#fff; color:var(--ink);
+    font-family:inherit; resize:vertical;
+  }
+  .note span{color:var(--ink2); font-size:15px;}
+  .src{color:var(--ink2); font-size:15.5px; margin:4px 0 0 42px;}
+  .excl{
+    background:#f7f5f1; border:1px dashed var(--rule); border-radius:4px;
+    padding:16px 22px; margin-bottom:10px; color:var(--ink2); font-size:16.5px;
+  }
+  .qbox{
+    background:var(--card); border:1px solid var(--rule); border-radius:4px;
+    padding:24px 26px; margin-bottom:14px;
+  }
+  .qbox .qt{font-size:20px; margin:0 0 6px;}
+  .qbox .qd{color:var(--ink2); font-size:16px; margin:0 0 16px;}
+  .qbox .opts{margin-left:0;}
+  .bar{
+    position:fixed; left:0; right:0; bottom:0; background:rgba(251,250,247,.97);
+    border-top:1px solid var(--rule); padding:16px 24px;
+  }
+  .bar .inner{
+    max-width:900px; margin:0 auto; display:flex; align-items:center; gap:16px;
+    flex-wrap:wrap;
+  }
+  .count{color:var(--ink2); font-size:16px; flex:1;}
+  .count b{color:var(--accent);}
+  button{
+    font-family:inherit; font-size:17px; padding:11px 26px; border-radius:4px;
+    border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer;
+  }
+  button.ghost{background:#fff; color:var(--accent);}
+  #out{
+    max-width:900px; margin:0 auto; padding:0 24px;
+  }
+  #out textarea{
+    width:100%; min-height:300px; font-size:15px; line-height:1.8; padding:16px;
+    border:1px solid var(--accent); border-radius:4px; font-family:inherit;
+    background:#fff; color:var(--ink);
+  }
+  .hint{color:var(--ink2); font-size:15.5px; margin:10px 0 0;}
+  @media (max-width:620px){
+    body{font-size:17px;}
+    .item .how,.item .flag,.opts,.src{margin-left:0;}
+    h1{font-size:28px;}
+  }
+</style>
+
+<div class="wrap">
+<header>
+  <h1>禪宗祖師跑江湖．開工前確認清單</h1>
+  <div class="sub">
+    達摩 → 慧可 → 僧璨 → 道信 → 弘忍 → 惠能　互動遊戲<br>
+    建立日 2026-10-07　　<b>全部勾選完才動工</b><br>
+    勾完按最下方「複製我的勾選結果」，貼回來給我即可。<br>
+    <br>
+    <b>你今天已經定案、不必再勾的五件事：</b><br>
+    一、語錄一定用原典，不要我的心靈雞湯語句（列為第零條）<br>
+    二、全站不加語音——互動遊戲本來就不需要人聲（規則 18、19 與錯7 標為不適用）<br>
+    三、現代研究整個不用，連延伸閱讀也不放（戊級已刪）<br>
+    四、互動效果由我直接寫程式零成本，美工素材走免費路線（見問題五）<br>
+    五、<b>傳說與史傳不一致時，用流傳最廣的版本</b>（原問題一，已定案不必再選）<br>
+    <span style="color:#6b645b">　　＝達摩見梁武帝「廓然無聖」「不識」、一葦渡江、面壁九年、慧可立雪斷臂，全部照演。<br>
+    　　不加「史傳未載」這類警語標籤；但依第零條，每段仍會附經號卷次，出處自己會說話。</span>
+  </div>
+</header>
+
+<h2>⚑ 第零條．不可妥協</h2>
+<p class="lead">2026-10-07 你再次指明的。這條是整個專案的前提，不是選項。</p>
+<div class="zero">
+  <p class="q">「講過的語錄一定要用原典，不要你的心靈雞湯語句。」</p>
+  <ul>
+    <li>遊戲裡每一句<strong>祖師說的話</strong>，逐字出自原典，附經號、卷次、可點開的線上連結。</li>
+    <li><strong>我一個字都不替祖師寫。</strong> 不自創對仗短語、不改寫、不潤飾、不縮寫、不「翻成兒童聽得懂的話」再放進語錄框。</li>
+    <li>兒童讀不懂時：原文照放（大字），下方另設<strong>淺色說明區</strong>寫白話，樣式與位置明顯不同，說明區永遠不用原典的排場。</li>
+    <li><strong>禁止</strong>「所以我們要活在當下」「放下就自在」這類勸世收尾，整站不出現。</li>
+    <li>技術上怎麼擋：資料檔每筆語錄強制要有「原文」與「出處」兩欄，缺一不得上線；建置時程式把原文與線上原典<strong>逐字比對，不一致就建置失敗</strong>。</li>
+  </ul>
+</div>
+<div id="zeroOpt"></div>
+
+<div id="app"></div>
+
+<div class="bar"><div class="inner">
+  <div class="count" id="count"></div>
+  <button class="ghost" onclick="clearAll()">全部清除</button>
+  <button onclick="makeOutput()">複製我的勾選結果</button>
+</div></div>
+
+<div id="out" style="display:none">
+  <h2>勾選結果</h2>
+  <p class="lead">已複製到剪貼簿。若沒複製成功，請全選下面的文字自行複製，貼回對話給我。</p>
+  <textarea id="outText" readonly></textarea>
+  <p class="hint">貼回來之後我就開始：①依你確認的來源從原典逐條抓原文建資料庫（每條帶經號卷次）②地名逐一走歷史地理系統定位今日省市 ③做效果樣張給你挑。</p>
+</div>
+</div>
+
+<script>
+const YN = [["照用","✅ 照用"],["要改","✏️ 要改"],["不適用","❌ 不適用"]];
+const SRC = [["可用","✅ 可用"],["不用","❌ 不用"],["待議","？ 待議"]];
+
+const DATA = [
+{h:"第一部分之一　畫面文字（你給過的規則 1–11）",
+ lead:"來源＝永久記憶「佛學影片出片檢核表」：你在雲門三字禪影片給過的 23 條規則，加上我自己犯過的 10 個錯，共 33 條。這裡逐條改寫成「這個網站要怎麼落實」。",
+ opts:YN, items:[
+ {n:"1",t:"畫面上的字只能是原典的字，優先放完整的原典句子",how:"語錄卡、對話框、公案彈窗一律逐字引原典，附經號卷次"},
+ {n:"2",t:"絕對不可放旁白自己的話（你說這是我重犯最多次的一條）",how:"任何「禪師說」的氣泡框只能放原文；我寫的白話另設淺色說明區，樣式明顯不同"},
+ {n:"3",t:"不可改寫原典",how:"原文區逐字鎖死，建置時用程式比對原文檔與頁面輸出"},
+ {n:"4",t:"講到的原典，該段要完整顯示，不得截斷",how:"公案彈窗顯示整段原文；關鍵詞大字卡只是額外強調，不能取代整段"},
+ {n:"5",t:"人名、地名、年代、書名可以上畫面",how:"這正是本遊戲的主幹：地圖、年表、人物"},
+ {n:"6",t:"不可出現文件結構字（「項目」「內容」「一、原典原文」這類）",how:"介面標籤改用自然語：「他說了什麼」「他去了哪裡」"},
+ {n:"7",t:"字要大",how:"兒童向，正文最小 20px，原文 24px 以上"},
+ {n:"8",t:"禁止表格、格子、多欄並列",how:"公案原文一定一屏一句、置中留白",flag:"⚠️ 需你裁示：年份／地區的「事實面板」算不算表格？它是事實標註不是原文"},
+ {n:"9",t:"關鍵詞用黃底／黃字標示，要標就全部標不可漏",how:"公案關鍵詞（如「廓然無聖」「不識」）統一黃底，程式自動掃不漏字"},
+ {n:"10",t:"不得出現任何英文字母",how:"介面、按鈕、說明全繁體中文",flag:"⚠️ 有技術限制：畫面文字可以保證，但網址列與原始碼不可能沒有英文"},
+ {n:"11",t:"不得出現缺字方框",how:"上線前掃擴充區字碼位，有就換通用字並加註"},
+]},
+{h:"第一部分之二　結構（規則 12–17）", opts:YN, items:[
+ {n:"12",t:"封面要有宗派名＋祖師名，不只主題",how:"首頁大標「禪宗．祖師行腳」＋六位祖師名"},
+ {n:"13",t:"開頭不要暖場鋪陳",how:"禁「請把心靜下來」「讓我們一起」「想像一下」；首頁第一屏直接是地圖與六位祖師"},
+ {n:"14",t:"祖師生平要給朝代、年份、以及對應的現代地區",how:"每位祖師固定三欄：朝代／年份／今日省市"},
+ {n:"14b",t:"世壽之外一定要加僧臘",how:"查得到的給並註出處；查不到就明寫「史料未載」，不推算"},
+ {n:"14c",t:"割據時期的年號要標清楚是哪一國",how:"南北朝與隋唐之際最常見，年號一律標朝代（如「梁普通元年」）"},
+ {n:"15",t:"片尾要有推薦續讀的清單——是清單，不是再講解一遍",how:"每關結尾給「接著可以讀」：篇名＋經號卷次，不展開講"},
+ {n:"16",t:"重要術語必須以原文字樣出現在畫面上，不可只用講的",how:"「壁觀」「二入四行」「廓然無聖」「本來無一物」一律見字"},
+ {n:"17",t:"不講成勵志格言或心靈雞湯",how:"不寫「所以我們要活在當下」這類收尾；說不得處就說它說不得"},
+]},
+{h:"第一部分之三　聲音與讀音（規則 18–19）── 已定案：不適用",
+ lead:"2026-10-07 你指明不加兒童朗讀，並問「互動式遊戲為什麼要人聲」。確實不需要——這兩條是影片的規則，我是因為「全部套用」才搬過來的，不該原封不動搬。本站定為全站無任何語音，這一節不必勾選。",
+ opts:null, items:[
+ {n:"18",t:"旁白用女聲",how:"不適用：本站沒有旁白、沒有配音、沒有朗讀按鈕"},
+ {n:"19",t:"破音字要正音",how:"不適用：沒有人聲就沒有讀音問題。若日後你要加注音輔助再另議"},
+]},
+{h:"第一部分之四　查證（規則 20–23）", opts:YN, items:[
+ {n:"20",t:"原文一律回原典查證，不可只信現成教材",how:"每條語錄附經號、卷次與線上連結，可點開核對"},
+ {n:"21",t:"地名只用三個權威來源，佛學人地名規範只能交叉參考不可當地理依據",how:"本遊戲地圖的全部古地名照此辦理，名單見第二部分丙級"},
+ {n:"22",t:"地名給到省・市即可，區級不要寫",how:"地圖標註一律「今廣東韶關」這個層級"},
+ {n:"23",t:"中文成品不要夾英文縮寫",how:"地理系統一律寫中文全名，或只放在核對紀錄不上畫面"},
+]},
+{h:"第一部分之五　我犯過的錯（10 條，每條都要主動避免）", opts:YN, items:[
+ {n:"錯1",t:"沒查原典就做",how:"資料檔先建原文庫並逐條標經號，程式強制每筆語錄必須有出處才能上線"},
+ {n:"錯2",t:"來源稿裡夾自己的轉述，結果被當成原文用",how:"資料檔分兩欄：「原文」逐字、「說明」是我寫的，樣式與位置永遠不同"},
+ {n:"錯3",t:"放了罕用字造成缺字方框",how:"建置時自動掃擴充區字"},
+ {n:"錯4",t:"把生平寫成表格，欄位名被畫進畫面",how:"來源稿零表格"},
+ {n:"錯5",t:"把「事實標註」誤標成不上畫面",how:"人名地名年代書名要上畫面"},
+ {n:"錯6",t:"用佛學地名規範當地理依據（雲門山查成浙江紹興那座）",how:"地理只信丙級三家"},
+ {n:"錯7",t:"沒指定女聲，預設隨機變成男聲",how:"不適用：本站全站無語音（見上一節）",skip:true},
+ {n:"錯8",t:"一再讓 AI 的話出現在畫面，改了四五版仍重犯",how:"本專案畫面文字由我直接寫進資料檔，不交給任何 AI 生成"},
+ {n:"錯9",t:"用 --fresh 砍掉登入設定檔，害你得手動登入",how:"不碰"},
+ {n:"錯10",t:"一次給多個版本讓你比較（你只要一版）",how:"只交一版定版，中間版放進「舊版_勿用」"},
+]},
+{h:"第一部分之六　交付前自檢（網站版，取代影片的抽幀）",
+ lead:"影片規定我要抽幀自己看過才交。網站對應的做法是這三條。",
+ opts:YN, items:[
+ {n:"自1",t:"上線前我用瀏覽器實際開過每一關、每一個彈窗並截圖自看，逐條對上面的規則打勾"},
+ {n:"自2",t:"沒有親眼看過的畫面，不可以寫進「已通過」",how:"這條在影片上被你當場抓過：我抽了封面畫格卻沒看就回報通過"},
+ {n:"自3",t:"交付時分三欄回報：過了的（附證據）／沒過的（主動列出）／做不到的（明講是限制）",how:"不能只說「已照辦」"},
+]},
+{h:"第一部分之七　其他全專案通用鐵律（來自別的記憶，一併套用）", opts:YN, items:[
+ {n:"通1",t:"自撰短語不可用原典的樣式呈現＝不可替祖師造句"},
+ {n:"通2",t:"你沒給的年份數字不可推算成事實；成品要分開標示「史料確認」與「待確認」"},
+ {n:"通3",t:"不要飽和大色塊，走紙墨素雅，重色只做細節點綴",flag:"⚠️ 與「兒童點了會亮燈變色」有張力，見第三部分問題四"},
+ {n:"通4",t:"成品檔直接送出給你，不只在回覆裡寫路徑"},
+]},
+
+{h:"第二部分之一　甲級．原典（語錄與事蹟的唯一依據）",
+ lead:"以下 13 部我已逐一向線上大藏經查證經號確實存在、題名與作者年代無誤。請逐部勾選可不可用。",
+ opts:SRC, items:[
+ {n:"甲1",t:"洛陽伽藍記",src:"T2092　元魏 楊衒之 547 年",how:"現存最早的達摩記載（永寧寺、自言年一百五十歲）"},
+ {n:"甲2",t:"續高僧傳",src:"T2060　唐 道宣 645 年",how:"達摩傳、慧可傳的史傳系統依據，最早的僧傳記載"},
+ {n:"甲3",t:"楞伽師資記",src:"T2837　唐 淨覺（敦煌寫本）",how:"東山法門的傳承譜系"},
+ {n:"甲4",t:"傳法寶紀",src:"T2838　唐 杜朏（敦煌寫本）",how:"北宗的傳承譜系"},
+ {n:"甲5",t:"歷代法寶記",src:"T2075　唐（保唐宗）",how:"傳衣說，另一系譜"},
+ {n:"甲6",t:"雙峰山曹侯溪寶林傳（殘卷）",src:"B0081　唐 智炬 801 年",how:"二十八祖說與梁武帝問答的祖型"},
+ {n:"甲7",t:"祖堂集",src:"B0144　南唐 靜、筠二禪德 952 年",how:"現存最早的完整燈史"},
+ {n:"甲8",t:"景德傳燈錄",src:"T2076　宋 道原 1004 年",how:"通行燈史，本遊戲語錄的主幹；達摩〈二入四行〉也收在卷三十"},
+ {n:"甲9",t:"宋高僧傳",src:"T2061　宋 贊寧 988 年",how:"惠能傳、神秀傳（史傳系統）"},
+ {n:"甲10",t:"壇經．敦煌本",src:"T2007　唐 法海集",how:"現存最早的壇經，惠能語錄第一手"},
+ {n:"甲11",t:"六祖大師法寶壇經．宗寶本",src:"T2008　元 宗寶 1290 年",how:"通行本，大眾最熟悉的文句"},
+ {n:"甲12",t:"曹溪大師別傳",src:"X1598　唐 781 年",how:"惠能別傳，與壇經互校"},
+ {n:"甲13",t:"少室六門",src:"T2009　託名達摩",how:"達摩著作群，若採用須標示為託名"},
+]},
+{h:"第二部分之二　乙級．正史與碑銘（不在大藏經，須另定權威電子本）",
+ lead:"建議一律用中研院「漢籍電子文獻資料庫」的點校本。",
+ opts:SRC, items:[
+ {n:"乙1",t:"魏書、梁書、陳書、隋書、舊唐書、新唐書",how:"年號、帝王、行政區劃核對"},
+ {n:"乙2",t:"王維〈六祖能禪師碑銘〉",src:"收《全唐文》",how:"最早的惠能碑銘，約西元 740 年代"},
+ {n:"乙3",t:"柳宗元〈曹溪第六祖賜謚大鑒禪師碑〉",src:"收《全唐文》",how:"惠能謚號與唐廷追謚"},
+ {n:"乙4",t:"劉禹錫〈大鑒禪師第二碑〉",src:"收《全唐文》"},
+ {n:"乙5",t:"張說〈唐玉泉寺大通禪師碑〉",src:"收《全唐文》",how:"神秀行跡，與惠能對照"},
+]},
+{h:"第二部分之三　丙級．地理（照你定的鐵律，只採這三家）", opts:SRC, items:[
+ {n:"丙1",t:"哈佛・復旦 中國歷史地理資訊系統",how:"可程式查詢，優先用這個。查詢一定要帶年份，否則同名地名會回一堆不同朝代"},
+ {n:"丙2",t:"中央研究院 中華文明之時空基礎架構"},
+ {n:"丙3",t:"中央研究院 歷史地名查詢系統",how:"中國歷史地名實際上要走丙2"},
+]},
+{h:"第二部分之四　丁級．曆法換算", opts:SRC, items:[
+ {n:"丁1",t:"中央研究院 兩千年中西曆轉換",how:"年號 ↔ 西元 ↔ 干支"},
+]},
+{h:"第二部分之五　戊級．現代研究 ── 已刪除，整個不用",
+ lead:"2026-10-07 你指明「這個不要」。原本列的印順法師《中國禪宗史》、柳田聖山、胡適敦煌禪籍校本，全部不採，連「延伸閱讀」也不放。分層判斷改為只看原典本身的成書年代（洛陽伽藍記 547 ＜ 續高僧傳 645 ＜ 寶林傳 801 ＜ 祖堂集 952 ＜ 景德傳燈錄 1004），這是客觀年代，不需要今人的論斷。本站只引原典與碑銘正史。",
+ opts:null, items:[]},
+];
+
+const QUESTIONS = [
+{id:"q2", t:"問題二：惠能的語錄用哪一個壇經底本？",
+ d:"兩本文句有名的差異：敦煌本作「佛性常清淨」，宗寶本作「本來無一物」。依你問題一定的「用流傳最廣的」，這題的答案應該是宗寶本——「本來無一物」才是大家會背的那一句。請你確認一下是不是這個意思。",
+ o:[["只用宗寶本","只用宗寶本 T2008（依你「用流傳最廣的」原則）","元代宗寶編的通行本，「本來無一物」出自這裡。單一底本最單純，兒童不會被兩種文字弄混。"],
+    ["宗寶本為主敦煌本並陳","宗寶本為主、敦煌本並陳","畫面主顯宗寶本 T2008，有差異處同時列出敦煌本 T2007 的文句，兩本都標經號可點開核對。"],
+    ["只用敦煌本","只用敦煌本 T2007","唐代法海集，現存最早。學術上最接近原貌，但文句與大眾熟悉的通行本差異大，與「用流傳最廣的」原則相反。"]]},
+{id:"q3", t:"問題三：兒童向的尺度要到哪裡？",
+ d:"二祖斷臂、惠能受衣後被追殺奪衣、南北宗之爭，這些情節有血腥或爭鬥成分。",
+ o:[["全部呈現不渲染","全部呈現但不渲染","事件照列（原文照引），不加血腥描寫、不配刺激畫面，用平實的事實敘述帶過。"],
+    ["淡化處理","淡化處理","事件保留在年表與地圖上，但不做成互動關卡，點開只有簡短一行事實。"],
+    ["整段跳過","整段跳過","兒童版完全不收這些情節，只做行腳、遇見的人、語錄三條線。"]]},
+{id:"q4", t:"問題四：色彩怎麼拿捏？",
+ d:"你一向要素雅紙墨、不要飽和大色塊；但兒童向要「一點就亮燈變色」。這兩件事要調和。",
+ o:[["紙墨底局部發光","紙墨底＋局部發光（我建議這個）","底色維持紙色，亮燈＝局部發光與描邊，六位祖師各給一個低彩度識別色（黛、赭、松綠、藤、茶、靛），面積都很小。"],
+    ["兒童版可以更鮮豔","兒童版可以更鮮豔","既然對象是兒童，允許比你平常的東西更高的彩度與更大的色塊。"],
+    ["先做兩版給我比","先做兩版配色樣張給我比","我做一版素雅、一版較鮮豔的配色樣張，你看過再定。"]]},
+{id:"q5", t:"問題五：美工素材走哪一條免費路線？",
+ d:"2026-10-07 你已定案：互動效果（亮燈、路線動畫）我直接寫程式，零成本；美工素材找免費的。免費的路有四條，可以複選（下面選主力，其餘寫在最後的補充欄）。註：Google AI Studio 不能用，它的免費層明寫會把資料拿去訓練。",
+ o:[["公有領域古畫為主","以博物館公有領域古畫為主（我建議這個）","歐美各大館（大都會、克利夫蘭、芝加哥藝術學院、V&A、史密森尼、歐洲數位圖書館）有大量標示為公有領域的禪宗題材真跡：達摩像、蘆葉渡江圖、祖師頂相、六祖圖。零成本、零授權風險，而且是真跡不是 AI 編的，每張可標館藏出處。我有現成工具可以直接檢索下載。"],
+    ["我用程式畫向量線稿","我用程式畫向量線稿","完全不用圖庫也不用 AI，線稿與圖示由我寫程式繪製。最素雅、風格最統一、檔案最小，但人物只能是簡化造型。"],
+    ["走訂閱額度生圖","用 Nano Banana Pro 生圖","走你現有的 Google 訂閱額度，不另外花錢。風格可控、可做到角色一致，但畫面是 AI 生成的，不是真跡。"],
+    ["古畫為底再向量補","古畫為底，不足處我用向量補","主力用公有領域古畫，查不到合適圖像的祖師（僧璨、道信這類圖像稀少的）改用向量線稿補齊，風格以統一的描邊處理銜接。"]]},
+{id:"q6", t:"問題六：放在哪裡？",
+ d:"七處徵心當初是從五十三參站搬出去獨立的。這個遊戲建議同樣獨立。",
+ o:[["獨立新站","獨立新站公開上線（我建議這個）","新開一個公開的專案，獨立網址，跟五十三參站互不影響。"],
+    ["掛在既有站底下","掛在既有站底下","放進現有的五十三參站，從首頁連過去。"],
+    ["先做本機版","先只做本機版，確認後再決定要不要公開","先不上線，做好給你在自己電腦上點開看。"]]},
+];
+
+let seq = 0;
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+function render(){
+  // 第零條
+  document.getElementById("zeroOpt").innerHTML =
+    '<div class="item"><span class="no">第零條</span>'
+    + '<span class="txt">以上五點我是否理解無誤、可以據此執行？</span>'
+    + optsHtml("zero", [["確認","✅ 確認，照這樣做"],["要補充","✏️ 要補充（寫在下面）"]])
+    + '</div>'
+    + '<div class="note"><span>補充說明：</span><textarea data-note="第零條"></textarea></div>';
+
+  let html = "";
+  for (const sec of DATA){
+    html += '<h2>'+esc(sec.h)+'</h2>';
+    if (sec.lead) html += '<p class="lead">'+esc(sec.lead)+'</p>';
+    for (const it of sec.items){
+      const mute = (!sec.opts || it.skip);
+      const key = mute ? null : "k"+(seq++);
+      html += '<div class="item'+(mute?' muted':'')+'">'
+        + '<span class="no">'+esc(it.n)+'</span><span class="txt">'+esc(it.t)+'</span>'
+        + (it.src ? '<div class="src">'+esc(it.src)+'</div>' : '')
+        + (it.how ? '<div class="how">'+esc(it.how)+'</div>' : '')
+        + (it.flag ? '<div class="flag">'+esc(it.flag)+'</div>' : '')
+        + (mute ? '' : optsHtml(key, sec.opts, it.n+"　"+it.t))
+        + '</div>';
+    }
+    if (sec.opts) html += '<div class="note"><span>這一節要補充的：</span><textarea data-note="'+esc(sec.h)+'"></textarea></div>';
+  }
+
+  html += '<h2>第三部分　必須先裁示的設計問題</h2>'
+       + '<p class="lead">這七題會決定整個遊戲的骨架，請逐題選一個。</p>';
+  for (const q of QUESTIONS){
+    html += '<div class="qbox"><p class="qt">'+esc(q.t)+'</p>'
+      + '<p class="qd">'+esc(q.d)+'</p>'
+      + '<div class="opts wide">'
+      + q.o.map(o =>
+          '<label><input type="radio" name="'+q.id+'" value="'+esc(o[0])+'" data-label="'+esc(q.t)+'">'
+          + '<span>'+esc(o[1])+'<span class="d">'+esc(o[2])+'</span></span></label>').join("")
+      + '</div></div>';
+  }
+  html += '<div class="note"><span>其他你想到要交代的：</span><textarea data-note="其他交代"></textarea></div>';
+
+  document.getElementById("app").innerHTML = html;
+  document.body.addEventListener("change", function(){ save(); tally(); });
+  document.body.addEventListener("input", save);
+  load(); tally();
+}
+
+function optsHtml(name, opts, label){
+  return '<div class="opts">' + opts.map(o =>
+    '<label><input type="radio" name="'+name+'" value="'+esc(o[0])+'" data-label="'+esc(label||name)+'"><span>'+esc(o[1])+'</span></label>'
+  ).join("") + '</div>';
+}
+
+function tally(){
+  const names = new Set();
+  document.querySelectorAll('input[type=radio]').forEach(i=>names.add(i.name));
+  let done = 0;
+  names.forEach(n=>{ if(document.querySelector('input[name="'+n+'"]:checked')) done++; });
+  document.getElementById("count").innerHTML =
+    '已勾 <b>'+done+'</b> ／ 共 '+names.size+' 項　　尚有 <b>'+(names.size-done)+'</b> 項未勾';
+}
+
+const KEY="zenpatriarch-checklist-v1";
+function save(){
+  const d={r:{},n:{}};
+  document.querySelectorAll('input[type=radio]:checked').forEach(i=>d.r[i.name]=i.value);
+  document.querySelectorAll('textarea[data-note]').forEach(t=>{ if(t.value) d.n[t.dataset.note]=t.value; });
+  try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
+}
+function load(){
+  let d; try{ d=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ return; }
+  if(!d) return;
+  for(const k in (d.r||{})){
+    const el=document.querySelector('input[name="'+k+'"][value="'+d.r[k]+'"]'); if(el) el.checked=true;
+  }
+  document.querySelectorAll('textarea[data-note]').forEach(t=>{
+    if((d.n||{})[t.dataset.note]) t.value=d.n[t.dataset.note];
+  });
+}
+function clearAll(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>i.checked=false);
+  document.querySelectorAll('textarea').forEach(t=>t.value="");
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  tally();
+  document.getElementById("out").style.display="none";
+}
+
+function makeOutput(){
+  let L = ["【禪宗祖師跑江湖．確認結果】",""];
+  const z = document.querySelector('input[name="zero"]:checked');
+  L.push("第零條（語錄只用原典）：" + (z? z.value : "未勾"));
+  const zn = document.querySelector('textarea[data-note="第零條"]');
+  if(zn && zn.value) L.push("　補充：" + zn.value);
+  L.push("");
+
+  let i = 0;
+  for (const sec of DATA){
+    L.push("── " + sec.h);
+    for (const it of sec.items){
+      if (!sec.opts || it.skip){
+        L.push("　" + it.n + "　" + it.t + " ⇒ 不適用（已定案）");
+        continue;
+      }
+      const el = document.querySelector('input[name="k'+i+'"]:checked');
+      L.push("　" + it.n + "　" + it.t + " ⇒ " + (el? el.value : "未勾"));
+      i++;
+    }
+    const n = document.querySelector('textarea[data-note="'+cssEsc(sec.h)+'"]');
+    if(n && n.value) L.push("　［補充］" + n.value);
+    L.push("");
+  }
+  L.push("── 設計問題");
+  for (const q of QUESTIONS){
+    const el = document.querySelector('input[name="'+q.id+'"]:checked');
+    L.push("　" + q.t + " ⇒ " + (el? el.value : "未選"));
+  }
+  const other = document.querySelector('textarea[data-note="其他交代"]');
+  if(other && other.value){ L.push(""); L.push("── 其他交代"); L.push("　"+other.value); }
+
+  const txt = L.join("\n");
+  const out = document.getElementById("out");
+  out.style.display = "block";
+  document.getElementById("outText").value = txt;
+  try{ var pr=navigator.clipboard.writeText(txt); if(pr&&pr.catch) pr.catch(function(){}); }catch(e){}
+  const ta = document.getElementById("outText");
+  ta.focus(); ta.select();
+  out.scrollIntoView({behavior:"smooth"});
+}
+function cssEsc(s){ return s.replace(/"/g,'\\"'); }
+
+render();
+</script>
