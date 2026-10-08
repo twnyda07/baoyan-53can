@@ -103,32 +103,7 @@
   .caveat ol{margin:0; padding-left:1.3em;}
   .caveat li{margin-top:7px;}
 
-  /* ── 時間軸 ─────────────────────────── */
-  .tl{position:relative; padding-left:26px;}
-  .tl::before{content:""; position:absolute; left:7px; top:8px; bottom:8px; width:1px; background:var(--line);}
-  .tli{position:relative; padding:0 0 22px 0;}
-  .tli::before{content:""; position:absolute; left:-23px; top:11px; width:9px; height:9px;
-    border-radius:50%; background:var(--paper); border:1.5px solid var(--blue);}
-  .tli.now::before{background:var(--seal); border-color:var(--seal); box-shadow:0 0 0 4px rgba(156,61,78,.14);}
-  .tld{font-size:15px; letter-spacing:.14em; color:var(--blue); font-weight:700;}
-  .tli.now .tld{color:var(--seal);}
-  .tlt{font-size:17.5px; font-weight:700; margin-top:2px;}
-  .tlx{font-size:16px; color:var(--ink2); line-height:1.85; margin-top:3px;}
-  .tag{display:inline-block; font-size:12.5px; letter-spacing:.14em; padding:1px 9px;
-    border-radius:2px; margin-left:8px; vertical-align:2px;
-    background:rgba(31,77,143,.1); border:1px solid rgba(31,77,143,.3); color:var(--blue);}
-  .tag.todo{background:rgba(138,109,36,.1); border-color:rgba(138,109,36,.35); color:var(--gold);}
-
-  /* ── 展示區 ─────────────────────────── */
-  .booth{background:var(--paper2); border:1px solid var(--line2); border-radius:4px; padding:24px;}
-  .booth dl{display:grid; grid-template-columns:7em 1fr; gap:9px 14px; font-size:16.5px;}
-  .booth dt{color:var(--ink3); letter-spacing:.1em;}
-  .booth dd{color:var(--ink);}
-  .booth dd.todo{color:var(--gold);}
-  .url{margin-top:18px; font-size:14.5px; color:var(--ink2); word-break:break-all;
-    background:rgba(31,77,143,.07); border:1px dashed var(--line); border-radius:3px; padding:11px 14px;}
-  .url b{color:var(--ink); letter-spacing:.02em;}
-
+  /* ── 手機 ───────────────────────────── */
   @media (max-width:430px){
     body{padding:0 12px 60px;}
     h1{font-size:30px;}
@@ -137,10 +112,6 @@
     .gsutra, .gbody, .glist, .gact{margin-top:14px;}
     .gfrom{margin-top:6px;}
     .btn{font-size:16.5px; padding:12px 18px; letter-spacing:.08em; text-indent:.08em;}
-    .booth{padding:20px 17px;}
-    .booth dl{grid-template-columns:1fr; gap:2px;}
-    .booth dt{font-size:14px; margin-top:11px;}
-    .booth dt:first-child{margin-top:0;}
   }
 
   /* ── 其他入口 ───────────────────────── */
@@ -275,57 +246,6 @@
         <li>二十五門無有優劣，所請之門只是<b>入手處</b>；根器亦非一成不變，莫作定解。</li>
         <li>《楞嚴經》卷九、卷十〈五十陰魔〉正是在破對境界異相的執取——<b>此處只借相作一面鏡子，照見習氣、依門用功</b>。</li>
       </ol>
-    </div>
-  </section>
-
-  <!-- ══ 時間軸 ══ -->
-  <section>
-    <h2>行　<em>程</em></h2>
-    <div class="tl">
-      <div class="tli now">
-        <div class="tld">10/24 — 11/16</div>
-        <div class="tlt">蓄勢 · 線上三關開放</div>
-        <div class="tlx">報名期間即可掃碼走一遍三關。每日持楞嚴咒、誦楞嚴經一卷，
-          持咒遍數累入「功德海」，開壇當日即是大眾共同的那一個數字。</div>
-      </div>
-      <div class="tli">
-        <div class="tld">11/17 — 11/20</div>
-        <div class="tlt">進場 · 場佈 · 排演暨壇場灑淨</div>
-        <div class="tlx">11/17 進場、11/18–19 場佈、11/20 排演暨壇場灑淨；
-          展示區於場佈期間架設。<span class="tag todo">展示區細節待定</span></div>
-      </div>
-      <div class="tli">
-        <div class="tld">11/21 — 11/23</div>
-        <div class="tlt">法會三日 · 展示區開放</div>
-        <div class="tlx">展示區設於<b>壇外動線</b>，自助掃碼，不動內壇儀軌。
-          等候、過堂前後、休息時段皆可走一遍。</div>
-      </div>
-      <div class="tli">
-        <div class="tld">11/24</div>
-        <div class="tlt">菩薩戒</div>
-        <div class="tlx">第三關轉為受戒之後的日用功課——所請那一門的教理、福德、禪定三學。</div>
-      </div>
-      <div class="tli">
-        <div class="tld">11/25 之後</div>
-        <div class="tlt">延續</div>
-        <div class="tlx">三關的結果可寄到自己的 Email，法會圓滿之後仍可依門用功。</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 展示區 ══ -->
-  <section>
-    <h2>現場展示區</h2>
-    <div class="booth">
-      <dl>
-        <dt>地點</dt><dd>板樹體育館 · 壇外動線</dd>
-        <dt>位置</dt><dd class="todo">待定（建議鄰近服務台／結緣區）</dd>
-        <dt>開放時間</dt><dd class="todo">待定</dd>
-        <dt>設備</dt><dd>掃碼自助，參加者用自己的手機；展示區只需海報與動線</dd>
-        <dt>人力</dt><dd>引導為主，<b>不作個別解相</b>；口徑見上方「分際」</dd>
-        <dt>無設備時</dt><dd>「七處徵心」另有列印版：主張卡 ×7＋破斥卡 ×7＋引導手冊</dd>
-      </dl>
-      <div class="url">現場海報掃碼進入此頁：<br><b>https://twnyda07.github.io/baoyan-53can/fahui.html</b></div>
     </div>
   </section>
 
