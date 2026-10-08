@@ -871,9 +871,27 @@ function renderSources(){
   el("srcUl").innerHTML = Object.keys(seen).sort().map(k=>'<li>'+esc(k)+'</li>').join("");
 }
 
+/* 選了哪一位要記在網址裡。
+   使用者回報「先切過去，過一下又自己變回達摩」——程式裡沒有任何地方會把 mi 改回 0，
+   會變回第一位只有一種可能：**整頁重新載入**（手機或分頁切走後被瀏覽器回收再還原、
+   網路不穩重載、從書籤重開）。原本選擇只存在記憶體裡，一重載就沒了。
+   存進網址還有一個好處：可以直接把某一位的連結傳給別人。 */
+function 記住選擇(){
+  const 名 = DATA.祖師[mi].介面名;
+  // replaceState 不會捲動、也不會灌爆上一頁的歷史
+  history.replaceState(null, "", "#" + encodeURIComponent(名));
+}
+function 讀回選擇(){
+  const h = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+  if(!h) return 0;
+  const i = DATA.祖師.findIndex(p => p.介面名 === h && (p.站||[]).length);
+  return i < 0 ? 0 : i;
+}
+
 function gotoMaster(i, 帶到畫像){
   if(!(DATA.祖師[i].站||[]).length) return;
   mi = i; step = 0; cur = -1; 回看 = -1;
+  記住選擇();
   renderMasters(); renderMap(); renderPanel(); renderHowto();
   if(帶到畫像){
     // 點卡片就是想看這位的畫像。要讓人**立刻看得出有反應**，
@@ -947,5 +965,8 @@ function setMode(m){
 el("bMap").onclick = ()=>setMode("map");      // 已在地圖模式時＝重設，面板回到提示
 el("bLife").onclick = ()=>setMode("life");    // 已在逐站模式時＝從第一站重走
 
+mi = 讀回選擇();                       // 重載後回到原本在看的那一位，不要默默跳回達摩
 renderMasters(); renderLines(); renderMap(); setMode("map");
+// 上一頁／下一頁換了網址裡的名字也要跟著換人
+addEventListener("hashchange", ()=>{ const i = 讀回選擇(); if(i !== mi) gotoMaster(i); });
 </script>
