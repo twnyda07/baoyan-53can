@@ -66,30 +66,43 @@ const BaoyanMail = (function(){
      避免此公開端點被拿來夾帶任意內容寄信。
      payload 另帶一個 rid（本次送出的識別碼）：Apps Script 的轉址偶爾會讓 fetch 失敗，
      我們會重試，而後端看到同一個 rid 就不會重複寄信。 */
-  async function post(payload){
-    const body = JSON.stringify(payload);
-    let lastErr = null;
-    for(let i=0; i<3; i++){
-      if(i) await new Promise(r=>setTimeout(r, 900*i));
-      try{
-        const res = await fetch(MAIL_API, {
-          method:"POST",
-          headers:{"Content-Type":"text/plain;charset=utf-8"},  // 用 text/plain 避免 CORS preflight
-          body: body,
-          redirect:"follow"
-        });
-        const txt = await res.text();
-        try{ return JSON.parse(txt); }catch(_){ return {ok:false, msg:"回應格式有誤，請稍後再試。"}; }
-      }catch(e){ lastErr = e; }
-    }
-    // 三次都讀不到回應（例如 App 內建瀏覽器擋跨網域）→ no-cors 盲送；同 rid 不會重複寄
+  /* 每次連線的等待上限。沒有上限時，公共 Wi-Fi 擋住 script.google.com（不回應）
+     按鈕會一直卡在「寄送中…」好幾分鐘。第一次給長一點：Apps Script 冷啟動加寄信本來就要幾秒。 */
+  const WAIT = [20000, 12000, 12000], BLIND_WAIT = 10000, SLOW_HINT = 8000;
+  const NET_FAIL = "連不上寄信服務。公共 Wi-Fi 常會擋住 Google 的寄信網址——" +
+                   "請關掉 Wi-Fi、改用手機行動網路，再按一次「寄送結果」（不會重複寄）。";
+
+  /* 送一次並讀完回應；超過 ms 毫秒就中止（讀回應本身也算在內） */
+  async function once(body, ms, blind){
+    const ctl = (typeof AbortController === "function") ? new AbortController() : null;
+    const timer = ctl ? setTimeout(function(){ ctl.abort(); }, ms) : 0;
     try{
-      await fetch(MAIL_API, {method:"POST", mode:"no-cors",
-        headers:{"Content-Type":"text/plain;charset=utf-8"}, body: body});
-      return {ok:true, blind:true};
-    }catch(e2){
-      return {ok:false, msg:"連線失敗，請確認網路後再試一次。"};
-    }
+      const opt = {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},  // text/plain 避免 CORS preflight
+                   body: body, signal: ctl ? ctl.signal : undefined};
+      if(blind){ opt.mode = "no-cors"; await fetch(MAIL_API, opt); return ""; }
+      opt.redirect = "follow";
+      const res = await fetch(MAIL_API, opt);
+      return await res.text();
+    }finally{ clearTimeout(timer); }
+  }
+
+  async function post(payload, onSlow){
+    const body = JSON.stringify(payload);
+    const slow = setTimeout(function(){ if(onSlow) onSlow(); }, SLOW_HINT);
+    try{
+      let txt = null;
+      for(let i=0; i<WAIT.length && txt===null; i++){
+        if(i) await new Promise(r=>setTimeout(r, 900*i));
+        try{ txt = await once(body, WAIT[i], false); }catch(_){ /* 逾時或被擋，續試 */ }
+      }
+      if(txt !== null){
+        try{ return JSON.parse(txt); }
+        catch(_){ return {ok:false, msg:"寄信服務暫時回應異常，請稍候再按一次；若仍不行，請改用手機行動網路。"}; }
+      }
+      // 三次都讀不到回應（例如 App 內建瀏覽器擋跨網域）→ no-cors 盲送；同 rid 不會重複寄
+      try{ await once(body, BLIND_WAIT, true); return {ok:true, blind:true}; }
+      catch(_){ return {ok:false, msg:NET_FAIL}; }
+    }finally{ clearTimeout(slow); }
   }
 
   function newRid(){
@@ -124,6 +137,9 @@ const BaoyanMail = (function(){
           msg = box.querySelector(".mailbox-msg");
 
     function say(text, cls){ msg.textContent = text; msg.className = "mailbox-msg " + (cls||""); }
+    /* 本次送出的識別碼只認「同一組姓名＋Email」：若連線逾時但其實已寄出，
+       使用者改正打錯的 Email 再按，必須換新的 rid，否則後端會當成重複而不寄到新信箱。 */
+    let rid = null, ridFor = null;
 
     btn.addEventListener("click", async function(){
       const name = nameEl.value.trim(), email = mailEl.value.trim();
@@ -133,9 +149,11 @@ const BaoyanMail = (function(){
 
       btn.disabled = true; const label = btn.textContent; btn.textContent = "寄 送 中 …";
       say("正在為您寄出…","");
-      if(!box.dataset.rid) box.dataset.rid = newRid();   // 同一次送出重試共用，避免重複寄信
-      const data = Object.assign({}, payload, {name:name, email:email, page:location.href, rid:box.dataset.rid});
-      const res = await post(data);
+      if(ridFor !== name + "\n" + email){ rid = newRid(); ridFor = name + "\n" + email; }   // 同一次送出重試共用，避免重複寄信
+      const data = Object.assign({}, payload, {name:name, email:email, page:location.href, rid:rid});
+      const res = await post(data, function(){
+        say("網路較慢，仍在為您寄出…（若您連的是公共 Wi-Fi，可改用手機行動網路）","");
+      });
       if(res && res.ok){
         nameEl.value = ""; mailEl.value = "";   // 立刻清掉，後面的人看不到也帶不走
         box.classList.add("done");
