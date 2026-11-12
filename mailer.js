@@ -41,6 +41,12 @@ const BaoyanMail = (function(){
   .mailbox-msg.bad{color:#ffd9a8;}
   .mailbox-note{font-size:11.5px; line-height:1.7; color:var(--ink-soft,#b9b08f); opacity:.72; margin-top:10px;}
   .mailbox.done .mailbox-f, .mailbox.done .mailbox-agree{display:none;}
+  .mailbox [hidden]{display:none !important;}
+  .mailbox-alt{margin-top:12px; padding-top:12px; border-top:1px dashed rgba(212,175,55,.4);}
+  .mailbox-alt-t{font-size:13px; line-height:1.75; color:var(--ink,#ede6cf); margin-bottom:9px;}
+  .mailbox-alt-b{display:block; width:100%; box-sizing:border-box; margin-top:8px; font-family:inherit; font-size:14.5px;
+    letter-spacing:.08em; padding:11px 14px; border-radius:30px; cursor:pointer; text-decoration:none; text-align:center;
+    color:var(--gold,#d4af37); background:rgba(8,12,30,.55); border:1.5px solid var(--gold,#d4af37);}
   `;
 
   function injectCSS(){
@@ -105,6 +111,30 @@ const BaoyanMail = (function(){
     }finally{ clearTimeout(slow); }
   }
 
+  /* ── 備援：寄信服務連不上（公共 Wi-Fi 擋住、或當日配額用完）時，
+        改用訪客手機自己的郵件 App／分享，把畫面上的結果寄給自己。完全不經過 script.google.com。 */
+  function resultText(root){
+    const out = [];
+    Array.prototype.forEach.call(root.children, function(el){
+      if(el.matches(".mailbox, .nextgate, .row, button, script, style") || !el.getClientRects().length) return;
+      const t = String(el.innerText || "").replace(/[ \t　]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+      if(t) out.push(t);
+    });
+    let s = out.join("\n\n");
+    if(s.length > 2500) s = s.slice(0, 2500) + "\n……（全文請回網站觀看）";
+    return s;
+  }
+  function altPack(root, title, name){
+    return { subject: "【寶嚴禪寺】" + title + " — " + name,
+             body: name + " 菩薩 您好：\n\n" + resultText(root) + "\n\n" +
+                   location.origin + location.pathname + "\n© 寶嚴禪寺" };
+  }
+  function mailtoHref(email, p){
+    return "mailto:" + encodeURIComponent(email).replace(/%40/g, "@") +
+      "?subject=" + encodeURIComponent(p.subject) +
+      "&body=" + encodeURIComponent(p.body.replace(/\r?\n/g, "\r\n"));
+  }
+
   function newRid(){
     return "r" + Date.now().toString(36) + Math.random().toString(36).slice(2,10);
   }
@@ -129,6 +159,11 @@ const BaoyanMail = (function(){
         <button class="mailbox-btn" type="button">寄 送 結 果</button>
       </div>
       <div class="mailbox-msg"></div>
+      <div class="mailbox-alt" hidden>
+        <div class="mailbox-alt-t">不必等網路——也可以直接用您自己的手機保存這張牌卡：</div>
+        <a class="mailbox-alt-b m-alt-mail" href="#">用手機的郵件 App 寄給自己</a>
+        <button class="mailbox-alt-b m-alt-share" type="button" hidden>分享到 LINE／其他 App 保存</button>
+      </div>
       <div class="mailbox-note">※ 我們只保存您的姓名與 Email 供寄送與法訊之用${payload.mode==="face"?"；您的照片全程留在本機，不會上傳、也不會出現在信中":""}。<br>※ 這台裝置不會記住您填的資料（共用裝置請每位自行填寫）。</div>`;
     container.appendChild(box);
 
@@ -140,6 +175,23 @@ const BaoyanMail = (function(){
     /* 本次送出的識別碼只認「同一組姓名＋Email」：若連線逾時但其實已寄出，
        使用者改正打錯的 Email 再按，必須換新的 rid，否則後端會當成重複而不寄到新信箱。 */
     let rid = null, ridFor = null;
+
+    const alt = box.querySelector(".mailbox-alt"), altMail = box.querySelector(".m-alt-mail"),
+          altShare = box.querySelector(".m-alt-share");
+    const altTitle = payload.mode === "face" ? "面相觀照牌卡" : "善知識籤牌卡";
+    let altP = null;
+    function hideAlt(){ alt.hidden = true; altMail.setAttribute("href", "#"); altP = null; }
+    function showAlt(name, email){
+      altP = altPack(container, altTitle, name);
+      altMail.setAttribute("href", mailtoHref(email, altP));
+      altShare.hidden = (typeof navigator.share !== "function");
+      alt.hidden = false;
+    }
+    altMail.addEventListener("click", function(e){ if(!altP) e.preventDefault(); });
+    altShare.addEventListener("click", function(){
+      if(altP && navigator.share) navigator.share({title: altP.subject, text: altP.body}).catch(function(){});
+    });
+    nameEl.addEventListener("input", hideAlt); mailEl.addEventListener("input", hideAlt);
 
     btn.addEventListener("click", async function(){
       const name = nameEl.value.trim(), email = mailEl.value.trim();
@@ -156,11 +208,13 @@ const BaoyanMail = (function(){
       });
       if(res && res.ok){
         nameEl.value = ""; mailEl.value = "";   // 立刻清掉，後面的人看不到也帶不走
+        hideAlt();
         box.classList.add("done");
         say("已寄出！請查收信箱（約一分鐘內；若沒看到請看看「促銷／垃圾郵件」匣）。","ok");
       }else{
         btn.disabled = false; btn.textContent = label;
         say((res && res.msg) || "寄送失敗，請稍後再試。","bad");
+        showAlt(name, email);
       }
     });
   }
