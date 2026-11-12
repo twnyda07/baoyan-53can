@@ -120,6 +120,16 @@
 
   footer{text-align:center; color:var(--ink3); font-size:13.5px; letter-spacing:.1em;
     margin-top:32px; line-height:1.9;}
+
+  /* 本站資訊（寶嚴禪寺所有開發一律附） */
+  .siteinfo{margin:30px auto 0; max-width:720px; text-align:left; font-size:16px; line-height:1.85;
+    color:var(--ink); background:var(--paper2); border:1px solid var(--line); border-radius:4px; padding:16px 20px;}
+  .siteinfo .si-h{color:var(--blue); font-weight:700; letter-spacing:.12em; margin-bottom:6px;}
+  .siteinfo dl{display:grid; grid-template-columns:max-content 1fr; gap:4px 12px; margin:0;}
+  .siteinfo dt{color:var(--ink2); white-space:nowrap;}
+  .siteinfo dd{margin:0; word-break:break-word;}
+  .siteinfo a{color:var(--blue); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:6px 0; margin:-6px 0;}
+  @media(max-width:420px){ .siteinfo dl{grid-template-columns:1fr; gap:0;} .siteinfo dd{margin-bottom:6px;} }
 </style>
 </head>
 <body>
@@ -236,9 +246,18 @@
   </div>
 
   <footer>
-    © 寶嚴山寶嚴禪寺　Baoyan Chan Monastery<br>
     經文逐字錄自 CBETA 中華電子佛典協會《大正新脩大藏經》第 19 冊 No. 945；引導語為方便語，非經文。
   </footer>
+
+<section class="siteinfo" aria-label="本站資訊">
+  <div class="si-h">本站資訊</div>
+  <dl>
+    <dt>名稱：</dt><dd>第三關・楞嚴修法：反聞聞自性</dd>
+    <dt>網址：</dt><dd><a href="https://twnyda07.github.io/baoyan-53can/xiufa.html">twnyda07.github.io/baoyan-53can/xiufa.html</a></dd>
+    <dt>特別功能：</dt><dd>三分鐘有引導、有計時的聞性練習，站著就能做；附經文與日用功課，全程不錄音、不上傳。</dd>
+    <dt>創作者／版權所有：</dt><dd>© 2026 寶嚴山寶嚴禪寺　保留一切權利</dd>
+  </dl>
+</section>
 
 </div>
 

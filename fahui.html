@@ -133,6 +133,16 @@
   footer{text-align:center; color:var(--ink3); font-size:13.5px; letter-spacing:.1em;
     margin-top:34px; line-height:1.9;}
   footer a{color:var(--ink2);}
+
+  /* 本站資訊（寶嚴禪寺所有開發一律附） */
+  .siteinfo{margin:30px auto 0; max-width:720px; text-align:left; font-size:16px; line-height:1.85;
+    color:var(--ink); background:var(--paper2); border:1px solid var(--line); border-radius:4px; padding:16px 20px;}
+  .siteinfo .si-h{color:var(--blue); font-weight:700; letter-spacing:.12em; margin-bottom:6px;}
+  .siteinfo dl{display:grid; grid-template-columns:max-content 1fr; gap:4px 12px; margin:0;}
+  .siteinfo dt{color:var(--ink2); white-space:nowrap;}
+  .siteinfo dd{margin:0; word-break:break-word;}
+  .siteinfo a{color:var(--blue); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:6px 0; margin:-6px 0;}
+  @media(max-width:420px){ .siteinfo dl{grid-template-columns:1fr; gap:0;} .siteinfo dd{margin-bottom:6px;} }
 </style>
 </head>
 <body>
@@ -271,10 +281,19 @@
   </div>
 
   <footer>
-    © 寶嚴山寶嚴禪寺　Baoyan Chan Monastery<br>
     經文逐字錄自 CBETA 中華電子佛典協會《大正新脩大藏經》——楞嚴經文出第 19 冊 No. 945，
     華嚴經文出第 10 冊 No. 279（八十華嚴）；白話說明為方便語，非經文。
   </footer>
+
+<section class="siteinfo" aria-label="本站資訊">
+  <div class="si-h">本站資訊</div>
+  <dl>
+    <dt>名稱：</dt><dd>楞嚴三關觀照</dd>
+    <dt>網址：</dt><dd><a href="https://twnyda07.github.io/baoyan-53can/fahui.html">twnyda07.github.io/baoyan-53can/fahui.html</a></dd>
+    <dt>特別功能：</dt><dd>分三關：面相觀照、掌紋觀照、楞嚴修法，一關一關走；每關附經文原文與說明，面相觀照的影像只在自己手機上處理、不上傳。</dd>
+    <dt>創作者／版權所有：</dt><dd>© 2026 寶嚴山寶嚴禪寺　保留一切權利</dd>
+  </dl>
+</section>
 
 </div>
 </body>
