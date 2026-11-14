@@ -307,6 +307,7 @@
 <script src="face-data.js"></script>
 <script src="mailer.js"></script>
 <script src="camera.js"></script>
+<script src="nav.js"></script>
 <script>
 /* 面相文案庫、有緣菩薩、三功課池已移到共用的 face-data.js
    （抽籤頁寄信與 Apps Script 信件內容共用同一份文案，避免兩處不一致）*/
@@ -445,6 +446,7 @@ function resetAll(){
   viewer.className="viewer";
   setupActions.style.display="flex"; camTip.style.display=""; goActions.style.display="none";
   againActions.style.display="none"; scene.classList.remove("show"); setErr("");
+  BYNav.setResult(false);
 }
 
 /* ============ 影像特徵分析 ============ */
@@ -625,6 +627,7 @@ function showResult(rep,canvas){
   /* 三關串連：關一（面相）→ 關二（掌紋．二十五圓通）。接在寄信區之後。 */
   scene.querySelector(".card").insertAdjacentHTML("beforeend", NEXT_GATE_HTML);
   scene.classList.add("show");
+  BYNav.setResult(true);
   scene.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
@@ -635,7 +638,7 @@ const NEXT_GATE_HTML = `
     <div class="ng-t">掌紋觀照 ・ 二十五圓通</div>
     <div class="ng-x">善財童子參的是五十三位善知識，楞嚴會上是二十五位聖者——
       <b>每一位入道的那一道門都不一樣</b>。<br>攤開慣用手，於二十五門中請出一門。</div>
-    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/" target="_blank" rel="noopener">進第二關 →</a>
+    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/">進第二關 →</a>
     <a class="ng-h" href="fahui.html">／　回三關入口 · 看完整三關</a>
   </div>`;
 
@@ -643,6 +646,15 @@ camBtn.addEventListener("click",openCam);
 readBtn.addEventListener("click",read);
 resetBtn.addEventListener("click",resetAll);
 againBtn.addEventListener("click",resetAll);
+/* 頂端導覽：回上頁＝看結果或已開鏡頭時回到起點；下一位＝回到起點給下一位 */
+BYNav.mount({
+  crumb: "第一關．面相",
+  parentUrl: "fahui.html",
+  theme: "dark",
+  nextLabel: "↺ 下一位",
+  onBack: ()=>{ if(mode || scene.classList.contains("show")){ resetAll(); return true; } return false; },
+  onNext: resetAll
+});
 
 /* 即時鏡頭在 Android Chrome／iPhone Safari（https）皆可使用；
    僅 App 內建瀏覽器（LINE／FB／IG）會封鎖相機，故給提示引導。 */

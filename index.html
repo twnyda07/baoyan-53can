@@ -218,6 +218,7 @@
 
 <script src="signs.js"></script>
 <script src="mailer.js"></script>
+<script src="nav.js"></script>
 <script>
 function luckClass(l){
   if(l.indexOf("上上")>=0||l.indexOf("大吉")>=0) return "lv3";
@@ -314,6 +315,7 @@ function showPanel(s){
   /* 三關串連：關一（抽籤／面相）→ 關二（掌紋．二十五圓通） */
   panel.insertAdjacentHTML("beforeend", NEXT_GATE_HTML);
   panel.classList.add("show");
+  BYNav.setResult(true);
   panel.scrollIntoView({behavior:"smooth", block:"nearest"});
 }
 
@@ -324,13 +326,31 @@ const NEXT_GATE_HTML = `
     <div class="ng-t">掌紋觀照 ・ 二十五圓通</div>
     <div class="ng-x">善財童子參的是五十三位善知識，楞嚴會上是二十五位聖者——
       <b>每一位入道的那一道門都不一樣</b>。<br>攤開慣用手，於二十五門中請出一門。</div>
-    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/" target="_blank" rel="noopener">進第二關 →</a>
+    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/">進第二關 →</a>
     <a class="ng-h" href="fahui.html">／　回三關入口 · 看完整三關</a>
   </div>`;
 
 flip.addEventListener("click",()=>{ if(!flipped) draw(); });
 drawBtn.addEventListener("click",draw);
 againBtn.addEventListener("click",draw);
+
+/* 頂端導覽：回上頁＝看結果時回到卡背；下一位＝回到卡背給下一位抽 */
+function resetDeck(){
+  if(busy) return false;
+  flip.classList.remove("flipped","shuffle"); flipped=false; flip.classList.add("float");
+  panel.classList.remove("show");
+  againBtn.style.display="none"; drawBtn.style.display=""; drawBtn.disabled=false;
+  hint.textContent="點擊卡片，誠心抽卡"; hint.classList.add("blink");
+  BYNav.setResult(false);
+  return true;
+}
+BYNav.mount({
+  crumb: "善財抽籤",
+  theme: "dark",
+  nextLabel: "↺ 下一位",
+  onBack: ()=> (flipped || panel.classList.contains("show")) ? resetDeck() : false,
+  onNext: resetDeck
+});
 
 /* 星空 + 金塵 */
 (function(){
