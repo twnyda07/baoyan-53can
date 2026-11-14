@@ -37,8 +37,8 @@
   h1 .sm{display:block; font-size:15.5px; color:var(--gold-light); letter-spacing:.32em; margin-top:9px; font-weight:400; -webkit-text-fill-color:initial;}
   .subtitle{color:var(--ink-soft); font-size:14px; margin-top:14px; line-height:1.85;}
   .back-link{display:inline-flex; align-items:center; gap:6px; margin-top:14px; text-decoration:none;
-    color:var(--gold-light); font-size:13.5px; font-weight:700; letter-spacing:.12em;
-    padding:8px 20px; border-radius:28px; border:1.5px solid var(--gold); background:rgba(212,175,55,.12);
+    color:var(--gold-light); font-size:14.5px; font-weight:700; letter-spacing:.12em;
+    min-height:44px; box-sizing:border-box; padding:8px 20px; border-radius:28px; border:1.5px solid var(--gold); background:rgba(212,175,55,.12);
     box-shadow:0 0 14px rgba(212,175,55,.22); transition:background .15s, transform .15s;}
   .back-link:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
 
@@ -240,7 +240,7 @@
   .siteinfo dl{display:grid; grid-template-columns:max-content 1fr; gap:4px 10px; margin:0;}
   .siteinfo dt{color:var(--gold-light); white-space:nowrap;}
   .siteinfo dd{margin:0; word-break:break-word;}
-  .siteinfo a{color:var(--gold-light); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:6px 0; margin:-6px 0;}
+  .siteinfo a{color:var(--gold-light); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:10px 0; margin:-10px 0; min-height:44px; box-sizing:border-box;}
   @media(max-width:420px){ .siteinfo dl{grid-template-columns:1fr; gap:0;} .siteinfo dd{margin-bottom:6px;} }
 </style>
 </head>
@@ -323,10 +323,10 @@
 
 <script src="signs.js"></script>
 <script src="face-data.js"></script>
-<script src="rotate.js"></script>
-<script src="mailer.js?v=20261114"></script>
-<script src="camera.js"></script>
-<script src="nav.js"></script>
+<script src="rotate.js?v=20261114b"></script>
+<script src="mailer.js?v=20261114b"></script>
+<script src="camera.js?v=20261114b"></script>
+<script src="nav.js?v=20261114b"></script>
 <script>
 /* 面相文案庫、有緣菩薩、三功課池已移到共用的 face-data.js
    （抽籤頁寄信與 Apps Script 信件內容共用同一份文案，避免兩處不一致）*/
@@ -372,6 +372,7 @@ const aTip=document.getElementById("aTip");
 const camTip=document.getElementById("camTip");
 
 let stream=null, mode=null, uploadedImg=null;
+let runId=0;   // 每次重來 +1：觀照中途按回上頁／下一位，晚到的結果一律作廢，不會疊到下一位畫面上
 function setErr(m){ errEl.textContent=m||""; }
 
 function isInAppBrowser(){
@@ -383,14 +384,14 @@ async function openCam(){
   setErr("");
   // 安全環境檢查（http、file:// 無法使用相機）
   if(!window.isSecureContext){
-    setErr("開啟相機需在安全連線（https）下使用。請改用下方「上傳照片」（可直接拍照）。");
+    setErr("開啟相機需在安全連線（https）下使用。請改按「📷 選照片」（可直接拍照）。");
     return;
   }
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
     if(isInAppBrowser()){
-      setErr("偵測到您是在 App 內建瀏覽器（LINE／FB／IG）開啟，相機常被封鎖。請按右上角「⋯」選「用外部瀏覽器開啟」（Safari／Chrome），或改用下方「上傳照片」直接拍照。");
+      setErr("偵測到您是在 App 內建瀏覽器（LINE／FB／IG）開啟，相機常被封鎖。請按右上角「⋯」選「用外部瀏覽器開啟」（Safari／Chrome），或改按「📷 選照片」直接拍照。");
     }else{
-      setErr("此瀏覽器不支援開啟相機，請改用下方「上傳照片」（可直接拍照）。");
+      setErr("此瀏覽器不支援開啟相機，請改按「📷 選照片」（可直接拍照）。");
     }
     return;
   }
@@ -405,20 +406,21 @@ async function openCam(){
     mode="cam"; viewer.className="viewer cam";
     setupActions.style.display="none"; camTip.style.display="none"; goActions.style.display="flex";
     scene.classList.remove("show");
+    BYCam.watch(stream, camLost);
     camSwitch.refresh();
   }catch(e){
     const n=(e&&e.name)||"";
     let msg;
     if(n==="NotAllowedError"||n==="SecurityError"||n==="PermissionDeniedError"){
-      msg="相機權限被拒。請點網址列旁的相機圖示（或瀏覽器設定）允許相機後再試；也可改用下方「上傳照片」直接拍照。";
+      msg="相機權限被拒。請點網址列旁的相機圖示（或瀏覽器設定）允許相機後再試；也可改按「📷 選照片」直接拍照。";
     }else if(n==="NotFoundError"||n==="DevicesNotFoundError"||n==="OverconstrainedError"){
-      msg="找不到可用的相機。請改用下方「上傳照片」（可直接拍照）。";
+      msg="找不到可用的相機。請改按「📷 選照片」（可直接拍照）。";
     }else if(n==="NotReadableError"||n==="TrackStartError"){
-      msg="相機正被其他程式占用，請先關閉其他相機程式再試，或改用「上傳照片」。";
+      msg="相機正被其他程式占用，請先關閉其他相機程式再試，或改按「📷 選照片」。";
     }else if(isInAppBrowser()){
-      msg="App 內建瀏覽器常封鎖相機。請用 Safari／Chrome 開啟本頁，或改用下方「上傳照片」直接拍照。";
+      msg="App 內建瀏覽器常封鎖相機。請用 Safari／Chrome 開啟本頁，或改按「📷 選照片」直接拍照。";
     }else{
-      msg="無法開啟相機（"+(n||"未知錯誤")+"）。請改用下方「上傳照片」（可直接拍照）。";
+      msg="無法開啟相機（"+(n||"未知錯誤")+"）。請改按「📷 選照片」（可直接拍照）。";
     }
     setErr(msg);
   }finally{
@@ -453,16 +455,32 @@ function drawToShot(src){
 function stopCam(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } }
 const camSwitch=BYCam.attachSwitch({
   viewer:viewer, video:video,
-  getStream:()=>stream, setStream:(s)=>{ stream=s; },
+  getStream:()=>stream, setStream:(s)=>{ stream=s; BYCam.watch(s, camLost); },
   onError:(m)=>setErr(m),
   hint:"或按「選照片」改用手機相機拍照（手機相機裡可自由切換前後鏡頭）"
 });
 
+/* 鏡頭被手機收回（切到別的 App、來電、LINE 掃碼）：畫面不會自己變，要講清楚並回到起點 */
+function camLost(s){
+  if(mode!=="cam" || (s && s!==stream)) return;
+  stopCam(); mode=null; viewer.className="viewer";
+  setupActions.style.display="flex"; camTip.style.display=""; goActions.style.display="none";
+  setErr("鏡頭已被手機關閉（可能切換到別的 App），請再按一次「即時鏡頭」，或改按「📷 選照片」。");
+}
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible" && mode==="cam" && !BYCam.live(stream)) camLost(stream);
+});
+
+/* 回到起點：共用裝置，上一位的照片、結果、填到一半的姓名與 Email 全部清掉 */
 function resetAll(){
+  runId++;
   stopCam(); mode=null; uploadedImg=null;
   viewer.className="viewer";
   setupActions.style.display="flex"; camTip.style.display=""; goActions.style.display="none";
-  scene.classList.remove("show"); setErr("");
+  aTip.classList.remove("show");
+  scene.classList.remove("show"); scene.innerHTML=""; setErr("");
+  try{ shot.width=shot.width; }catch(_){}
+  try{ fileInput.value=""; }catch(_){}
   BYNav.setResult(false);
 }
 
@@ -537,21 +555,30 @@ async function buildReport(f){
 
 /* ============ 觀照流程 ============ */
 function read(){
-  if(!mode){ setErr("請先開啟鏡頭或上傳照片。"); return; }
+  if(!mode){ setErr("請先開啟鏡頭或按「📷 選照片」。"); return; }
+  if(mode==="cam" && !BYCam.live(stream)){ camLost(stream); return; }
   setErr("");
+  const my=++runId;
   const canvas=grabSourceCanvas();
   if(mode==="cam"){ stopCam(); mode="shot"; }
   viewer.className="viewer shot analyzing";
   aTip.classList.add("show"); goActions.style.display="none";
   setTimeout(async ()=>{
+    if(my!==runId) return;   // 已按回上頁／下一位
     const f=analyzeFace(canvas);
     if(!f.valid){
       viewer.className="viewer shot"; aTip.classList.remove("show");
       setErr("畫面太暗或看不清面容，請在光線充足處、正面清晰再試一次。");
       goActions.style.display="flex"; return;
     }
-    const rep=await buildReport(f);
+    let rep=null;
+    try{ rep=await buildReport(f); }catch(e){ console.warn("[face] buildReport", e); }
+    if(my!==runId) return;   // 等號碼時已按回上頁／下一位：上一位的結果作廢
     viewer.className="viewer shot"; aTip.classList.remove("show");
+    if(!rep || !rep.sign || !rep.bodhi){
+      setErr("這次觀照沒有完成，請再按一次「觀照面相」。");
+      goActions.style.display="flex"; return;
+    }
     showResult(rep,canvas);
   }, 1800);
 }

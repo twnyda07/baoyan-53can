@@ -17,18 +17,18 @@ const BaoyanMail = (function(){
     background:linear-gradient(180deg,rgba(212,175,55,.13),rgba(8,12,30,.55));
     border:1.5px solid var(--gold,#d4af37); border-radius:14px;
     box-shadow:inset 0 0 22px rgba(212,175,55,.12), 0 0 16px rgba(212,175,55,.18);}
-  .mailbox-h{color:var(--gold,#d4af37); font-size:12.5px; letter-spacing:.3em; text-indent:.3em; opacity:.95;}
-  .mailbox-p{font-size:13px; line-height:1.85; color:var(--ink-soft,#b9b08f); margin-top:9px;}
+  .mailbox-h{color:var(--gold,#d4af37); font-size:14px; letter-spacing:.3em; text-indent:.3em; opacity:.95;}
+  .mailbox-p{font-size:14px; line-height:1.85; color:var(--ink-soft,#b9b08f); margin-top:9px;}
   .mailbox-f{margin-top:13px; display:flex; flex-direction:column; gap:9px;}
   .mailbox-f input[type=text], .mailbox-f input[type=email]{
-    font-family:inherit; font-size:15px; color:var(--ink,#ede6cf);
+    font-family:inherit; font-size:16px; color:var(--ink,#ede6cf);
     background:rgba(8,12,30,.62); border:1px solid rgba(212,175,55,.45); border-radius:10px;
     padding:11px 14px; outline:none; transition:border-color .15s, box-shadow .15s; width:100%;}
   .mailbox-f input::placeholder{color:rgba(185,176,143,.6);}
   .mailbox-f input:focus{border-color:var(--gold,#d4af37); box-shadow:0 0 0 2px rgba(212,175,55,.18);}
   .mailbox-agree{display:flex; align-items:flex-start; gap:8px; text-align:left;
-    font-size:12.5px; line-height:1.7; color:var(--ink-soft,#b9b08f); padding:2px 2px 0;}
-  .mailbox-agree input{margin-top:3px; accent-color:var(--gold,#d4af37); width:15px; height:15px; flex:0 0 auto;}
+    font-size:14px; line-height:1.7; color:var(--ink-soft,#b9b08f); padding:2px 2px 0; min-height:44px; cursor:pointer;}
+  .mailbox-agree input{margin-top:3px; accent-color:var(--gold,#d4af37); width:20px; height:20px; flex:0 0 auto;}
   .mailbox-btn{appearance:none; border:1.5px solid #fff2cf; cursor:pointer; font-family:inherit;
     background:linear-gradient(180deg,#f3e0a3,#d4af37 55%,#9c7a1e); color:#3a2a05;
     font-weight:700; font-size:15.5px; letter-spacing:.24em; text-indent:.24em; padding:12px 26px;
@@ -36,14 +36,14 @@ const BaoyanMail = (function(){
   .mailbox-btn:hover{transform:translateY(-2px);}
   .mailbox-btn:active{transform:translateY(1px);}
   .mailbox-btn[disabled]{opacity:.55; cursor:default; transform:none;}
-  .mailbox-msg{min-height:20px; margin-top:11px; font-size:13.5px; line-height:1.75;}
+  .mailbox-msg{min-height:20px; margin-top:11px; font-size:15px; line-height:1.75;}
   .mailbox-msg.ok{color:#bff0c8;}
   .mailbox-msg.bad{color:#ffd9a8;}
-  .mailbox-note{font-size:11.5px; line-height:1.7; color:var(--ink-soft,#b9b08f); opacity:.72; margin-top:10px;}
+  .mailbox-note{font-size:13.5px; line-height:1.75; color:var(--ink-soft,#b9b08f); opacity:.85; margin-top:10px;}
   .mailbox.done .mailbox-f, .mailbox.done .mailbox-agree{display:none;}
   .mailbox [hidden]{display:none !important;}
   .mailbox-alt{margin-top:12px; padding-top:12px; border-top:1px dashed rgba(212,175,55,.4);}
-  .mailbox-alt-t{font-size:13px; line-height:1.75; color:var(--ink,#ede6cf); margin-bottom:9px;}
+  .mailbox-alt-t{font-size:14.5px; line-height:1.75; color:var(--ink,#ede6cf); margin-bottom:9px;}
   .mailbox-alt-b{display:block; width:100%; box-sizing:border-box; margin-top:8px; font-family:inherit; font-size:14.5px;
     letter-spacing:.08em; padding:11px 14px; border-radius:30px; cursor:pointer; text-decoration:none; text-align:center;
     color:var(--gold,#d4af37); background:rgba(8,12,30,.55); border:1.5px solid var(--gold,#d4af37);}
@@ -75,10 +75,15 @@ const BaoyanMail = (function(){
      payload 另帶一個 rid（本次送出的識別碼）：Apps Script 的轉址偶爾會讓 fetch 失敗，
      我們會重試，而後端看到同一個 rid 就不會重複寄信。 */
   /* 每次連線的等待上限。沒有上限時，公共 Wi-Fi 擋住 script.google.com（不回應）
-     按鈕會一直卡在「寄送中…」好幾分鐘。第一次給長一點：Apps Script 冷啟動加寄信本來就要幾秒。 */
-  const WAIT = [20000, 12000, 12000], BLIND_WAIT = 10000, SLOW_HINT = 8000;
+     按鈕會一直卡在「寄送中…」好幾分鐘。第一次給長一點：Apps Script 冷啟動加寄信本來就要幾秒。
+     全部加起來不超過 TOTAL（約 20 秒）；第 SLOW_HINT 毫秒還沒結果，就先把「用我的郵件 App 寄給自己」打開，不讓人乾等。 */
+  const WAIT = [12000, 7000], TOTAL = 20000, SLOW_HINT = 8000;
   const NET_FAIL = "連不上寄信服務（公共 Wi-Fi 常會擋住）。請直接按下方「用我的郵件 App 寄給自己」；" +
                    "或關掉 Wi-Fi、改用行動網路，再按一次「寄送結果」（不會重複寄）。";
+  /* 讀不到後台回應時，無法知道信到底有沒有寄出（後台壞掉、要重新授權、被 Wi-Fi 登入頁攔下都長這樣），
+     一律不可說「已寄出」。 */
+  const UNKNOWN = "無法確認信是否送達。若兩分鐘內沒收到信（也請看看「促銷／垃圾郵件」匣），" +
+                  "請按下方「用我的郵件 App 寄給自己」，內容都已幫您填好。";
 
   /* 送一次並讀完回應；超過 ms 毫秒就中止（讀回應本身也算在內） */
   async function once(body, ms, blind){
@@ -94,21 +99,29 @@ const BaoyanMail = (function(){
     }finally{ clearTimeout(timer); }
   }
 
+  /* 回傳：{ok:true} 確定寄出／{ok:false,msg} 確定沒寄出／{ok:null,msg} 無法確認（一律要給備援） */
   async function post(payload, onSlow){
     const body = JSON.stringify(payload);
+    const t0 = Date.now(), left = function(){ return TOTAL - (Date.now() - t0); };
     const slow = setTimeout(function(){ if(onSlow) onSlow(); }, SLOW_HINT);
     try{
       let txt = null;
-      for(let i=0; i<WAIT.length && txt===null; i++){
-        if(i) await new Promise(r=>setTimeout(r, 900*i));
-        try{ txt = await once(body, WAIT[i], false); }catch(_){ /* 逾時或被擋，續試 */ }
+      for(let i=0; i<WAIT.length && txt===null && left() > 2500; i++){
+        if(i) await new Promise(r=>setTimeout(r, 800));
+        try{ txt = await once(body, Math.min(WAIT[i], left() - 2000), false); }catch(_){ /* 逾時或被擋，續試 */ }
       }
       if(txt !== null){
-        try{ return JSON.parse(txt); }
-        catch(_){ return {ok:false, msg:"寄信服務暫時回應異常，請稍候再按一次；若仍不行，請改用手機行動網路。"}; }
+        let j = null;
+        try{ j = JSON.parse(txt); }catch(_){ }
+        if(!j || typeof j !== "object")   // 讀得到但不是後台的回應（例如 Wi-Fi 登入頁、Google 錯誤頁）
+          return {ok:null, msg:UNKNOWN};
+        if(j.ok === true) return {ok:true, dup:!!j.dup};
+        if(j.pending) return {ok:null, msg:UNKNOWN};
+        return {ok:false, msg:j.msg || ""};
       }
-      // 三次都讀不到回應（例如 App 內建瀏覽器擋跨網域）→ no-cors 盲送；同 rid 不會重複寄
-      try{ await once(body, BLIND_WAIT, true); return {ok:true, blind:true}; }
+      /* 讀不到回應（App 內建瀏覽器擋跨網域時會這樣）→ 用 no-cors 再送一次（同 rid 後台不會重複寄）。
+         no-cors 看不到回應內容，送得出去不代表寄得出去，所以只能說「無法確認」，並打開備援。 */
+      try{ await once(body, Math.max(left(), 1500), true); return {ok:null, blind:true, msg:UNKNOWN}; }
       catch(_){ return {ok:false, msg:NET_FAIL}; }
     }finally{ clearTimeout(slow); }
   }
@@ -137,7 +150,7 @@ const BaoyanMail = (function(){
   function altPack(root, title, name){
     return { subject: "【寶嚴禪寺】" + title + " — " + name,
              body: name + " 菩薩 您好：\n\n" + resultText(root) + "\n\n" +
-                   location.origin + location.pathname + "\n© 寶嚴禪寺" };
+                   location.origin + location.pathname + "\n© 寶嚴山寶嚴禪寺" };
   }
   function mailtoHref(email, p){
     return "mailto:" + encodeURIComponent(email).replace(/%40/g, "@") +
@@ -215,13 +228,21 @@ const BaoyanMail = (function(){
       if(ridFor !== name + "\n" + email){ rid = newRid(); ridFor = name + "\n" + email; }   // 同一次送出重試共用，避免重複寄信
       const data = Object.assign({}, payload, {name:name, email:email, page:location.href, rid:rid});
       const res = await post(data, function(){
-        say("網路較慢，仍在為您寄出…（若您連的是公共 Wi-Fi，可改用手機行動網路）","");
+        say("網路較慢，仍在為您寄出…。不想等的話，可以直接按下方「用我的郵件 App 寄給自己」。","");
+        showAlt(name, email);
       });
-      if(res && res.ok){
+      if(!box.isConnected) return;   // 等待中已換下一位（結果區已清掉），不再顯示上一位的訊息
+      if(res && res.ok === true){
         nameEl.value = ""; mailEl.value = "";   // 立刻清掉，後面的人看不到也帶不走
         hideAlt();
         box.classList.add("done");
         say("已寄出！請查收信箱（約一分鐘內；若沒看到請看看「促銷／垃圾郵件」匣）。","ok");
+      }else if(res && res.ok === null){
+        /* 無法確認：不說「已寄出」，一定給備援；按鈕恢復可再按（同一組姓名＋Email 共用 rid，後台不會重複寄） */
+        btn.disabled = false; btn.textContent = label;
+        say(res.msg || "無法確認信是否送達，請按下方「用我的郵件 App 寄給自己」。", "bad");
+        msg.title = res.blind ? "no-cors 盲送：看不到後台回應" : "";
+        showAlt(name, email);
       }else{
         btn.disabled = false; btn.textContent = label;
         /* 後端程式錯誤（英文技術訊息）不直接丟給信眾看：改用中文說明並導向下方備援；原文留在 title 與 console 供工作人員查 */

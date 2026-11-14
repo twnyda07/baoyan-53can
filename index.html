@@ -38,7 +38,7 @@
   h1 .grad{background:linear-gradient(90deg,#f3e0a3,#d4af37 50%,#f3e0a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
   h1 .sm{display:block; font-size:15.5px; color:var(--gold-light); letter-spacing:.32em; margin-top:9px; font-weight:400; -webkit-text-fill-color:initial;}
   .subtitle{color:var(--ink-soft); font-size:14px; margin-top:14px; line-height:1.85;}
-  .cross-link{display:inline-flex; align-items:center; gap:9px; margin-top:16px; text-decoration:none;
+  .cross-link{display:inline-flex; align-items:center; gap:9px; margin-top:16px; text-decoration:none; min-height:44px; box-sizing:border-box;
     color:var(--gold-light); font-size:14.5px; font-weight:700; letter-spacing:.14em;
     padding:9px 22px; border-radius:30px; background:rgba(212,175,55,.12);
     border:1.5px solid var(--gold); box-shadow:0 0 16px rgba(212,175,55,.25);
@@ -181,7 +181,7 @@
   .siteinfo dl{display:grid; grid-template-columns:max-content 1fr; gap:4px 10px; margin:0;}
   .siteinfo dt{color:var(--gold-light); white-space:nowrap;}
   .siteinfo dd{margin:0; word-break:break-word;}
-  .siteinfo a{color:var(--gold-light); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:6px 0; margin:-6px 0;}
+  .siteinfo a{color:var(--gold-light); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:10px 0; margin:-10px 0; min-height:44px; box-sizing:border-box;}
   @media(max-width:420px){ .siteinfo dl{grid-template-columns:1fr; gap:0;} .siteinfo dd{margin-bottom:6px;} }
 </style>
 </head>
@@ -200,7 +200,7 @@
       請先合掌靜心、默想所求之事，再抽取一張善知識卡。
     </p>
     <a class="cross-link" href="face.html"><span class="eye">👁️‍🗨️</span>改用「面相觀照」· 以鏡頭或照片相應善知識 →</a>
-    <a class="cross-link" href="fahui.html" style="font-size:13.5px; padding:8px 20px; margin-top:10px;"><span class="eye">❖</span>楞嚴三關觀照 · 面相→掌紋→修法 →</a>
+    <a class="cross-link" href="fahui.html" style="font-size:14.5px; padding:8px 20px; margin-top:10px; min-height:44px; box-sizing:border-box;"><span class="eye">❖</span>楞嚴三關觀照 · 面相→掌紋→修法 →</a>
   </header>
 
   <div class="stage">
@@ -239,9 +239,9 @@
 </div>
 
 <script src="signs.js"></script>
-<script src="rotate.js"></script>
-<script src="mailer.js?v=20261114"></script>
-<script src="nav.js"></script>
+<script src="rotate.js?v=20261114b"></script>
+<script src="mailer.js?v=20261114b"></script>
+<script src="nav.js?v=20261114b"></script>
 <script>
 function luckClass(l){
   if(l.indexOf("上上")>=0||l.indexOf("大吉")>=0) return "lv3";
@@ -255,6 +255,7 @@ const flip=document.getElementById("flip"), glow=document.getElementById("glow")
       drawBtn=document.getElementById("drawBtn"), againBtn=document.getElementById("againBtn"),
       panel=document.getElementById("panel");
 let busy=false, flipped=false;
+let gen=0;   // 每次回到卡背 +1：洗牌中按回上頁／下一位，進行中的動畫與結果一律作廢
 
 /* 洗牌袋：53 參每輪全部抽完一次才重洗，更隨機且每參必現 */
 /* 平均出現：這台裝置上每一項都出現一次才重洗（存的只是編號順序，不含任何個人資料）。
@@ -281,6 +282,7 @@ async function nextSign(){ return SIGNS[await BYRotate.next(MAIL_API,"draw53",()
 
 function draw(){
   if(busy) return; busy=true;
+  const my=gen;
   drawBtn.disabled=true; againBtn.style.display="none";
   panel.classList.remove("show");
   hint.classList.remove("blink");
@@ -292,17 +294,23 @@ function draw(){
   } else { start(); }
 
   function start(){
+    if(my!==gen) return;
     hint.textContent="洗牌中…誠心默想所求";
     flip.classList.remove("float");
     flip.classList.add("shuffle");
     const pickP=nextSign();
     const minAnim=new Promise(r=>setTimeout(r,1000));
     Promise.all([pickP,minAnim]).then(([pick])=>{
+      if(my!==gen) return;
+      if(!pick) throw new Error("no sign");
       frontImg.src="images/"+String(pick.n).padStart(2,"0")+".jpg";
       flip.classList.remove("shuffle");
       flip.classList.add("flipped"); flipped=true;
       hint.textContent="";
-      setTimeout(()=>{ showPanel(pick); busy=false; drawBtn.style.display="none"; againBtn.style.display="inline-block"; }, 650);
+      setTimeout(()=>{ if(my!==gen) return; showPanel(pick); busy=false; drawBtn.style.display="none"; againBtn.style.display="inline-block"; }, 650);
+    }).catch(()=>{
+      if(my!==gen) return;
+      resetDeck(); hint.textContent="這次沒有抽成，請再點一次卡片。";
     });
   }
 }
@@ -368,10 +376,11 @@ drawBtn.addEventListener("click",draw);
 againBtn.addEventListener("click",draw);
 
 /* 頂端導覽：回上頁＝看結果時回到卡背；下一位＝回到卡背給下一位抽 */
+/* 共用裝置：上一位的結果與填到一半的姓名、Email 一併清掉。洗牌中也可以重來（進行中的那次作廢） */
 function resetDeck(){
-  if(busy) return false;
+  gen++; busy=false;
   flip.classList.remove("flipped","shuffle"); flipped=false; flip.classList.add("float");
-  panel.classList.remove("show");
+  panel.classList.remove("show"); panel.innerHTML="";
   againBtn.style.display="none"; drawBtn.style.display=""; drawBtn.disabled=false;
   hint.textContent="點擊卡片，誠心抽卡"; hint.classList.add("blink");
   BYNav.setResult(false);
@@ -381,7 +390,7 @@ BYNav.mount({
   crumb: "善財抽籤",
   theme: "dark",
   nextLabel: "↺ 下一位",
-  onBack: ()=> (flipped || panel.classList.contains("show")) ? resetDeck() : false,
+  onBack: ()=> (busy || flipped || panel.classList.contains("show")) ? resetDeck() : false,
   onNext: resetDeck
 });
 

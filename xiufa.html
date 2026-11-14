@@ -27,8 +27,8 @@
   }
   .wrap{max-width:720px; margin:0 auto;}
 
-  .back-link{display:inline-block; margin-top:22px; font-size:15px; color:var(--ink2);
-    text-decoration:none; letter-spacing:.08em; border-bottom:1px solid var(--line);}
+  .back-link{display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; margin-top:14px; padding:6px 2px;
+    font-size:16px; color:var(--ink2); text-decoration:none; letter-spacing:.08em; border-bottom:1px solid var(--line);}
   .back-link:hover{color:var(--ink); border-color:var(--ink2);}
 
   header{text-align:center; padding:26px 0 6px;}
@@ -128,7 +128,7 @@
   .siteinfo dl{display:grid; grid-template-columns:max-content 1fr; gap:4px 12px; margin:0;}
   .siteinfo dt{color:var(--ink2); white-space:nowrap;}
   .siteinfo dd{margin:0; word-break:break-word;}
-  .siteinfo a{color:var(--blue); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:6px 0; margin:-6px 0;}
+  .siteinfo a{color:var(--blue); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:10px 0; margin:-10px 0; min-height:44px; box-sizing:border-box;}
   @media(max-width:420px){ .siteinfo dl{grid-template-columns:1fr; gap:0;} .siteinfo dd{margin-bottom:6px;} }
 </style>
 </head>
@@ -261,6 +261,7 @@
 
 </div>
 
+<script src="nav.js?v=20261114b"></script>
 <script>
 (function(){
   var TOTAL = 180;
@@ -279,7 +280,23 @@
       phase=document.getElementById('phase'), cue=document.getElementById('cue'),
       go=document.getElementById('go'), reset=document.getElementById('reset'),
       steps=document.getElementById('steps').children;
-  var timer=null, left=TOTAL, cur=-1;
+  var timer=null, left=TOTAL, cur=-1, startAt=0, wake=null;
+  /* 用實際經過的時間倒數：閉眼時手機自動鎖屏、或切到別的 App，回來時鐘照實際時間走，不會停住 */
+  function remaining(){ return TOTAL - Math.floor((Date.now() - startAt) / 1000); }
+  /* 練習中讓螢幕保持常亮（瀏覽器不支援就略過） */
+  function keepAwake(){
+    try{
+      if(!timer || wake || !navigator.wakeLock || document.visibilityState !== "visible") return;
+      navigator.wakeLock.request("screen").then(function(w){
+        if(!timer){ w.release().catch(function(){}); return; }
+        wake = w; w.addEventListener("release", function(){ if(wake === w) wake = null; });
+      }).catch(function(){});
+    }catch(_){}
+  }
+  function letSleep(){ try{ if(wake){ var w = wake; wake = null; w.release().catch(function(){}); } }catch(_){} }
+  document.addEventListener("visibilitychange", function(){
+    if(document.visibilityState === "visible" && timer){ tick(); keepAwake(); }
+  });
 
   function fmt(s){ return Math.floor(s/60)+":"+String(s%60).padStart(2,'0'); }
 
@@ -299,7 +316,8 @@
   }
 
   function tick(){
-    left--;
+    if(!timer) return;
+    left=remaining();
     if(left<0){ finish(); return; }
     clock.textContent=fmt(left);
     var done=TOTAL-left;
@@ -308,7 +326,7 @@
   }
 
   function finish(){
-    clearInterval(timer); timer=null;
+    clearInterval(timer); timer=null; letSleep();
     clock.textContent="0:00"; phase.textContent="圓滿";
     bar.setAttribute('stroke-dashoffset', 0);
     bar.style.stroke="#9c3d4e";
@@ -325,9 +343,13 @@
     if(timer) return;
     go.textContent="進行中"; go.disabled=true;
     paintPhase(0);
+    startAt=Date.now(); left=TOTAL;
     timer=setInterval(tick,1000);
+    keepAwake();
   });
-  reset.addEventListener('click', function(){
+  function resetAll(){
+    if(timer){ clearInterval(timer); timer=null; }
+    letSleep();
     left=TOTAL; cur=-1; clock.textContent=fmt(TOTAL); phase.textContent="尚未開始";
     bar.setAttribute('stroke-dashoffset', CIRC); bar.style.stroke="";
     for(var k=0;k<steps.length;k++){ steps[k].className=""; }
@@ -335,7 +357,10 @@
       '<div class="ctxt">身坐正，肩放下，手放在腿上。眼睛可閉可不閉——這一關不靠眼睛。'+
       '現場若人聲嘈雜，正好；<b>吵雜本身就是這個法門的材料</b>。</div>';
     go.hidden=false; go.disabled=false; go.textContent="開　始"; reset.hidden=true;
-  });
+  }
+  reset.addEventListener('click', resetAll);
+  /* 頂端導覽列（與面相、抽籤、掌紋一致）：回上頁＝回三關入口；離開本頁時停止計時 */
+  if(window.BYNav) BYNav.mount({ crumb: "第三關．修法", parentUrl: "fahui.html", theme: "light", onLeave: resetAll, onBack: function(){ return false; } });
 })();
 </script>
 </body>

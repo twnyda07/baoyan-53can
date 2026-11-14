@@ -43,7 +43,7 @@
     box-shadow:0 6px 18px rgba(0,0,0,.4), inset 0 1px 0 #fff6d8; transition:transform .15s;}
   .btn:hover{transform:translateY(-2px);} .btn:active{transform:translateY(1px);}
   .btn[disabled]{opacity:.55; cursor:default; transform:none;}
-  .btn.small{font-size:14.5px; padding:10px 20px; letter-spacing:.1em; text-indent:.1em; margin-top:0;}
+  .btn.small{font-size:15px; padding:10px 20px; letter-spacing:.1em; text-indent:.1em; margin-top:0; min-height:46px;}
   .btn.ghost{background:transparent; color:var(--gold-light); border:1.5px solid var(--gold); box-shadow:none;}
   .btn.ghost:hover{background:rgba(212,175,55,.14);}
   .msg{min-height:22px; margin-top:12px; font-size:15px; line-height:1.7;}
@@ -62,9 +62,10 @@
     background:rgba(8,12,30,.62); border:1px solid rgba(212,175,55,.4); border-radius:10px; padding:11px 14px; outline:none;}
   .tools input[type=search]:focus{border-color:var(--gold);}
 
-  .tablewrap{overflow-x:auto; border:1px solid rgba(212,175,55,.25); border-radius:12px;}
+  /* 表格在自己的框裡捲動，表頭才固定得住（外層若只設 overflow-x，sticky 會失效） */
+  .tablewrap{overflow:auto; max-height:72vh; border:1px solid rgba(212,175,55,.25); border-radius:12px;}
   table{width:100%; border-collapse:collapse; font-size:15.5px; min-width:760px;}
-  thead th{position:sticky; top:0; background:#1a2250; color:var(--gold-light); font-weight:700;
+  thead th{position:sticky; top:0; z-index:1; background:#1a2250; color:var(--gold-light); font-weight:700;
     text-align:left; padding:12px 12px; letter-spacing:.06em; border-bottom:1px solid rgba(212,175,55,.35); white-space:nowrap;}
   tbody td{padding:11px 12px; border-bottom:1px solid rgba(212,175,55,.14); line-height:1.6; vertical-align:top;}
   tbody tr:nth-child(even){background:rgba(8,12,30,.35);}
@@ -80,7 +81,23 @@
     h1{font-size:22px;}
     .stats{grid-template-columns:repeat(2,1fr);}
     .card{padding:18px 14px;}
+    /* 手機：一人一張卡，不必左右捲 */
+    .tablewrap{max-height:none; overflow:visible; border:none;}
+    table{min-width:0;} thead{display:none;}
+    tbody tr{display:block; border:1px solid rgba(212,175,55,.3); border-radius:12px; padding:10px 14px; margin-bottom:12px; background:rgba(8,12,30,.45) !important;}
+    tbody td{display:flex; gap:12px; padding:4px 0; border:none;}
+    tbody td::before{content:attr(data-k); flex:0 0 4.6em; color:var(--ink-soft); font-weight:400; font-family:inherit; font-size:14.5px;}
+    tbody td.empty{display:block;} tbody td.empty::before{content:none;}
   }
+  /* 本站資訊（寶嚴禪寺所有開發一律附） */
+  .siteinfo{margin:26px auto 0; max-width:720px; text-align:left; font-size:15px; line-height:1.8;
+    color:var(--ink); background:rgba(8,12,30,.55); border:1px solid rgba(212,175,55,.35); border-radius:10px; padding:14px 18px;}
+  .siteinfo .si-h{color:var(--gold-light); font-weight:700; letter-spacing:.12em; margin-bottom:6px;}
+  .siteinfo dl{display:grid; grid-template-columns:max-content 1fr; gap:4px 10px; margin:0;}
+  .siteinfo dt{color:var(--gold-light); white-space:nowrap;}
+  .siteinfo dd{margin:0; word-break:break-word;}
+  .siteinfo a{color:var(--gold-light); text-decoration:underline; text-underline-offset:3px; display:inline-block; padding:10px 0; margin:-10px 0; min-height:44px; box-sizing:border-box;}
+  @media(max-width:420px){ .siteinfo dl{grid-template-columns:1fr; gap:0;} .siteinfo dd{margin-bottom:6px;} }
 </style>
 </head>
 <body>
@@ -131,16 +148,36 @@
       名單僅供寶嚴禪寺寄送與法訊聯絡之用，請勿外流。
     </div>
   </div>
+
+<section class="siteinfo" aria-label="本站資訊">
+  <div class="si-h">本站資訊</div>
+  <dl>
+    <dt>名稱：</dt><dd>善財五十三參．寄送名單（工作人員專用）</dd>
+    <dt>網址：</dt><dd><a href="https://twnyda07.github.io/baoyan-53can/list.html">twnyda07.github.io/baoyan-53can/list.html</a></dd>
+    <dt>特別功能：</dt><dd>工作人員輸入共同密碼後，查看抽籤與面相觀照留下 Email 的名單，可搜尋、複製 Email、下載 CSV。</dd>
+    <dt>創作者／版權所有：</dt><dd>© 2026 寶嚴山寶嚴禪寺　保留一切權利</dd>
+  </dl>
+</section>
 </div>
 
-<script src="mailer.js"></script>
+<script src="mailer.js?v=20261114b"></script>
 <script>
 /* 後端網址沿用 mailer.js 的 MAIL_API；密碼一律送到後端驗，前端不存明碼名單 */
 const gate=document.getElementById("gate"), board=document.getElementById("board"),
       pwEl=document.getElementById("pw"), goBtn=document.getElementById("goBtn"),
       gmsg=document.getElementById("gmsg"), bmsg=document.getElementById("bmsg"),
       tb=document.getElementById("tb"), q=document.getElementById("q");
-let DATA=[], PW="";
+let DATA=[], PW="", SERVER_TODAY="";
+const SS_KEY="baoyan53_admin";
+/* 瀏覽器封鎖網站資料（無痕、隱私設定）時 sessionStorage 會丟例外：一律包起來，不影響登入 */
+function ssGet(){ try{ return sessionStorage.getItem(SS_KEY); }catch(_){ return null; } }
+function ssSet(v){ try{ sessionStorage.setItem(SS_KEY, v); }catch(_){} }
+function ssDel(){ try{ sessionStorage.removeItem(SS_KEY); }catch(_){} }
+/* 台北日期 yyyy-mm-dd（名單時間是台北時間；不可用 toISOString，那是 UTC，凌晨 0～8 點會算成前一天） */
+function taipeiDate(){
+  try{ return new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Taipei"}).format(new Date()); }
+  catch(_){ const d=new Date(Date.now()+8*3600e3); return d.toISOString().slice(0,10); }
+}
 
 function say(el,t,c){ el.textContent=t; el.className="msg "+(c||""); }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m])); }
@@ -164,15 +201,22 @@ async function fetchList(pw){
   throw lastErr;
 }
 
-async function enter(){
+let entering=false;
+async function enter(auto){
+  if(entering) return;   // 連按 Enter／按鈕不重複送出（打錯密碼也不會一次扣好幾次）
   const pw=pwEl.value.trim();
   if(!pw){ say(gmsg,"請輸入密碼。","bad"); pwEl.focus(); return; }
+  entering=true;
   goBtn.disabled=true; const lb=goBtn.textContent; goBtn.textContent="讀取中…";
   say(gmsg,"正在讀取名單…","");
   try{
     const r=await fetchList(pw);
-    if(!r.ok){ say(gmsg, r.msg||"讀取失敗。","bad"); return; }
-    PW=pw; sessionStorage.setItem("baoyan53_admin", pw);
+    if(!r.ok){
+      if(auto===true){ ssDel(); pwEl.value=""; }   // 存的舊密碼不對：清掉，不再每次重整自動重試
+      say(gmsg, r.msg||"讀取失敗。","bad"); return;
+    }
+    PW=pw; ssSet(pw);
+    SERVER_TODAY=/^\d{8}$/.test(r.today||"") ? r.today.replace(/^(\d{4})(\d\d)(\d\d)$/,"$1-$2-$3") : "";
     DATA=r.rows||[];
     document.getElementById("ssLink").href=r.sheetUrl||"#";
     gate.style.display="none"; board.style.display="block";
@@ -180,7 +224,7 @@ async function enter(){
   }catch(e){
     say(gmsg,"連線失敗，請確認網路後再試。","bad");
   }finally{
-    goBtn.disabled=false; goBtn.textContent=lb;
+    goBtn.disabled=false; goBtn.textContent=lb; entering=false;
   }
 }
 
@@ -189,6 +233,7 @@ async function reload(){
   try{
     const r=await fetchList(PW);
     if(!r.ok){ say(bmsg, r.msg||"讀取失敗。","bad"); return; }
+    if(/^\d{8}$/.test(r.today||"")) SERVER_TODAY=r.today.replace(/^(\d{4})(\d\d)(\d\d)$/,"$1-$2-$3");
     DATA=r.rows||[]; render(); say(bmsg,"已更新。","ok");
     setTimeout(()=>say(bmsg,"",""),2500);
   }catch(e){ say(bmsg,"連線失敗。","bad"); }
@@ -202,7 +247,7 @@ function filtered(){
 
 function render(){
   const rows=filtered();
-  const today=new Date().toISOString().slice(0,10);
+  const today=SERVER_TODAY||taipeiDate();
   const mails=new Set(DATA.map(r=>(r[2]||"").toLowerCase()).filter(Boolean));
   document.getElementById("s-all").textContent=DATA.length;
   document.getElementById("s-mail").textContent=mails.size;
@@ -212,15 +257,15 @@ function render(){
   document.getElementById("f-shown").textContent=rows.length;
 
   tb.innerHTML=rows.map(r=>`<tr>
-    <td>${esc(r[0])}</td>
-    <td class="nm">${esc(r[1])}</td>
-    <td class="email">${esc(r[2])}</td>
-    <td><span class="tag${r[3]==="面相觀照"?" face":""}">${esc(r[3])}</span></td>
-    <td>${esc(r[4])}</td>
-    <td>${esc(r[5])}</td>
-    <td>${esc(r[6])}</td>
-    <td>${esc(r[7])}</td></tr>`).join("")
-    || `<tr><td colspan="8" style="text-align:center;padding:26px;color:var(--ink-soft)">目前沒有符合的資料</td></tr>`;
+    <td data-k="時間">${esc(r[0])}</td>
+    <td data-k="姓名" class="nm">${esc(r[1])}</td>
+    <td data-k="Email" class="email">${esc(r[2])}</td>
+    <td data-k="類型"><span class="tag${r[3]==="面相觀照"?" face":""}">${esc(r[3])}</span></td>
+    <td data-k="第幾參">${esc(r[4])}</td>
+    <td data-k="善知識">${esc(r[5])}</td>
+    <td data-k="有緣菩薩">${esc(r[6])}</td>
+    <td data-k="三分數">${esc(r[7])}</td></tr>`).join("")
+    || `<tr><td colspan="8" class="empty" style="text-align:center;padding:26px;color:var(--ink-soft)">目前沒有符合的資料</td></tr>`;
 }
 
 function copyMails(){
@@ -233,18 +278,19 @@ function copyMails(){
 function downloadCSV(){
   const rows=filtered();
   const head=["時間","姓名","Email","類型","第幾參","善知識","有緣菩薩","三分數(智/業/福)"];
-  const cell=v=>`"${String(v==null?"":v).replace(/"/g,'""')}"`;
+  /* 開頭是 = + - @（或 Tab、換行）的格子，Excel 會當成公式執行：前面加 ' 讓它只是文字 */
+  const cell=v=>{ let t=String(v==null?"":v); if(/^[=+\-@\t\r]/.test(t)) t="'"+t; return `"${t.replace(/"/g,'""')}"`; };
   const csv=[head.map(cell).join(",")].concat(rows.map(r=>r.slice(0,8).map(cell).join(","))).join("\r\n");
   const blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"});   // BOM 讓 Excel 不亂碼
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
-  a.download="善財五十三參_寄送名單_"+new Date().toISOString().slice(0,10)+".csv";
+  a.download="善財五十三參_寄送名單_"+taipeiDate()+".csv";
   a.click(); URL.revokeObjectURL(a.href);
   say(bmsg,`已下載 ${rows.length} 筆。`,"ok");
 }
 
-goBtn.addEventListener("click", enter);
-pwEl.addEventListener("keydown", e=>{ if(e.key==="Enter") enter(); });
+goBtn.addEventListener("click", ()=>enter(false));
+pwEl.addEventListener("keydown", e=>{ if(e.key==="Enter" && !e.repeat){ e.preventDefault(); enter(false); } });
 q.addEventListener("input", render);
 document.getElementById("copyBtn").addEventListener("click", copyMails);
 document.getElementById("csvBtn").addEventListener("click", downloadCSV);
@@ -252,8 +298,8 @@ document.getElementById("reloadBtn").addEventListener("click", reload);
 
 /* 同一分頁內回來不必重打密碼（關閉分頁就失效） */
 (function(){
-  const saved=sessionStorage.getItem("baoyan53_admin");
-  if(saved){ pwEl.value=saved; enter(); }
+  const saved=ssGet();
+  if(saved){ pwEl.value=saved; enter(true); }
 })();
 </script>
 </body>
