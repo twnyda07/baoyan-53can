@@ -305,6 +305,7 @@
 
 <script src="signs.js"></script>
 <script src="face-data.js"></script>
+<script src="rotate.js"></script>
 <script src="mailer.js"></script>
 <script src="camera.js"></script>
 <script src="nav.js"></script>
@@ -334,7 +335,7 @@ function fairPick(key,n){
   return pick;
 }
 /* 有緣菩薩：7 位在這台裝置上輪流各出現一次才重洗 */
-function nextBodhiIdx(){ return fairPick("baoyan53_bodhibag", BODHISATTVAS.length); }
+function nextBodhiIdx(){ return BYRotate.next(MAIL_API,"bodhi",()=>fairPick("baoyan53_bodhibag", BODHISATTVAS.length)); }
 
 /* ============ DOM ============ */
 const viewer=document.getElementById("viewer");
@@ -487,9 +488,9 @@ function tier(v,lo,hi){ return v<lo?"low":(v>hi?"high":"mid"); }
 function pct(level){ return level==="high"?90:(level==="mid"?76:62); }   // 最短 62%：長條不可短到讓人覺得自己不好
 
 /* 53 參：在這台裝置上每參各出現一次才重洗 */
-function nextSign(){ return SIGNS[fairPick("baoyan53_facebag", SIGNS.length)]; }
+async function nextSign(){ return SIGNS[await BYRotate.next(MAIL_API,"face53",()=>fairPick("baoyan53_facebag", SIGNS.length))]; }
 
-function buildReport(f){
+async function buildReport(f){
   const stops={上停:f.u,中停:f.m,下停:f.d};
   const maxStop=Object.keys(stops).reduce((a,b)=>stops[a]>=stops[b]?a:b);
   const lv={
@@ -511,8 +512,7 @@ function buildReport(f){
   const sc=[0,0,0]; sc[lead]=hi; let pi=0;
   for(let i=0;i<3;i++){ if(i!==lead) sc[i]=others[pi++]; }
   const wisdom=sc[0], career=sc[1], fortune=sc[2];
-  const sign=nextSign();
-  const bodhiIdx=nextBodhiIdx();   // 與您有緣的菩薩（隨機）
+  const [sign,bodhiIdx]=await Promise.all([nextSign(),nextBodhiIdx()]);   // 與您有緣的菩薩（隨機）
   const hw=[pickIdx(JIAO_POOL), pickIdx(FUDE_POOL), pickIdx(CHAN_POOL)];  // 功課隨機（教理/福德/禪定）
   return {lv,maxStop,wisdom,career,fortune,sign,bodhiIdx,hw,
           bodhi:BODHISATTVAS[bodhiIdx],
@@ -527,14 +527,15 @@ function read(){
   if(mode==="cam"){ stopCam(); mode="shot"; }
   viewer.className="viewer shot analyzing";
   aTip.classList.add("show"); goActions.style.display="none";
-  setTimeout(()=>{
+  setTimeout(async ()=>{
     const f=analyzeFace(canvas);
-    viewer.className="viewer shot"; aTip.classList.remove("show");
     if(!f.valid){
+      viewer.className="viewer shot"; aTip.classList.remove("show");
       setErr("畫面太暗或看不清面容，請在光線充足處、正面清晰再試一次。");
       goActions.style.display="flex"; return;
     }
-    const rep=buildReport(f);
+    const rep=await buildReport(f);
+    viewer.className="viewer shot"; aTip.classList.remove("show");
     showResult(rep,canvas);
     againActions.style.display="flex";
   }, 1800);

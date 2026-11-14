@@ -36,6 +36,11 @@ function doPost(e) {
   try {
     const p = JSON.parse((e && e.postData && e.postData.contents) || "{}");
 
+    // 全場輪替號碼（只發號碼，不需密碼、不存個資）
+    if (p.action === "next") {
+      return json_(rotateNext_(String(p.key || "")));
+    }
+
     // 工作人員後台：讀名單（密碼在後端驗，密碼不對什麼都拿不到）
     if (p.action === "list") {
       return json_(listForAdmin_(p.pw));
@@ -432,4 +437,32 @@ function testFace() {
   }));
   MailApp.sendEmail({ to: me, subject: mail.subject, htmlBody: mail.html, body: mail.text, name: CFG.SENDER_NAME });
   Logger.log("已寄出面相測試信到 " + me);
+}
+
+/* ===== 全場輪替號碼（action: "next"）=====
+ * 號碼順序事先隨機洗好、存在指令碼屬性，所有手機共用；輪完一輪才重洗，換輪時新一輪第一個不等於上一輪最後一個。
+ * LockService 保證同時多人領號也不會領到同一個。只發號碼，不存任何個人資料。
+ * ROTATE_KEYS 的 n 由後台決定，不信任前端傳來的數字。各站只列自己用的 key。 */
+var ROTATE_KEYS = { face53: 53, draw53: 53, bodhi: 7 };
+function rotateNext_(key){
+  var n = ROTATE_KEYS[key];
+  if(!n) return { ok:false, msg:"bad key" };
+  var lock = LockService.getScriptLock();
+  lock.waitLock(8000);
+  try{
+    var props = PropertiesService.getScriptProperties();
+    var seq = JSON.parse(props.getProperty("rot_seq_" + key) || "[]");
+    var pos = Number(props.getProperty("rot_pos_" + key) || 0);
+    if(seq.length !== n || pos >= n){
+      var last = seq.length ? seq[seq.length - 1] : -1;
+      seq = []; for(var i = 0; i < n; i++) seq.push(i);
+      for(var j = n - 1; j > 0; j--){ var k = Math.floor(Math.random() * (j + 1)); var t = seq[j]; seq[j] = seq[k]; seq[k] = t; }
+      if(n > 1 && seq[0] === last){ var t2 = seq[0]; seq[0] = seq[1]; seq[1] = t2; }
+      pos = 0;
+    }
+    var idx = seq[pos];
+    var upd = {}; upd["rot_seq_" + key] = JSON.stringify(seq); upd["rot_pos_" + key] = String(pos + 1);
+    props.setProperties(upd);
+    return { ok:true, idx: idx };
+  } finally { lock.releaseLock(); }
 }

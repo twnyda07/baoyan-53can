@@ -217,6 +217,7 @@
 </div>
 
 <script src="signs.js"></script>
+<script src="rotate.js"></script>
 <script src="mailer.js"></script>
 <script src="nav.js"></script>
 <script>
@@ -254,7 +255,7 @@ function fairPick(key,n){
   try{ localStorage.setItem(key,JSON.stringify({bag,last:pick})); }catch(_){}
   return pick;
 }
-function nextSign(){ return SIGNS[fairPick("baoyan53_drawbag", SIGNS.length)]; }
+async function nextSign(){ return SIGNS[await BYRotate.next(MAIL_API,"draw53",()=>fairPick("baoyan53_drawbag", SIGNS.length))]; }
 
 function draw(){
   if(busy) return; busy=true;
@@ -272,14 +273,15 @@ function draw(){
     hint.textContent="洗牌中…誠心默想所求";
     flip.classList.remove("float");
     flip.classList.add("shuffle");
-    const pick=nextSign();
-    frontImg.src="images/"+String(pick.n).padStart(2,"0")+".jpg";
-    setTimeout(()=>{
+    const pickP=nextSign();
+    const minAnim=new Promise(r=>setTimeout(r,1000));
+    Promise.all([pickP,minAnim]).then(([pick])=>{
+      frontImg.src="images/"+String(pick.n).padStart(2,"0")+".jpg";
       flip.classList.remove("shuffle");
       flip.classList.add("flipped"); flipped=true;
       hint.textContent="";
       setTimeout(()=>{ showPanel(pick); busy=false; drawBtn.style.display="none"; againBtn.style.display="inline-block"; }, 650);
-    }, 1000);
+    });
   }
 }
 
