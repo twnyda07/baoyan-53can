@@ -42,24 +42,45 @@
     box-shadow:0 0 14px rgba(212,175,55,.22); transition:background .15s, transform .15s;}
   .back-link:hover{background:rgba(212,175,55,.24); transform:translateY(-2px);}
 
-  /* 三關串連：下一關 */
-  .nextgate{margin-top:22px; padding:20px 18px 22px; border-radius:12px; text-align:center;
-    background:linear-gradient(180deg, rgba(43,112,112,.16), rgba(8,12,30,.55));
-    border:1.5px solid rgba(120,190,185,.42); box-shadow:inset 0 0 26px rgba(43,112,112,.16);}
-  .nextgate .ng-k{font-size:12px; letter-spacing:.34em; text-indent:.34em; color:#8fd0c9;}
-  .nextgate .ng-t{font-size:19px; font-weight:700; letter-spacing:.14em; color:#eaf6f4; margin-top:8px;}
-  .nextgate .ng-x{font-size:14px; line-height:1.9; color:var(--ink-soft); margin-top:9px;
-    max-width:330px; margin-left:auto; margin-right:auto;}
-  .nextgate .ng-x b{color:#bfe6e0;}
-  .nextgate .ng-b{display:inline-block; margin-top:15px; text-decoration:none; font-weight:700;
-    font-size:15.5px; letter-spacing:.2em; text-indent:.2em; padding:12px 28px; border-radius:30px;
-    color:#06201e; background:linear-gradient(180deg,#bfe6e0,#79bdb5 60%,#4e968e);
-    border:1.5px solid #d6f2ee; box-shadow:0 6px 18px rgba(0,0,0,.4);
-    transition:transform .15s;}
-  .nextgate .ng-b:hover{transform:translateY(-2px);}
-  .nextgate .ng-h{display:block; margin-top:13px; font-size:12.5px; letter-spacing:.1em;
-    color:var(--ink-soft); text-decoration:none; opacity:.85;}
-  .nextgate .ng-h:hover{opacity:1; color:var(--gold-light);}
+  /* 三關串連：下一站（版式同掌紋站「諸門同歸」結尾卡，配色沿用本頁金色夜空） */
+  .nextstop{margin-top:26px; padding:24px 20px 20px; border-radius:12px; text-align:center;
+    background:rgba(8,12,30,.55); border:1px solid rgba(212,175,55,.5); box-shadow:inset 0 0 22px rgba(212,175,55,.08);}
+  .nextstop .ns-k{font-size:13px; letter-spacing:.34em; text-indent:.34em; color:var(--gold);}
+  .nextstop .ns-t .nw{display:inline-block;}
+  .nextstop .ns-t{font-size:19px; font-weight:700; letter-spacing:.08em; color:var(--gold-light); margin-top:10px; line-height:1.6;}
+  .nextstop .ns-path{display:flex; align-items:stretch; gap:8px; margin:18px 0 4px;}
+  .nextstop .ns-st{flex:1; min-width:0; border:1px solid rgba(212,175,55,.22); border-radius:8px; padding:10px 6px; background:rgba(255,255,255,.035);}
+  .nextstop .ns-st b{display:block; font-size:15.5px; letter-spacing:.04em; color:var(--ink); line-height:1.5;}
+  .nextstop .ns-st span{display:block; font-size:12.5px; color:var(--ink-soft); margin-top:3px; line-height:1.5;}
+  .nextstop .ns-st.me{border-color:var(--gold);} .nextstop .ns-st.me b{color:var(--gold-light);}
+  .nextstop .ns-ar{align-self:center; color:var(--ink-soft); font-size:17px; line-height:1;}
+  .nextstop .ns-x{font-size:15px; line-height:1.95; color:var(--ink); margin-top:16px; text-align:left;}
+  .nextstop .ns-try{background:rgba(212,175,55,.08); border-radius:8px; padding:12px 14px; margin-top:14px; text-align:left;
+    font-size:15px; line-height:1.9; color:var(--ink);}
+  .nextstop .ns-try b{color:var(--gold-light);}
+  .nextstop .ns-go{display:flex; align-items:center; justify-content:center; margin:18px auto 0; max-width:340px; min-height:50px;
+    box-sizing:border-box; padding:12px 14px; border-radius:30px; text-decoration:none; font-weight:700; font-size:16.5px;
+    letter-spacing:.1em; color:#2a1d05; background:linear-gradient(180deg,var(--gold-light),var(--gold) 55%,var(--gold-deep));
+    border:1.5px solid var(--gold-light); box-shadow:0 6px 18px rgba(0,0,0,.4); transition:transform .15s;}
+  .nextstop .ns-go:hover{transform:translateY(-2px);}
+  .nextstop .ns-back{display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; margin-top:8px;
+    padding:10px 6px; font-size:14px; color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px;}
+  .nextstop .ns-back:hover{color:var(--gold-light);}
+  @media(max-width:520px){
+    .nextstop{padding:22px 16px 18px;}
+    .nextstop .ns-path{flex-direction:column; gap:4px;}
+    .nextstop .ns-st{display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; row-gap:2px; padding:10px 14px; text-align:left;}
+    .nextstop .ns-st span{margin-top:0; margin-left:auto; white-space:nowrap;}
+    .nextstop .ns-ar{transform:rotate(90deg);}
+  }
+  /* 卡片本身窄（桌機上結果欄也窄）時一樣直排，避免三格擠成細長條 */
+  .nextstop{container-type:inline-size;}
+  @container (max-width:520px){
+    .nextstop .ns-path{flex-direction:column; gap:4px;}
+    .nextstop .ns-st{display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; row-gap:2px; padding:10px 14px; text-align:left;}
+    .nextstop .ns-st span{margin-top:0; margin-left:auto; white-space:nowrap;}
+    .nextstop .ns-ar{transform:rotate(90deg);}
+  }
 
   /* 觀照台 */
   .viewer{
@@ -282,9 +303,6 @@
 
   <div class="card-scene" id="scene"></div>
 
-  <div class="actions" id="againActions" style="display:none; margin-top:18px;">
-    <button class="btn ghost" id="againBtn">再觀照一次</button>
-  </div>
 
   <footer>
     本程式依《大方廣佛華嚴經‧入法界品》五十三參與傳統面相「三停五官」之說編成，<br>
@@ -306,7 +324,7 @@
 <script src="signs.js"></script>
 <script src="face-data.js"></script>
 <script src="rotate.js"></script>
-<script src="mailer.js"></script>
+<script src="mailer.js?v=20261114"></script>
 <script src="camera.js"></script>
 <script src="nav.js"></script>
 <script>
@@ -346,10 +364,8 @@ const camBtn=document.getElementById("camBtn");
 const pickBtn=document.getElementById("pickBtn");
 const readBtn=document.getElementById("readBtn");
 const resetBtn=document.getElementById("resetBtn");
-const againBtn=document.getElementById("againBtn");
 const setupActions=document.getElementById("setupActions");
 const goActions=document.getElementById("goActions");
-const againActions=document.getElementById("againActions");
 const scene=document.getElementById("scene");
 const errEl=document.getElementById("err");
 const aTip=document.getElementById("aTip");
@@ -388,7 +404,7 @@ async function openCam(){
     try{ await video.play(); }catch(_){ }
     mode="cam"; viewer.className="viewer cam";
     setupActions.style.display="none"; camTip.style.display="none"; goActions.style.display="flex";
-    scene.classList.remove("show"); againActions.style.display="none";
+    scene.classList.remove("show");
     camSwitch.refresh();
   }catch(e){
     const n=(e&&e.name)||"";
@@ -418,7 +434,7 @@ function handleFile(f){
     uploadedImg=img; drawToShot(img);
     mode="shot"; viewer.className="viewer shot"; stopCam();
     setupActions.style.display="none"; camTip.style.display="none"; goActions.style.display="flex";
-    scene.classList.remove("show"); againActions.style.display="none";
+    scene.classList.remove("show");
     URL.revokeObjectURL(url);
   };
   img.onerror=()=>{ setErr("照片讀取失敗，請換一張試試。"); URL.revokeObjectURL(url); };
@@ -446,7 +462,7 @@ function resetAll(){
   stopCam(); mode=null; uploadedImg=null;
   viewer.className="viewer";
   setupActions.style.display="flex"; camTip.style.display=""; goActions.style.display="none";
-  againActions.style.display="none"; scene.classList.remove("show"); setErr("");
+  scene.classList.remove("show"); setErr("");
   BYNav.setResult(false);
 }
 
@@ -537,7 +553,6 @@ function read(){
     const rep=await buildReport(f);
     viewer.className="viewer shot"; aTip.classList.remove("show");
     showResult(rep,canvas);
-    againActions.style.display="flex";
   }, 1800);
 }
 
@@ -619,34 +634,42 @@ function showResult(rep,canvas){
         <div class="bodhi-reward">✦　${rep.bodhi.reward}　✦</div>
       </div>
     </div>`;
+  /* 三關串連：結果 → 下一站卡 → 寄信區 */
+  scene.querySelector(".card").insertAdjacentHTML("beforeend", nextStopHTML(s));
   /* 寄一份到我的信箱（只送編號，信件內容由伺服器依同一份資料重建；照片不上傳） */
   BaoyanMail.mount(scene.querySelector(".card"), {
     mode:"face", n:s.n,
     face:{ lv:rep.lv, scores:[rep.wisdom,rep.career,rep.fortune],
            maxStop:rep.maxStop, bodhi:rep.bodhiIdx, hw:rep.hw }
   });
-  /* 三關串連：關一（面相）→ 關二（掌紋．二十五圓通）。接在寄信區之後。 */
-  scene.querySelector(".card").insertAdjacentHTML("beforeend", NEXT_GATE_HTML);
   scene.classList.add("show");
   BYNav.setResult(true);
   scene.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
-/* 楞嚴三關觀照 · 第二關入口 */
-const NEXT_GATE_HTML = `
-  <div class="nextgate">
-    <div class="ng-k">楞 嚴 三 關 觀 照 ・ 第 二 關</div>
-    <div class="ng-t">掌紋觀照 ・ 二十五圓通</div>
-    <div class="ng-x">善財童子參的是五十三位善知識，楞嚴會上是二十五位聖者——
-      <b>每一位入道的那一道門都不一樣</b>。<br>攤開慣用手，於二十五門中請出一門。</div>
-    <a class="ng-b" href="https://twnyda07.github.io/lengyan-25-yuantong/">進第二關 →</a>
-    <a class="ng-h" href="fahui.html">／　回三關入口 · 看完整三關</a>
+/* 楞嚴三關觀照 · 下一站（放在寄信區之前） */
+function nextStopHTML(s){
+  return `
+  <div class="nextstop">
+    <div class="ns-k">下 一 站</div>
+    <div class="ns-t"><span class="nw">與你相應的善知識，</span><span class="nw">是旅程的一站</span></div>
+    <div class="ns-path">
+      <div class="ns-st me"><b>第 ${s.n} 參・${s.name}</b><span>與你相應的善知識</span></div>
+      <div class="ns-ar" aria-hidden="true">→</div>
+      <div class="ns-st"><b>二十五圓通</b><span>第二關・掌紋請出你的門</span></div>
+      <div class="ns-ar" aria-hidden="true">→</div>
+      <div class="ns-st"><b>反聞聞自性</b><span>第三關・三分鐘練習</span></div>
+    </div>
+    <div class="ns-x">善財童子一路參訪五十三位善知識；楞嚴會上二十五位聖者，各有入道的門。下一站，請出你的那一門。</div>
+    <div class="ns-try">今天就做一件：從上面的「<b>每日功課</b>」挑一項，今天做到。</div>
+    <a class="ns-go" href="https://twnyda07.github.io/lengyan-25-yuantong/">進第二關・掌紋觀照 →</a>
+    <a class="ns-back" href="fahui.html">回三關入口（面相 → 掌紋 → 修法）</a>
   </div>`;
+}
 
 camBtn.addEventListener("click",openCam);
 readBtn.addEventListener("click",read);
 resetBtn.addEventListener("click",resetAll);
-againBtn.addEventListener("click",resetAll);
 /* 頂端導覽：回上頁＝看結果或已開鏡頭時回到起點；下一位＝回到起點給下一位 */
 BYNav.mount({
   crumb: "第一關．面相",

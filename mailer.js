@@ -118,7 +118,7 @@ const BaoyanMail = (function(){
   function resultText(root){
     const out = [];
     Array.prototype.forEach.call(root.children, function(el){
-      if(el.matches(".mailbox, .nextgate, .row, button, script, style") || !el.getClientRects().length) return;
+      if(el.matches(".mailbox, .nextstop, .row, button, script, style") || !el.getClientRects().length) return;
       const t = String(el.innerText || "").replace(/[ \t　]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
       if(t) out.push(t);
     });
@@ -127,7 +127,7 @@ const BaoyanMail = (function(){
     /* innerText 不含網址：把結果裡的外部連結（如見輝法師開示影片）另列在後 */
     const links = [];
     Array.prototype.forEach.call(root.querySelectorAll("a[href^='http']"), function(a){
-      if(a.closest(".mailbox, .nextgate, .row")) return;
+      if(a.closest(".mailbox, .nextstop, .row")) return;
       const t = String(a.innerText || "").replace(/\s+/g, " ").trim();
       if(links.indexOf(a.href) < 0) links.push(t ? "▶ " + t + "\n" + a.href : a.href);
     });
