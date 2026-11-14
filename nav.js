@@ -7,6 +7,7 @@
  * 共用裝置：離開本頁（pagehide）與從上一頁快取回來（pageshow persisted）時，一律呼叫 onLeave（預設＝onNext）
  *   把結果、照片、填到一半的姓名與 Email 清掉，按返回鍵回來的下一位看不到上一位的資料。
  * 窄螢幕（≤360px）按鈕只留箭頭圖示，讓「目前位置」顯示得出來。
+ * followDark:true（淺色頁本身支援深色模式時才設）：手機深色模式下導覽列也跟著轉深色。
  */
 (function(){
   var opt = {}, bar, crumbEl, nextBtn, backBtn, inResult = false;
@@ -48,6 +49,10 @@
       ".bynav .bynav-crumb{flex:1 1 auto; min-width:0; font-size:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; opacity:.9; text-align:center;}" +
       ".bynav .bynav-i{display:inline-block;}" +
       "@media (max-width:360px){ .bynav button{padding:0 12px; min-width:46px;} .bynav .bynav-t{display:none;} .bynav .bynav-crumb{font-size:14.5px;} }" +
+      /* 淺色頁本身有深色模式時（followDark:true），手機設成深色，導覽列也跟著轉深色（護眼）；頁面沒有深色模式就不轉，免得上下不一致 */
+      (dark || !opt.followDark ? "" : "@media (prefers-color-scheme: dark){ .bynav{background:rgba(17,22,31,.95); border-bottom-color:#3b4a64; color:#e3e8f1;}" +
+        " .bynav button{color:#8fb3e6; background:#19202d; border-color:#8fb3e6;}" +
+        " .bynav .bynav-next{color:#0b1220; background:#8fb3e6;} }") +
       ".bynav-space{height:calc(env(safe-area-inset-top,0px) + 58px);}" +
       "html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 66px);}" +
       "@media print{ .bynav, .bynav-space{display:none !important;} }";
