@@ -548,7 +548,9 @@ async function buildReport(f){
   for(let i=0;i<3;i++){ if(i!==lead) sc[i]=others[pi++]; }
   const wisdom=sc[0], career=sc[1], fortune=sc[2];
   const [sign,bodhiIdx]=await Promise.all([nextSign(),nextBodhiIdx()]);   // 與您有緣的菩薩（隨機）
-  const hw=[pickIdx(JIAO_POOL), pickIdx(FUDE_POOL), pickIdx(CHAN_POOL)];  // 功課隨機（教理/福德/禪定）
+  /* 功課跟著請出的那一參走（11-15 寺方裁示）：參由全場輪替錯開，功課組合也跟著錯開；53 參各有一組不同的三項功課 */
+  const sx=(sign && sign.n ? sign.n : 1)-1;
+  const hw=[sx%JIAO_POOL.length, Math.floor(sx/JIAO_POOL.length)%FUDE_POOL.length, sx%CHAN_POOL.length];
   return {lv,maxStop,wisdom,career,fortune,sign,bodhiIdx,hw,
           bodhi:BODHISATTVAS[bodhiIdx],
           homework:{jiao:JIAO_POOL[hw[0]], fude:FUDE_POOL[hw[1]], chan:CHAN_POOL[hw[2]]}};
