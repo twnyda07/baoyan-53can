@@ -239,7 +239,7 @@
 </div>
 
 <script src="signs.js"></script>
-<script src="rotate.js?v=20261114b"></script>
+<script src="rotate.js?v=20261115a"></script>
 <script src="mailer.js?v=20261114b"></script>
 <script src="nav.js?v=20261114b"></script>
 <script>
@@ -279,6 +279,7 @@ function fairPick(key,n){
   return pick;
 }
 async function nextSign(){ return SIGNS[await BYRotate.next(MAIL_API,"draw53",()=>fairPick("baoyan53_drawbag", SIGNS.length))]; }
+BYRotate.warm(MAIL_API,"draw53");   // 一打開就先向後台領號，抽籤時不必等
 
 function draw(){
   if(busy) return; busy=true;

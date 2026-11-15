@@ -323,7 +323,7 @@
 
 <script src="signs.js"></script>
 <script src="face-data.js"></script>
-<script src="rotate.js?v=20261114b"></script>
+<script src="rotate.js?v=20261115a"></script>
 <script src="mailer.js?v=20261114b"></script>
 <script src="camera.js?v=20261114b"></script>
 <script src="nav.js?v=20261114b"></script>
@@ -354,6 +354,7 @@ function fairPick(key,n){
 }
 /* 有緣菩薩：7 位在這台裝置上輪流各出現一次才重洗 */
 function nextBodhiIdx(){ return BYRotate.next(MAIL_API,"bodhi",()=>fairPick("baoyan53_bodhibag", BODHISATTVAS.length)); }
+BYRotate.warm(MAIL_API,"face53"); BYRotate.warm(MAIL_API,"bodhi");   // 一打開就先向後台領號，觀照完不必等
 
 /* ============ DOM ============ */
 const viewer=document.getElementById("viewer");
